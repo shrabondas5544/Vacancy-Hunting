@@ -22,22 +22,20 @@
             overflow-x: hidden;
         }
         
-        /* Navbar Styles - Matching signin page gradient */
+        /* Navbar Styles - Glassmorphism Effect */
         .navbar {
-            background-color: #0f172a;
+            background: rgba(15, 23, 42, 0.7);
             background-image: 
                 radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.15) 0px, transparent 50%), 
-                radial-gradient(at 100% 0%, rgba(30, 58, 138, 0.2) 0px, transparent 50%), 
-                radial-gradient(at 100% 100%, rgba(15, 23, 42, 1) 0px, transparent 50%), 
-                radial-gradient(at 0% 100%, rgba(30, 64, 175, 0.2) 0px, transparent 50%);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+                radial-gradient(at 100% 0%, rgba(30, 58, 138, 0.2) 0px, transparent 50%);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
             padding: 1rem 2rem;
             position: sticky;
             top: 0;
             z-index: 1000;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
         
         .navbar-container {
@@ -81,15 +79,51 @@
         }
         
         .nav-link {
+            position: relative;
             color: rgba(255, 255, 255, 0.8);
             text-decoration: none;
             font-size: 0.95rem;
             font-weight: 500;
-            transition: color 0.3s ease;
+            transition: all 0.3s ease;
+            padding: 0.5rem 0;
+        }
+        
+        /* Animated underline effect */
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #00bcd4, #00d4ff);
+            transform: translateX(-50%);
+            transition: width 0.3s ease;
+            box-shadow: 0 0 10px rgba(0, 188, 212, 0.5);
         }
         
         .nav-link:hover {
-            color: #00bcd4;
+            color: #00d4ff;
+            transform: translateY(-2px);
+            text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+        }
+        
+        .nav-link:hover::before {
+            width: 100%;
+        }
+        
+        /* Glow effect on hover */
+        .nav-link:hover {
+            animation: navLinkGlow 0.3s ease-in-out;
+        }
+        
+        @keyframes navLinkGlow {
+            0%, 100% {
+                filter: brightness(1);
+            }
+            50% {
+                filter: brightness(1.3);
+            }
         }
         
         .nav-right {
@@ -420,9 +454,11 @@
             -webkit-backdrop-filter: blur(16px);
             box-shadow: -4px 0 30px rgba(0, 0, 0, 0.5);
             z-index: 2000;
-            transition: right 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            transition: right 0.5s cubic-bezier(0.4, 0.0, 0.2, 1);
             overflow-y: auto;
             border-left: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
         }
         
         .mobile-drawer.active {
@@ -473,6 +509,14 @@
         /* Drawer Navigation */
         .drawer-nav {
             padding: 1rem 0;
+            flex: 1;
+        }
+        
+        /* Logout Section at Bottom */
+        .drawer-logout-section {
+            margin-top: auto;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0;
         }
         
         .drawer-nav-link {
@@ -486,12 +530,24 @@
             font-weight: 500;
             transition: all 0.3s ease;
             border-left: 3px solid transparent;
+            background: transparent;
         }
         
         .drawer-nav-link:hover {
-            background: rgba(0, 212, 255, 0.1);
-            color: #00d4ff;
+            background: rgba(0, 212, 255, 0.1) !important;
+            color: #00d4ff !important;
             border-left-color: #00d4ff;
+        }
+        
+        /* Ensure logout button doesn't have white background */
+        .drawer-nav-link[type="submit"] {
+            background: transparent !important;
+            color: rgba(255, 255, 255, 0.8) !important;
+        }
+        
+        .drawer-nav-link[type="submit"]:hover {
+            background: rgba(0, 212, 255, 0.1) !important;
+            color: #00d4ff !important;
         }
         
         .drawer-nav-link svg {
@@ -531,6 +587,11 @@
             
             .hamburger-btn {
                 display: flex;
+            }
+            
+            /* Hide desktop user menu on mobile since drawer has sign in/sign up */
+            .user-menu {
+                display: none;
             }
         }
         
@@ -763,9 +824,10 @@
                 </svg>
                 <span>Policy</span>
             </a>
-            
-            <div class="drawer-divider"></div>
-            
+        </nav>
+        
+        <!-- Profile and Logout Section at Bottom -->
+        <div class="drawer-logout-section">
             @auth
                 <a href="{{ route('profile.show') }}" class="drawer-nav-link">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -804,7 +866,7 @@
                     <span>Sign Up</span>
                 </a>
             @endauth
-        </nav>
+        </div>
     </div>
     
     

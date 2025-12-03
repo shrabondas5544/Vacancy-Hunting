@@ -857,6 +857,7 @@ margin-bottom: 4px;
     </style>
 </head>
 <body>
+    @include('partials.navbar')
 
     <!-- Hero Banner -->
     <div class="hero-banner" style="background-image: url('{{ $candidate->hero_banner ? asset('storage/' . $candidate->hero_banner) : '' }}');">

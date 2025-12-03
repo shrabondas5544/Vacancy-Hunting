@@ -854,7 +854,7 @@
     </style>
 </head>
 <body>
-
+    @include('partials.navbar')
 
     <!-- Hero Banner -->
     <div class="hero-banner" style="background-image: url('{{ $employer->hero_banner ? asset('storage/' . $employer->hero_banner) : '' }}');">
