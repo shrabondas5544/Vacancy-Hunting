@@ -62,58 +62,61 @@
             min-height: 100vh;
         }
 
-        /* HERO BANNER */
+        /* CLEAN PROFILE HEADER (No Banner Background) */
         .hero-banner {
             position: relative;
-            height: 300px;
-            background: var(--gradient-1);
-            background-size: cover;
-            background-position: center;
-            overflow: hidden;
+            background: var(--bg-primary);
+            padding: 60px 40px 40px;
         }
 
         .hero-banner::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(to bottom, rgba(15, 23, 42, 0.3), rgba(15, 23, 42, 0.8));
+            display: none;
         }
 
         .hero-content {
-            position: absolute;
-            bottom: 30px;
-            left: 0;
-            right: 0;
-            padding: 0 40px;
+            position: static;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0;
             display: flex;
-            align-items: flex-end;
+            align-items: center;
             gap: 30px;
-            z-index: 1;
         }
 
         .company-logo {
-            width: 140px;
-            height: 140px;
+            width: 180px;
+            height: 180px;
             border-radius: 50%;
-            border: 5px solid var(--bg-secondary);
+            border: 6px solid var(--bg-secondary);
             background-color: var(--bg-card);
             object-fit: cover;
-            box-shadow: var(--shadow-lg);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            flex-shrink: 0;
+        }
+
+        .hero-info {
+            flex: 1;
         }
 
         .hero-info h1 {
             font-size: 36px;
             font-weight: 700;
-            margin-bottom: 8px;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            margin-bottom: 12px;
+            color: var(--text-primary);
+            text-shadow: none;
         }
 
         .hero-info p {
-            color: #e2e8f0;
+            color: var(--text-secondary);
             font-size: 16px;
             display: flex;
             align-items: center;
             gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .hero-info p i {
+            color: var(--accent-primary);
         }
 
         .status-badge {
@@ -851,13 +854,52 @@
             font-weight: 500;
             color: var(--text-primary);
         }
+
+        /* MOBILE RESPONSIVE STYLES */
+        @media (max-width: 768px) {
+            .hero-banner {
+                padding: 10px 20px 30px;
+                margin-bottom: 20px;
+            }
+
+            .hero-content {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                gap: 2px;
+            }
+
+            .company-logo {
+                width: 120px;
+                height: 120px;
+                border: 4px solid var(--bg-secondary);
+            }
+
+            .hero-info {
+                width: 100%;
+                padding-bottom: 20px;
+            }
+
+            .hero-info h1 {
+                font-size: 24px;
+                margin-bottom: 8px;
+            }
+
+            .hero-info p {
+                justify-content: center;
+                font-size: 13px;
+                margin-bottom: 2px;
+            }
+
+            
+        }
     </style>
 </head>
 <body>
     @include('partials.navbar')
 
     <!-- Hero Banner -->
-    <div class="hero-banner" style="background-image: url('{{ $employer->hero_banner ? asset('storage/' . $employer->hero_banner) : '' }}');">
+    <div class="hero-banner">
         <div class="hero-content">
             <img src="{{ $employer->profile_picture ? asset('storage/' . $employer->profile_picture) : 'https://ui-avatars.com/api/?name=' . urlencode($employer->company_name) . '&size=150&background=3b82f6&color=fff' }}" 
                  alt="{{ $employer->company_name }}" 
@@ -868,10 +910,6 @@
                     <i class="fas fa-envelope"></i>
                     {{ $employer->user->email }}
                 </p>
-                <span class="status-badge status-{{ $employer->status }}">
-                    <i class="fas fa-{{ $employer->status === 'approved' ? 'check-circle' : ($employer->status === 'pending' ? 'clock' : 'times-circle') }}"></i>
-                    {{ ucfirst($employer->status) }}
-                </span>
             </div>
         </div>
     </div>
