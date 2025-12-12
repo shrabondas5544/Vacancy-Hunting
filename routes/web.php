@@ -28,4 +28,19 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
     Route::post('/profile/picture', [ProfileController::class, 'updateProfilePicture'])->name('profile.picture');
 
+
+});
+
+
+// Admin Routes
+Route::get('/adminview/login', [App\Http\Controllers\AdminController::class, 'loginView'])->name('admin.login');
+Route::post('/adminview/login', [App\Http\Controllers\AdminController::class, 'login']);
+
+Route::middleware(['auth', 'admin'])->prefix('adminview')->name('admin.')->group(function () {
+    Route::get('/dashboard', [App\Http\Controllers\AdminController::class, 'dashboardView'])->name('dashboard');
+    Route::post('/logout', [App\Http\Controllers\AdminController::class, 'logout'])->name('logout');
+    
+    // Profile Routes
+    Route::get('/profile', [App\Http\Controllers\AdminController::class, 'profileView'])->name('profile');
+    Route::post('/profile/password', [App\Http\Controllers\AdminController::class, 'updatePassword'])->name('profile.password');
 });

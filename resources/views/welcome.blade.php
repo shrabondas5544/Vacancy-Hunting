@@ -657,7 +657,7 @@
                                 @elseif(Auth::user()->isEmployer())
                                     {{ Auth::user()->employer->company_name }}
                                 @elseif(Auth::user()->isAdmin())
-                                    {{ Auth::user()->admin->name }}
+                                    {{ Auth::user()->admin->name ?? Auth::user()->name }}
                                 @else
                                     {{ Auth::user()->email }}
                                 @endif
@@ -668,7 +668,7 @@
                                 @elseif(Auth::user()->isEmployer())
                                     {{ strtoupper(substr(Auth::user()->employer->company_name, 0, 1)) }}
                                 @elseif(Auth::user()->isAdmin())
-                                    {{ strtoupper(substr(Auth::user()->admin->name, 0, 1)) }}
+                                    {{ strtoupper(substr(Auth::user()->admin->name ?? Auth::user()->name, 0, 1)) }}
                                 @else
                                     {{ strtoupper(substr(Auth::user()->email, 0, 1)) }}
                                 @endif
@@ -745,7 +745,7 @@
                         @elseif(Auth::user()->isEmployer())
                             {{ strtoupper(substr(Auth::user()->employer->company_name, 0, 1)) }}
                         @elseif(Auth::user()->isAdmin())
-                            {{ strtoupper(substr(Auth::user()->admin->name, 0, 1)) }}
+                            {{ strtoupper(substr(Auth::user()->admin->name ?? Auth::user()->name, 0, 1)) }}
                         @else
                             {{ strtoupper(substr(Auth::user()->email, 0, 1)) }}
                         @endif
@@ -757,7 +757,7 @@
                             @elseif(Auth::user()->isEmployer())
                                 {{ Auth::user()->employer->company_name }}
                             @elseif(Auth::user()->isAdmin())
-                                {{ Auth::user()->admin->name }}
+                                {{ Auth::user()->admin->name ?? Auth::user()->name }}
                             @else
                                 {{ Auth::user()->email }}
                             @endif

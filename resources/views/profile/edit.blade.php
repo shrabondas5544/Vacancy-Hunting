@@ -233,7 +233,7 @@
         <!-- Profile Information Section -->
         <div class="card">
             <h2>Profile Information</h2>
-            <form action="{{ route('profile.update') }}" method="POST">
+            <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
                 @if(Auth::user()->isCandidate())
