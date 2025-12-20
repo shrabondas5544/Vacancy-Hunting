@@ -43,4 +43,13 @@ Route::middleware(['auth', 'admin'])->prefix('adminview')->name('admin.')->group
     // Profile Routes
     Route::get('/profile', [App\Http\Controllers\AdminController::class, 'profileView'])->name('profile');
     Route::post('/profile/password', [App\Http\Controllers\AdminController::class, 'updatePassword'])->name('profile.password');
+
+    // Headhunting Routes
+    Route::prefix('headhunting')->name('headhunting.')->group(function () {
+        Route::get('/', [App\Http\Controllers\HeadhuntingController::class, 'index'])->name('index');
+        Route::get('/candidates', [App\Http\Controllers\HeadhuntingController::class, 'candidates'])->name('candidates');
+        Route::get('/candidates/{id}', [App\Http\Controllers\HeadhuntingController::class, 'show'])->name('candidates.show');
+        Route::post('/candidates/{id}/password', [App\Http\Controllers\HeadhuntingController::class, 'updatePassword'])->name('candidates.password');
+        Route::delete('/candidates/{id}', [App\Http\Controllers\HeadhuntingController::class, 'destroy'])->name('candidates.destroy');
+    });
 });

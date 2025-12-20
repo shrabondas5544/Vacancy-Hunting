@@ -198,13 +198,13 @@
     <div class="container">
         <div class="grid-container">
             <!-- Headhunting -->
-            <div class="card">
+            <a href="{{ route('admin.headhunting.index') }}" class="card">
                 <div class="card-icon-wrapper">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
                 </div>
                 <h3 class="card-title">Headhunting</h3>
                 <p class="card-desc">Executive search and specialized recruitment services.</p>
-            </div>
+            </a>
 
             <!-- Corporate Workshop -->
             <div class="card">
