@@ -274,12 +274,25 @@
 
             <div class="nav-section">
                 <div class="nav-section-title">Recruitment</div>
-                <a href="{{ route('admin.headhunting.candidates') }}" class="nav-item {{ request()->routeIs('admin.headhunting.candidates') ? 'active' : '' }}">
+                <a href="{{ route('admin.headhunting.candidates') }}" class="nav-item {{ request()->routeIs('admin.headhunting.candidates*') ? 'active' : '' }}">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                         <circle cx="12" cy="7" r="4"></circle>
                     </svg>
                     Candidates
+                </a>
+                <a href="{{ route('admin.headhunting.employers') }}" class="nav-item {{ request()->routeIs('admin.headhunting.employers*') ? 'active' : '' }}">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 21h18"></path>
+                        <path d="M9 8h1"></path>
+                        <path d="M9 12h1"></path>
+                        <path d="M9 16h1"></path>
+                        <path d="M14 8h1"></path>
+                        <path d="M14 12h1"></path>
+                        <path d="M14 16h1"></path>
+                        <path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"></path>
+                    </svg>
+                    Employers
                 </a>
             </div>
         </nav>

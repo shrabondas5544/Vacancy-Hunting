@@ -234,25 +234,27 @@
     <div class="stat-card">
         <div class="stat-icon green">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                <path d="M3 21h18"></path>
+                <path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"></path>
             </svg>
         </div>
         <div class="stat-info">
-            <h3>0</h3>
-            <p>Placed Candidates</p>
+            <h3>{{ $stats['total_employers'] ?? 0 }}</h3>
+            <p>Total Employers</p>
         </div>
     </div>
 
     <div class="stat-card">
         <div class="stat-icon orange">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
             </svg>
         </div>
         <div class="stat-info">
-            <h3>0</h3>
-            <p>Active Jobs</p>
+            <h3>{{ $stats['pending_employers'] ?? 0 }}</h3>
+            <p>Pending Approval</p>
         </div>
     </div>
 </div>
@@ -272,6 +274,20 @@
                 <circle cx="12" cy="7" r="4"></circle>
             </svg>
             View All Candidates
+        </a>
+        <a href="{{ route('admin.headhunting.employers') }}" class="action-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 21h18"></path>
+                <path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"></path>
+            </svg>
+            View All Employers
+        </a>
+        <a href="{{ route('admin.headhunting.employers') }}?status=pending" class="action-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            Pending Employers
         </a>
         <a href="{{ route('admin.dashboard') }}" class="action-link">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

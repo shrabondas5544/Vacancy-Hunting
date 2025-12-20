@@ -47,9 +47,19 @@ Route::middleware(['auth', 'admin'])->prefix('adminview')->name('admin.')->group
     // Headhunting Routes
     Route::prefix('headhunting')->name('headhunting.')->group(function () {
         Route::get('/', [App\Http\Controllers\HeadhuntingController::class, 'index'])->name('index');
+        
+        // Candidate Routes
         Route::get('/candidates', [App\Http\Controllers\HeadhuntingController::class, 'candidates'])->name('candidates');
-        Route::get('/candidates/{id}', [App\Http\Controllers\HeadhuntingController::class, 'show'])->name('candidates.show');
-        Route::post('/candidates/{id}/password', [App\Http\Controllers\HeadhuntingController::class, 'updatePassword'])->name('candidates.password');
-        Route::delete('/candidates/{id}', [App\Http\Controllers\HeadhuntingController::class, 'destroy'])->name('candidates.destroy');
+        Route::get('/candidates/{id}', [App\Http\Controllers\HeadhuntingController::class, 'showCandidate'])->name('candidates.show');
+        Route::post('/candidates/{id}/password', [App\Http\Controllers\HeadhuntingController::class, 'updateCandidatePassword'])->name('candidates.password');
+        Route::delete('/candidates/{id}', [App\Http\Controllers\HeadhuntingController::class, 'destroyCandidate'])->name('candidates.destroy');
+        
+        // Employer Routes
+        Route::get('/employers', [App\Http\Controllers\HeadhuntingController::class, 'employers'])->name('employers');
+        Route::get('/employers/{id}', [App\Http\Controllers\HeadhuntingController::class, 'showEmployer'])->name('employers.show');
+        Route::post('/employers/{id}/approve', [App\Http\Controllers\HeadhuntingController::class, 'approveEmployer'])->name('employers.approve');
+        Route::post('/employers/{id}/reject', [App\Http\Controllers\HeadhuntingController::class, 'rejectEmployer'])->name('employers.reject');
+        Route::post('/employers/{id}/password', [App\Http\Controllers\HeadhuntingController::class, 'updateEmployerPassword'])->name('employers.password');
+        Route::delete('/employers/{id}', [App\Http\Controllers\HeadhuntingController::class, 'destroyEmployer'])->name('employers.destroy');
     });
 });

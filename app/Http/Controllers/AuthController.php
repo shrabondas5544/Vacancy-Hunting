@@ -41,15 +41,17 @@ class AuthController extends Controller
 
             // Check if Employer is approved
             if ($user->role === 'employer') {
-                if ($user->employer->status !== 'approved') {
-                    // Optional: You can allow login but restrict features, 
-                    // or force logout. Here we force logout for strict approval.
-                    if($user->employer->status === 'rejected') {
-                         Auth::logout();
-                         return back()->withErrors(['email' => 'Your account was rejected by Admin.']);
+                $employer = $user->employer;
+                if (!$employer || $employer->status !== 'approved') {
+                    Auth::logout();
+                    $request->session()->invalidate();
+                    $request->session()->regenerateToken();
+                    
+                    if ($employer && $employer->status === 'rejected') {
+                        return back()->withErrors(['email' => 'Your account has been rejected by admin.']);
                     }
-                    // Allow login but maybe redirect to a "Pending" dashboard?
-                    // For now, let's let them in but you would handle middleware restrictions later.
+                    
+                    return back()->withErrors(['email' => 'Your account is pending approval. Please wait for admin to approve your account.']);
                 }
             }
 

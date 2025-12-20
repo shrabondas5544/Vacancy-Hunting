@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Candidate;
+use App\Models\Employer;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -17,6 +18,8 @@ class HeadhuntingController extends Controller
         $stats = [
             'total_candidates' => Candidate::count(),
             'recent_candidates' => Candidate::where('created_at', '>=', now()->subDays(30))->count(),
+            'total_employers' => Employer::count(),
+            'pending_employers' => Employer::where('status', 'pending')->count(),
         ];
 
         return view('admin.headhunting.index', compact('stats'));
@@ -48,7 +51,7 @@ class HeadhuntingController extends Controller
     /**
      * Display a candidate's full details.
      */
-    public function show($id)
+    public function showCandidate($id)
     {
         $candidate = Candidate::with([
             'user',
@@ -66,7 +69,7 @@ class HeadhuntingController extends Controller
     /**
      * Update the candidate's password.
      */
-    public function updatePassword(Request $request, $id)
+    public function updateCandidatePassword(Request $request, $id)
     {
         $request->validate([
             'password' => ['required', 'confirmed', 'min:8'],
@@ -85,7 +88,7 @@ class HeadhuntingController extends Controller
     /**
      * Delete a candidate account.
      */
-    public function destroy($id)
+    public function destroyCandidate($id)
     {
         $candidate = Candidate::findOrFail($id);
         $user = User::find($candidate->user_id);
@@ -106,4 +109,122 @@ class HeadhuntingController extends Controller
 
         return redirect()->route('admin.headhunting.candidates')->with('status', 'candidate-deleted');
     }
+
+    // ========================
+    // EMPLOYER METHODS
+    // ========================
+
+    /**
+     * Display the list of all employers.
+     */
+    public function employers(Request $request)
+    {
+        $query = Employer::with('user');
+
+        // Search functionality
+        if ($request->has('search') && $request->search) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('company_name', 'like', "%{$search}%")
+                  ->orWhereHas('user', function ($userQuery) use ($search) {
+                      $userQuery->where('email', 'like', "%{$search}%");
+                  });
+            });
+        }
+
+        // Filter by status
+        if ($request->has('status') && $request->status) {
+            $query->where('status', $request->status);
+        }
+
+        $employers = $query->orderBy('created_at', 'desc')->paginate(15);
+
+        return view('admin.headhunting.employers', compact('employers'));
+    }
+
+    /**
+     * Display an employer's full details.
+     */
+    public function showEmployer($id)
+    {
+        $employer = Employer::with([
+            'user',
+            'locations',
+            'teamMembers',
+            'media'
+        ])->findOrFail($id);
+
+        return view('admin.headhunting.employer-show', compact('employer'));
+    }
+
+    /**
+     * Approve an employer account.
+     */
+    public function approveEmployer($id)
+    {
+        $employer = Employer::findOrFail($id);
+        
+        $employer->update([
+            'status' => 'approved',
+            'approved_at' => now(),
+        ]);
+
+        return redirect()->route('admin.headhunting.employers')->with('status', 'employer-approved');
+    }
+
+    /**
+     * Reject an employer account.
+     */
+    public function rejectEmployer($id)
+    {
+        $employer = Employer::findOrFail($id);
+        
+        $employer->update([
+            'status' => 'rejected',
+        ]);
+
+        return redirect()->route('admin.headhunting.employers')->with('status', 'employer-rejected');
+    }
+
+    /**
+     * Update the employer's password.
+     */
+    public function updateEmployerPassword(Request $request, $id)
+    {
+        $request->validate([
+            'password' => ['required', 'confirmed', 'min:8'],
+        ]);
+
+        $employer = Employer::findOrFail($id);
+        $user = User::findOrFail($employer->user_id);
+
+        $user->update([
+            'password' => Hash::make($request->password),
+        ]);
+
+        return back()->with('status', 'password-updated');
+    }
+
+    /**
+     * Delete an employer account.
+     */
+    public function destroyEmployer($id)
+    {
+        $employer = Employer::findOrFail($id);
+        $user = User::find($employer->user_id);
+
+        // Delete employer and related data
+        $employer->locations()->delete();
+        $employer->teamMembers()->delete();
+        $employer->media()->delete();
+        $employer->delete();
+
+        // Delete user account
+        if ($user) {
+            $user->delete();
+        }
+
+        return redirect()->route('admin.headhunting.employers')->with('status', 'employer-deleted');
+    }
 }
+
