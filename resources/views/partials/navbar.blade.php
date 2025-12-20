@@ -26,7 +26,7 @@
     .logo {
         display: flex;
         align-items: center;
-        gap: 0.5rem;
+        gap: 0.6rem;
         font-size: 1.2rem;
         font-weight: 700;
         color: #fff;
@@ -34,19 +34,19 @@
     }
     
     .logo-icon {
-        width: 24px;
-        height: 24px;
-        background: #00bcd4;
-        border-radius: 4px;
+        width: 32px;
+        height: 32px;
+        border-radius: 6px;
+        overflow: hidden;
         display: flex;
         align-items: center;
         justify-content: center;
     }
     
-    .logo-icon::before {
-        content: '◈';
-        color: white;
-        font-size: 14px;
+    .logo-icon img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
     }
     
     .nav-center {
@@ -441,7 +441,7 @@
 <nav class="navbar">
     <div class="navbar-container">
         <a href="{{ url('/') }}" class="logo">
-            <span class="logo-icon"></span>
+            <span class="logo-icon"><img src="{{ asset('assets/images/vh-logo.jpg') }}" alt="VH"></span>
             Vacancy Hunting
         </a>
         
