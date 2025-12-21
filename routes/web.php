@@ -3,9 +3,15 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\BlogController;
 
 // Public Routes
 Route::get('/', function () { return view('welcome'); }); // or redirect to login
+
+// Public Blog Routes
+Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
+Route::get('/blog/my-articles', [BlogController::class, 'myArticles'])->name('blog.my-articles')->middleware('auth');
+Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
@@ -28,6 +34,17 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
     Route::post('/profile/picture', [ProfileController::class, 'updateProfilePicture'])->name('profile.picture');
 
+    // Protected Blog Routes
+    Route::prefix('blog')->name('blog.')->group(function () {
+        Route::get('/article/create', [BlogController::class, 'create'])->name('create');
+        Route::post('/article', [BlogController::class, 'store'])->name('store');
+        Route::delete('/article/{id}', [BlogController::class, 'destroy'])->name('destroy');
+        
+        // Reactions and comments
+        Route::post('/{id}/react', [BlogController::class, 'react'])->name('react');
+        Route::post('/{id}/comment', [BlogController::class, 'comment'])->name('comment');
+        Route::delete('/comment/{id}', [BlogController::class, 'deleteComment'])->name('comment.delete');
+    });
 
 });
 
@@ -61,5 +78,9 @@ Route::middleware(['auth', 'admin'])->prefix('adminview')->name('admin.')->group
         Route::post('/employers/{id}/reject', [App\Http\Controllers\HeadhuntingController::class, 'rejectEmployer'])->name('employers.reject');
         Route::post('/employers/{id}/password', [App\Http\Controllers\HeadhuntingController::class, 'updateEmployerPassword'])->name('employers.password');
         Route::delete('/employers/{id}', [App\Http\Controllers\HeadhuntingController::class, 'destroyEmployer'])->name('employers.destroy');
+        
+        // Blog Routes
+        Route::get('/blogs', [App\Http\Controllers\HeadhuntingController::class, 'blogs'])->name('blogs');
+        Route::delete('/blogs/{id}', [App\Http\Controllers\HeadhuntingController::class, 'destroyBlog'])->name('blogs.destroy');
     });
 });

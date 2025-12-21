@@ -635,7 +635,7 @@
                 <a href="{{ url('/') }}" class="nav-link">Home</a>
                 <a href="#" class="nav-link">About</a>
                 <a href="#" class="nav-link">Services</a>
-                <a href="#" class="nav-link">Blog</a>
+                <a href="{{ route('blog.index') }}" class="nav-link">Blog</a>
                 <a href="#" class="nav-link">Policy</a>
             </div>
             

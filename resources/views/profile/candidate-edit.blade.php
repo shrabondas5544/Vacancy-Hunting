@@ -311,6 +311,8 @@
     </style>
 </head>
 <body>
+    @include('partials.navbar')
+    
     <div class="container">
         <div class="page-header">
             <h1><i class="fas fa-user-edit"></i> Edit Your Profile</h1>

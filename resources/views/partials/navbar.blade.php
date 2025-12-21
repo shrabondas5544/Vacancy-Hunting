@@ -449,7 +449,7 @@
             <a href="{{ url('/') }}" class="nav-link">Home</a>
             <a href="#" class="nav-link">About</a>
             <a href="#" class="nav-link">Services</a>
-            <a href="#" class="nav-link">Blog</a>
+            <a href="{{ route('blog.index') }}" class="nav-link">Blog</a>
             <a href="#" class="nav-link">Policy</a>
         </div>
         
@@ -466,23 +466,23 @@
                 <div class="user-menu">
                     <div class="user-profile">
                         <span class="username">
-                            @if(Auth::user()->isCandidate())
+                            @if(Auth::user()->isCandidate() && Auth::user()->candidate)
                                 {{ Auth::user()->candidate->name }}
-                            @elseif(Auth::user()->isEmployer())
+                            @elseif(Auth::user()->isEmployer() && Auth::user()->employer)
                                 {{ Auth::user()->employer->company_name }}
                             @elseif(Auth::user()->isAdmin())
-                                {{ Auth::user()->admin->name }}
+                                {{ Auth::user()->admin->name ?? Auth::user()->email }}
                             @else
                                 {{ Auth::user()->email }}
                             @endif
                         </span>
                         <div class="profile-icon user-menu-trigger">
-                            @if(Auth::user()->isCandidate())
+                            @if(Auth::user()->isCandidate() && Auth::user()->candidate)
                                 {{ strtoupper(substr(Auth::user()->candidate->name, 0, 1)) }}
-                            @elseif(Auth::user()->isEmployer())
+                            @elseif(Auth::user()->isEmployer() && Auth::user()->employer)
                                 {{ strtoupper(substr(Auth::user()->employer->company_name, 0, 1)) }}
                             @elseif(Auth::user()->isAdmin())
-                                {{ strtoupper(substr(Auth::user()->admin->name, 0, 1)) }}
+                                {{ strtoupper(substr(Auth::user()->admin->name ?? Auth::user()->email, 0, 1)) }}
                             @else
                                 {{ strtoupper(substr(Auth::user()->email, 0, 1)) }}
                             @endif
@@ -554,24 +554,24 @@
         @auth
             <div class="drawer-user-profile">
                 <div class="drawer-profile-icon">
-                    @if(Auth::user()->isCandidate())
+                    @if(Auth::user()->isCandidate() && Auth::user()->candidate)
                         {{ strtoupper(substr(Auth::user()->candidate->name, 0, 1)) }}
-                    @elseif(Auth::user()->isEmployer())
+                    @elseif(Auth::user()->isEmployer() && Auth::user()->employer)
                         {{ strtoupper(substr(Auth::user()->employer->company_name, 0, 1)) }}
                     @elseif(Auth::user()->isAdmin())
-                        {{ strtoupper(substr(Auth::user()->admin->name, 0, 1)) }}
+                        {{ strtoupper(substr(Auth::user()->admin->name ?? Auth::user()->email, 0, 1)) }}
                     @else
                         {{ strtoupper(substr(Auth::user()->email, 0, 1)) }}
                     @endif
                 </div>
                 <div class="drawer-user-info">
                     <h3>
-                        @if(Auth::user()->isCandidate())
+                        @if(Auth::user()->isCandidate() && Auth::user()->candidate)
                             {{ Auth::user()->candidate->name }}
-                        @elseif(Auth::user()->isEmployer())
+                        @elseif(Auth::user()->isEmployer() && Auth::user()->employer)
                             {{ Auth::user()->employer->company_name }}
                         @elseif(Auth::user()->isAdmin())
-                            {{ Auth::user()->admin->name }}
+                            {{ Auth::user()->admin->name ?? Auth::user()->email }}
                         @else
                             {{ Auth::user()->email }}
                         @endif
@@ -621,7 +621,7 @@
             </svg>
             <span>Services</span>
         </a>
-        <a href="#" class="drawer-nav-link">
+        <a href="{{ route('blog.index') }}" class="drawer-nav-link">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                 <polyline points="14 2 14 8 20 8"></polyline>
