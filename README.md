@@ -261,47 +261,23 @@ php artisan serve
 
 ## 📸 Screenshots
 
-> *Coming soon - Screenshots of the beautiful glassmorphism UI*
+> *Screenshots demonstrate the user interface. Please add images to `public/screenshots/`.*
 
 ### Landing Page
-The landing page features a stunning hero section with gradient overlays and modern navigation.
+![Landing Page](public/screenshots/landing.png)
+*The landing page features a stunning hero section with gradient overlays and modern navigation.*
 
 ### Candidate Profile
-Rich, tabbed profile interface with education timeline, skills showcase, and portfolio gallery.
+![Candidate Profile](public/screenshots/candidate-dashboard.png)
+*Rich, tabbed profile interface with education timeline, skills showcase, and portfolio gallery.*
 
 ### Employer Dashboard
-Comprehensive company profile with team members, locations map, and media gallery.
+![Employer Dashboard](public/screenshots/employer-dashboard.png)
+*Comprehensive company profile with team members, locations map, and media gallery.*
 
 ### Admin Panel
-Clean, efficient dashboard for managing users and content.
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome! Here's how you can help:
-
-1. **Fork the repository**
-2. **Create a feature branch**
-   ```bash
-   git checkout -b feature/amazing-feature
-   ```
-3. **Commit your changes**
-   ```bash
-   git commit -m 'Add some amazing feature'
-   ```
-4. **Push to the branch**
-   ```bash
-   git push origin feature/amazing-feature
-   ```
-5. **Open a Pull Request**
-
-### Development Guidelines
-
-- Follow PSR-12 coding standards
-- Run `composer test` before submitting
-- Use meaningful commit messages
-- Update documentation as needed
+![Admin Panel](public/screenshots/admin-dashboard.png)
+*Clean, efficient dashboard for managing users and content.*
 
 ---
 
