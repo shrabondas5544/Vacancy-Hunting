@@ -31,69 +31,35 @@
             color: #e2e8f0;
         }
 
-        .btn {
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            border: none;
-            cursor: pointer;
-            font-size: 0.95rem;
-        }
-        
-        .btn-primary {
-            background: linear-gradient(135deg, #00bcd4 0%, #0099cc 100%);
-            color: white;
-        }
-        
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0, 188, 212, 0.4);
-        }
-
-        .btn-outline {
-            background: transparent;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            color: white;
-        }
-        
-        .btn-outline:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: #00d4ff;
-            color: #00d4ff;
-        }
-
-        .main-content {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-
-        /* Page Header */
+        /* Modern UI Components */
         .page-header {
             text-align: center;
-            margin-bottom: 2rem;
+            margin-bottom: 4rem;
+            padding: 3rem 0;
         }
 
         .page-title {
-            font-size: 2.5rem;
+            font-size: 3rem;
             font-weight: 800;
-            background: linear-gradient(135deg, #fff 0%, #e2e8f0 100%);
+            background: linear-gradient(135deg, #fff 0%, #cbd5e1 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
             margin-bottom: 0.75rem;
+            letter-spacing: -0.02em;
         }
 
         .page-subtitle {
             font-size: 1.1rem;
-            color: rgba(255, 255, 255, 0.7);
+            color: #94a3b8;
             max-width: 500px;
             margin: 0 auto;
+        }
+
+        /* Layout */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
         }
 
         /* Button Container */
@@ -101,23 +67,49 @@
             display: flex;
             justify-content: center;
             gap: 1rem;
-            margin-bottom: 2rem;
+            margin-bottom: 3rem;
             flex-wrap: wrap;
         }
 
-        .alert-success {
-            background: rgba(16, 185, 129, 0.15);
-            border: 1px solid rgba(16, 185, 129, 0.3);
-            color: #10b981;
-            padding: 1rem 1.5rem;
+        .btn {
+            padding: 0.75rem 1.5rem;
             border-radius: 10px;
-            margin-bottom: 1.5rem;
-            display: flex;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex;
             align-items: center;
-            gap: 0.75rem;
+            gap: 0.5rem;
+            border: none;
+            cursor: pointer;
+            font-size: 0.95rem;
         }
 
-        /* Articles Feed */
+        .btn-primary {
+            background: linear-gradient(135deg, #0ea5e9, #3b82f6);
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+        }
+
+        .btn-outline {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #e2e8f0;
+            backdrop-filter: blur(4px);
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #38bdf8;
+            color: #38bdf8;
+        }
+
+        /* Articles List */
         .articles-feed {
             display: flex;
             flex-direction: column;
@@ -126,27 +118,31 @@
 
         /* Article Card */
         .article-card {
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(30, 41, 59, 0.4);
             border-radius: 16px;
             overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
             transition: all 0.3s ease;
+            display: flex;
         }
 
         .article-card:hover {
-            border-color: rgba(0, 212, 255, 0.3);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            background: rgba(30, 41, 59, 0.6);
+            border-color: rgba(56, 189, 248, 0.25);
+            transform: translateX(4px);
         }
 
         .article-image {
-            width: 100%;
-            height: 200px;
-            background: linear-gradient(135deg, rgba(0, 188, 212, 0.3), rgba(99, 102, 241, 0.3));
+            width: 240px;
+            flex-shrink: 0;
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(99, 102, 241, 0.1));
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 4rem;
+            font-size: 3rem;
             position: relative;
+            object-fit: cover;
         }
 
         .article-image img {
@@ -158,11 +154,15 @@
         .article-status {
             position: absolute;
             top: 1rem;
-            right: 1rem;
-            padding: 0.35rem 0.85rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 600;
+            left: 1rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 100px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            backdrop-filter: blur(4px);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
 
         .status-published {
@@ -171,145 +171,161 @@
         }
 
         .status-draft {
-            background: rgba(251, 191, 36, 0.9);
-            color: #1a1a1a;
+            background: rgba(245, 158, 11, 0.9);
+            color: white;
         }
 
         .article-content {
-            padding: 1.5rem;
+            padding: 1.5rem 2rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
         }
 
         .article-header {
             display: flex;
+            align-items: center;
             justify-content: space-between;
-            align-items: flex-start;
             margin-bottom: 0.75rem;
-            gap: 1rem;
         }
 
         .article-category {
-            display: inline-block;
-            padding: 0.35rem 0.85rem;
-            background: rgba(0, 212, 255, 0.15);
-            color: #00d4ff;
-            border-radius: 20px;
             font-size: 0.75rem;
-            font-weight: 600;
-            flex-shrink: 0;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #38bdf8;
         }
 
         .article-date {
             font-size: 0.85rem;
-            color: rgba(255, 255, 255, 0.5);
+            color: #64748b;
         }
 
         .article-title {
-            font-size: 1.35rem;
+            font-size: 1.5rem;
             font-weight: 700;
-            color: #fff;
+            color: #f1f5f9;
             margin-bottom: 0.75rem;
-            line-height: 1.4;
+            line-height: 1.3;
         }
 
         .article-title a {
             color: inherit;
             text-decoration: none;
-            transition: color 0.3s;
+            transition: color 0.2s;
         }
 
         .article-title a:hover {
-            color: #00d4ff;
+            color: #38bdf8;
         }
 
         .article-excerpt {
-            color: rgba(255, 255, 255, 0.65);
+            color: #94a3b8;
             line-height: 1.6;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
             display: -webkit-box;
-            -webkit-line-clamp: 3;
+            -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
 
         .article-footer {
+            margin-top: auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding-top: 1rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .article-stats {
             display: flex;
-            gap: 1rem;
+            gap: 1.5rem;
         }
 
         .stat-item {
             display: flex;
             align-items: center;
-            gap: 0.35rem;
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 0.85rem;
+            gap: 0.4rem;
+            color: #64748b;
+            font-size: 0.9rem;
+            font-weight: 500;
         }
 
         .article-actions {
             display: flex;
-            gap: 0.5rem;
+            gap: 0.75rem;
         }
 
         .action-btn {
-            padding: 0.5rem 0.85rem;
-            border-radius: 6px;
-            background: rgba(255, 255, 255, 0.08);
-            border: none;
-            color: rgba(255, 255, 255, 0.8);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #cbd5e1;
             cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
+            transition: all 0.2s;
+            display: inline-flex;
             align-items: center;
-            gap: 0.35rem;
+            gap: 0.4rem;
             text-decoration: none;
             font-size: 0.85rem;
             font-weight: 500;
         }
 
         .action-btn:hover {
-            background: rgba(0, 212, 255, 0.2);
-            color: #00d4ff;
+            background: rgba(56, 189, 248, 0.15);
+            border-color: #38bdf8;
+            color: #38bdf8;
         }
 
         .action-btn.delete:hover {
-            background: rgba(239, 68, 68, 0.2);
+            background: rgba(239, 68, 68, 0.15);
+            border-color: #ef4444;
             color: #ef4444;
-        }
-
-        .action-btn svg {
-            width: 16px;
-            height: 16px;
         }
 
         /* Empty State */
         .empty-state {
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(30, 41, 59, 0.4);
             border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.05);
             text-align: center;
-            padding: 4rem 2rem;
+            padding: 5rem 2rem;
+            backdrop-filter: blur(12px);
         }
 
         .empty-state-icon {
             font-size: 4rem;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
+            opacity: 0.7;
         }
 
         .empty-state h3 {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
+            font-size: 1.75rem;
+            margin-bottom: 0.75rem;
+            color: #f1f5f9;
         }
 
         .empty-state p {
-            color: rgba(255, 255, 255, 0.6);
-            margin-bottom: 1.5rem;
+            color: #94a3b8;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        /* Success Message */
+        .alert-success {
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            color: #34d399;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            backdrop-filter: blur(4px);
         }
 
         /* Pagination */
@@ -317,56 +333,56 @@
             display: flex;
             justify-content: center;
             gap: 0.5rem;
-            margin-top: 2rem;
+            margin-top: 3rem;
         }
 
         .pagination a, .pagination span {
-            padding: 0.75rem 1rem;
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.05);
-            color: rgba(255, 255, 255, 0.7);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            background: rgba(30, 41, 59, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #94a3b8;
             text-decoration: none;
-            transition: all 0.3s;
+            transition: all 0.2s;
         }
 
         .pagination a:hover {
-            background: rgba(0, 212, 255, 0.2);
-            color: #00d4ff;
+            background: rgba(56, 189, 248, 0.15);
+            color: #38bdf8;
+            border-color: rgba(56, 189, 248, 0.3);
         }
 
         .pagination .active span {
-            background: linear-gradient(135deg, #00bcd4 0%, #0099cc 100%);
-            color: white;
+            background: #38bdf8;
+            color: #0f172a;
+            font-weight: 700;
+            border: none;
         }
 
-        @media (max-width: 640px) {
-            .main-content {
-                padding: 1rem;
-            }
-
-            .page-title {
-                font-size: 2rem;
-            }
-
-            .article-image {
-                height: 160px;
-            }
-
-            .article-header {
+        @media (max-width: 768px) {
+            .article-card {
                 flex-direction: column;
-                gap: 0.5rem;
             }
-
+            .article-image {
+                width: 100%;
+                height: 200px;
+            }
+            .article-content {
+                padding: 1.5rem;
+            }
             .article-footer {
                 flex-direction: column;
-                gap: 1rem;
                 align-items: flex-start;
+                gap: 1.5rem;
             }
-
             .article-actions {
                 width: 100%;
+                justify-content: space-between;
             }
-
             .action-btn {
                 flex: 1;
                 justify-content: center;
@@ -381,7 +397,7 @@
         <!-- Page Header -->
         <div class="page-header">
             <h1 class="page-title">My Articles</h1>
-            <p class="page-subtitle">Manage and view all the articles you've published.</p>
+            <p class="page-subtitle">Manage and view all the articles you've published to the community.</p>
         </div>
 
         <!-- Buttons -->
@@ -440,29 +456,35 @@
                             
                             <div class="article-footer">
                                 <div class="article-stats">
-                                    <div class="stat-item">
+                                    <div class="stat-item" title="Likes">
                                         <span>👍</span>
                                         <span>{{ $article->reactions->where('reaction_type', 'like')->count() }}</span>
                                     </div>
-                                    <div class="stat-item">
+                                    <div class="stat-item" title="Comments">
                                         <span>💬</span>
                                         <span>{{ $article->comments->count() }}</span>
+                                    </div>
+                                    <div class="stat-item" title="Views">
+                                        <span>👁️</span>
+                                        <span>{{ $article->views_count ?? 0 }}</span>
                                     </div>
                                 </div>
                                 
                                 <div class="article-actions">
                                     <a href="{{ route('blog.show', $article->slug) }}" class="action-btn">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                             <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                                             <circle cx="12" cy="12" r="3"></circle>
                                         </svg>
                                         View
                                     </a>
+                                    <!-- Edit feature can be added here -->
+                                    
                                     <form action="{{ route('blog.destroy', $article->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this article?');">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="action-btn delete">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                                 <polyline points="3 6 5 6 21 6"></polyline>
                                                 <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
                                             </svg>
@@ -488,5 +510,8 @@
             </div>
         @endif
     </main>
+
+    @include('partials.footer')
+
 </body>
 </html>

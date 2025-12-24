@@ -351,6 +351,8 @@
         .pagination a:hover {
             background: rgba(0, 212, 255, 0.2);
             color: #00d4ff;
+            border-color: rgba(0, 212, 255, 0.3);
+            color: #00d4ff;
         }
 
         .pagination .active span {
@@ -523,5 +525,8 @@
             </div>
         @endif
     </main>
+
+    @include('partials.footer')
+
 </body>
 </html>

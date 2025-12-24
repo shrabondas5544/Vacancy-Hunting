@@ -475,11 +475,13 @@
             }
 
             .reactions-buttons {
-                flex-direction: column;
+                /* flex-direction: column; Removed to keep buttons parallel */
+                flex-direction: row; 
             }
 
             .reaction-btn {
                 justify-content: center;
+                flex: 1; /* Make them equal width */
             }
 
             .main-content {
@@ -667,6 +669,9 @@
             </div>
         </div>
     </main>
+
+    @include('partials.footer')
+
 
     <script>
         function toggleReplyForm(commentId) {

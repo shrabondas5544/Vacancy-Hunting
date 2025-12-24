@@ -112,6 +112,9 @@
     .user-menu {
         position: relative;
         padding-bottom: 0.5rem;
+        /* Crucial: Extend the wrapper down so the mouse doesn't leave it before hitting the menu */
+        padding-bottom: 20px;
+        margin-bottom: -20px; /* Compensate for layout */
     }
     
     .user-menu-trigger {
@@ -136,18 +139,30 @@
         display: none;
         position: absolute;
         right: 0;
-        top: 100%;
+        top: 100%; /* Positions it right at the bottom of the padded wrapper */
         background: rgba(255, 255, 255, 0.98);
         backdrop-filter: blur(20px);
         border-radius: 12px;
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08);
         min-width: 220px;
         overflow: hidden;
-        margin-top: 4px;
+        margin-top: 0; /* No margin to ensure physical connection */
         border: 1px solid rgba(0, 0, 0, 0.08);
         opacity: 0;
         transform: translateY(-10px);
         transition: opacity 0.3s ease, transform 0.3s ease;
+        z-index: 1100;
+    }
+    
+    /* Invisible bridge for profile dropdown - Extra safety */
+    .user-menu-dropdown::before {
+        content: '';
+        position: absolute;
+        top: -30px; 
+        left: 0;
+        width: 100%;
+        height: 30px;
+        background: transparent;
     }
     
     .user-menu:hover .user-menu-dropdown,
@@ -435,6 +450,56 @@
             display: none;
         }
     }
+
+    /* Navigation Dropdown Styles */
+    /* Navigation Dropdown Styles */
+    .nav-drop-wrapper {
+        position: relative;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        /* Padding to increase hit area slightly if needed */
+        padding: 0 0.5rem;
+        /* Crucial: Extend the wrapper down so the mouse doesn't leave it before hitting the menu */
+        padding-bottom: 20px;
+        margin-bottom: -20px; /* Compensate for layout */
+    }
+
+    .nav-drop-menu {
+        display: none;
+        position: absolute;
+        left: 0;
+        top: 100%; /* Positions it right at the bottom of the padded wrapper */
+        background: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(20px);
+        border-radius: 12px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08);
+        min-width: 260px;
+        overflow: hidden;
+        margin-top: 0; /* No margin to ensure physical connection */
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        opacity: 0;
+        transform: translateY(-10px);
+        transition: opacity 0.3s ease, transform 0.3s ease;
+        z-index: 1100; /* Ensure it's on top */
+    }
+    
+    /* Invisible bridge to prevent menu from closing when moving mouse - Extra safety */
+    .nav-drop-menu::before {
+        content: '';
+        position: absolute;
+        top: -30px; 
+        left: 0;
+        width: 100%;
+        height: 30px;
+        background: transparent;
+    }
+
+    .nav-drop-wrapper:hover .nav-drop-menu {
+        display: block;
+        opacity: 1;
+        transform: translateY(0);
+    }
 </style>
 
 <!-- Navbar -->
@@ -448,7 +513,17 @@
         <div class="nav-center">
             <a href="{{ url('/') }}" class="nav-link">Home</a>
             <a href="#" class="nav-link">About</a>
-            <a href="#" class="nav-link">Services</a>
+            <div class="nav-drop-wrapper">
+                <a href="#" class="nav-link">Services <span style="font-size: 0.7em; margin-left: 4px;"></span></a>
+                <div class="nav-drop-menu">
+                    <a href="#" class="dropdown-item">Headhunting</a>
+                    <a href="#" class="dropdown-item">Corporate Workshop</a>
+                    <a href="#" class="dropdown-item">Career Counselling</a>
+                    <a href="#" class="dropdown-item">Skill Development Program</a>
+                    <a href="#" class="dropdown-item">People Empowerment</a>
+                    <a href="#" class="dropdown-item">Consultancy & Advisory</a>
+                </div>
+            </div>
             <a href="{{ route('blog.index') }}" class="nav-link">Blog</a>
             <a href="#" class="nav-link">Policy</a>
         </div>
@@ -614,13 +689,24 @@
             </svg>
             <span>About</span>
         </a>
-        <a href="#" class="drawer-nav-link">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
-                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
-            </svg>
-            <span>Services</span>
-        </a>
+        <div class="drawer-nav-group">
+            <a href="#" class="drawer-nav-link" onclick="toggleDrawerSubmenu(event, 'services-submenu')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                    <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                </svg>
+                <span>Services</span>
+                <span class="submenu-arrow" style="margin-left: auto;">▼</span>
+            </a>
+            <div id="services-submenu" class="drawer-submenu" style="display: none; padding-left: 1.5rem; background: rgba(0,0,0,0.1);">
+                <a href="#" class="drawer-nav-link" style="font-size: 0.9rem;">Headhunting</a>
+                <a href="#" class="drawer-nav-link" style="font-size: 0.9rem;">Corporate Workshop</a>
+                <a href="#" class="drawer-nav-link" style="font-size: 0.9rem;">Career Counselling</a>
+                <a href="#" class="drawer-nav-link" style="font-size: 0.9rem;">Skill Development Program</a>
+                <a href="#" class="drawer-nav-link" style="font-size: 0.9rem;">People Empowerment</a>
+                <a href="#" class="drawer-nav-link" style="font-size: 0.9rem;">Consultancy & Advisory</a>
+            </div>
+        </div>
         <a href="{{ route('blog.index') }}" class="drawer-nav-link">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
@@ -744,7 +830,10 @@
         }
         
         drawerLinks.forEach(link => {
-            link.addEventListener('click', closeDrawer);
+            // Only close drawer for links that don't have a custom onclick handler (like submenus)
+            if (!link.hasAttribute('onclick')) {
+                link.addEventListener('click', closeDrawer);
+            }
         });
         
         window.addEventListener('resize', function() {
@@ -752,5 +841,16 @@
                 closeDrawer();
             }
         });
+
+        // Mobile submenu toggle
+        window.toggleDrawerSubmenu = function(e, id) {
+            e.preventDefault();
+            const submenu = document.getElementById(id);
+            if (submenu.style.display === 'none') {
+                submenu.style.display = 'block';
+            } else {
+                submenu.style.display = 'none';
+            }
+        };
     });
 </script>
