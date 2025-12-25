@@ -189,7 +189,7 @@
     <!-- Hero Section -->
     <div class="hero-section">
         <div class="container">
-            <h1 class="hero-title">Admin Dashboard</h1>
+            <h1 class="hero-title">VH Admin Dashboard</h1>
             <p class="hero-subtitle">Manage all aspects of your platform from one place.</p>
         </div>
     </div>

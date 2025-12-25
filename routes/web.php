@@ -67,12 +67,14 @@ Route::middleware(['auth', 'admin'])->prefix('adminview')->name('admin.')->group
         
         // Candidate Routes
         Route::get('/candidates', [App\Http\Controllers\HeadhuntingController::class, 'candidates'])->name('candidates');
+        Route::get('/candidates/export', [App\Http\Controllers\HeadhuntingController::class, 'exportCandidates'])->name('candidates.export');
         Route::get('/candidates/{id}', [App\Http\Controllers\HeadhuntingController::class, 'showCandidate'])->name('candidates.show');
         Route::post('/candidates/{id}/password', [App\Http\Controllers\HeadhuntingController::class, 'updateCandidatePassword'])->name('candidates.password');
         Route::delete('/candidates/{id}', [App\Http\Controllers\HeadhuntingController::class, 'destroyCandidate'])->name('candidates.destroy');
         
         // Employer Routes
         Route::get('/employers', [App\Http\Controllers\HeadhuntingController::class, 'employers'])->name('employers');
+        Route::get('/employers/export', [App\Http\Controllers\HeadhuntingController::class, 'exportEmployers'])->name('employers.export');
         Route::get('/employers/{id}', [App\Http\Controllers\HeadhuntingController::class, 'showEmployer'])->name('employers.show');
         Route::post('/employers/{id}/approve', [App\Http\Controllers\HeadhuntingController::class, 'approveEmployer'])->name('employers.approve');
         Route::post('/employers/{id}/reject', [App\Http\Controllers\HeadhuntingController::class, 'rejectEmployer'])->name('employers.reject');

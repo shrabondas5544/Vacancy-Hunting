@@ -19,6 +19,13 @@
         color: var(--text-main);
     }
 
+    .filters-row {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        width: 100%;
+    }
+
     .search-box {
         display: flex;
         align-items: center;
@@ -27,8 +34,8 @@
         border: 1px solid var(--border);
         border-radius: 8px;
         padding: 0.5rem 1rem;
+        flex: 1;
         max-width: 320px;
-        width: 100%;
     }
 
     .search-box svg {
@@ -51,7 +58,23 @@
         color: var(--text-muted);
     }
 
-    .search-box button {
+    .filter-select {
+        background-color: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 0.5rem 1rem;
+        color: var(--text-main);
+        font-size: 0.95rem;
+        outline: none;
+        cursor: pointer;
+    }
+
+    .filter-select option {
+        background-color: var(--surface);
+        color: var(--text-main);
+    }
+
+    .search-btn {
         background-color: var(--primary);
         color: white;
         border: none;
@@ -62,8 +85,32 @@
         transition: background-color 0.2s;
     }
 
-    .search-box button:hover {
+    .search-btn:hover {
         background-color: var(--primary-dark);
+    }
+
+    .export-btn {
+        background-color: #22c55e;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        text-decoration: none;
+    }
+
+    .export-btn:hover {
+        background-color: #16a34a;
+    }
+
+    .export-btn svg {
+        width: 18px;
+        height: 18px;
     }
 
     .alert {
@@ -396,15 +443,50 @@
 @section('page-content')
 <div class="page-header">
     <h2>All Candidates</h2>
-    <form action="{{ route('admin.headhunting.candidates') }}" method="GET" class="search-box">
+</div>
+
+<form action="{{ route('admin.headhunting.candidates') }}" method="GET" class="filters-row" id="filterForm" style="margin-bottom: 1.5rem;">
+    <div class="search-box">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="11" cy="11" r="8"></circle>
             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
         </svg>
-        <input type="text" name="search" placeholder="Search by name or email..." value="{{ request('search') }}">
-        <button type="submit">Search</button>
-    </form>
-</div>
+        <input type="text" name="search" id="searchInput" placeholder="Search by name or email..." value="{{ request('search') }}">
+    </div>
+    
+    <select name="month" class="filter-select" id="monthFilter" onchange="document.getElementById('filterForm').submit()">
+        <option value="">All Months</option>
+        <option value="1" {{ request('month') == '1' ? 'selected' : '' }}>January</option>
+        <option value="2" {{ request('month') == '2' ? 'selected' : '' }}>February</option>
+        <option value="3" {{ request('month') == '3' ? 'selected' : '' }}>March</option>
+        <option value="4" {{ request('month') == '4' ? 'selected' : '' }}>April</option>
+        <option value="5" {{ request('month') == '5' ? 'selected' : '' }}>May</option>
+        <option value="6" {{ request('month') == '6' ? 'selected' : '' }}>June</option>
+        <option value="7" {{ request('month') == '7' ? 'selected' : '' }}>July</option>
+        <option value="8" {{ request('month') == '8' ? 'selected' : '' }}>August</option>
+        <option value="9" {{ request('month') == '9' ? 'selected' : '' }}>September</option>
+        <option value="10" {{ request('month') == '10' ? 'selected' : '' }}>October</option>
+        <option value="11" {{ request('month') == '11' ? 'selected' : '' }}>November</option>
+        <option value="12" {{ request('month') == '12' ? 'selected' : '' }}>December</option>
+    </select>
+
+    <select name="year" class="filter-select" id="yearFilter" onchange="document.getElementById('filterForm').submit()">
+        <option value="">All Years</option>
+        @foreach($years as $year)
+            <option value="{{ $year }}" {{ request('year') == $year ? 'selected' : '' }}>{{ $year }}</option>
+            
+        @endforeach
+    </select>
+
+    <a href="{{ route('admin.headhunting.candidates.export', ['month' => request('month'), 'year' => request('year'), 'search' => request('search')]) }}" class="export-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+        </svg>
+        Export to Excel
+    </a>
+</form>
 
 @if(session('status') === 'candidate-deleted')
     <div class="alert alert-success">
@@ -557,5 +639,35 @@
             closeDeleteModal();
         }
     });
+
+    // Auto search with debounce
+    let typingTimer;
+    const doneTypingInterval = 800; // time in ms (0.8 seconds)
+    const searchInput = document.getElementById('searchInput');
+
+    searchInput.addEventListener('input', function() {
+        clearTimeout(typingTimer);
+        if (searchInput.value) {
+            typingTimer = setTimeout(doneTyping, doneTypingInterval);
+        } else {
+            // Check if there was a previous value to avoid reloading on empty -> empty
+            // But if user cleared the input, we probably want to reset filter
+            typingTimer = setTimeout(doneTyping, doneTypingInterval);
+        }
+    });
+
+    function doneTyping() {
+        document.getElementById('filterForm').submit();
+    }
+    
+    // Focus search input if search param exists
+    @if(request('search'))
+        const input = document.getElementById('searchInput');
+        input.focus();
+        // Move cursor to end
+        const val = input.value;
+        input.value = '';
+        input.value = val;
+    @endif
 </script>
 @endsection

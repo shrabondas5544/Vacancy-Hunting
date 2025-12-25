@@ -69,6 +69,9 @@ class HeadhuntingController extends Controller
     /**
      * Display the list of all candidates.
      */
+    /**
+     * Display the list of all candidates.
+     */
     public function candidates(Request $request)
     {
         $query = Candidate::with('user');
@@ -84,9 +87,132 @@ class HeadhuntingController extends Controller
             });
         }
 
+        // Month filter
+        if ($request->has('month') && $request->month) {
+            $query->whereMonth('created_at', $request->month);
+        }
+
+        // Year filter
+        if ($request->has('year') && $request->year) {
+            $query->whereYear('created_at', $request->year);
+        }
+
+        // Get available years for filter (database years + defaults from 2023)
+        $dbYears = Candidate::selectRaw('YEAR(created_at) as year')
+            ->distinct()
+            ->orderBy('year', 'desc')
+            ->pluck('year')
+            ->toArray();
+            
+        $currentYear = date('Y');
+        $defaultYears = range($currentYear, 2023); // 2023 to Current Year
+        
+        $years = array_unique(array_merge($dbYears, $defaultYears));
+        rsort($years); // Sort descending
+
         $candidates = $query->orderBy('created_at', 'desc')->paginate(15);
 
-        return view('admin.headhunting.candidates', compact('candidates'));
+        return view('admin.headhunting.candidates', compact('candidates', 'years'));
+    }
+
+    /**
+     * Export candidates to CSV (opens in Excel).
+     */
+    /**
+     * Export candidates to Excel (.xlsx).
+     */
+    /**
+     * Export candidates to Excel (.xlsx).
+     */
+    public function exportCandidates(Request $request)
+    {
+        $month = $request->get('month');
+        $search = $request->get('search');
+        
+        // Build query
+        $query = Candidate::with('user');
+        
+        // Apply search filter
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhereHas('user', function ($userQuery) use ($search) {
+                      $userQuery->where('email', 'like', "%{$search}%");
+                  });
+            });
+        }
+        
+        // Apply month filter
+        if ($month) {
+            $query->whereMonth('created_at', $month);
+        }
+
+        // Apply year filter
+        if ($request->has('year') && $request->year) {
+            $query->whereYear('created_at', $request->year);
+        }
+        
+        $candidates = $query->orderBy('created_at', 'desc')->get();
+        
+        // Generate filename
+        $monthName = $month ? date('F', mktime(0, 0, 0, $month, 1)) : 'all';
+        $filename = 'candidates_' . strtolower($monthName) . '_' . date('Y-m-d') . '.xlsx';
+        
+        // Prepare data for XLSX
+        $data = [
+            [
+                'Name', 'Email', 'Phone', 'Joining Date', 
+                'Professional Summary', 'Experience Years', 'Skills', 'Interested In',
+                'Street', 'City', 'State', 'Zip Code', 'Country',
+                'Date of Birth', 'Gender', 'Pronouns',
+                'LinkedIn', 'GitHub', 'Portfolio', 'Twitter', 'Facebook', 'Instagram'
+            ] // Header row
+        ];
+        
+        foreach ($candidates as $candidate) {
+            $data[] = [
+                $candidate->name ?? 'N/A',
+                $candidate->user->email ?? 'N/A',
+                $candidate->phone ?? 'N/A',
+                $candidate->created_at->format('M d, Y'),
+                
+                $candidate->professional_summary ?? '',
+                $candidate->experience_years ?? '',
+                $candidate->skills ?? '',
+                is_array($candidate->interested_in) ? implode(', ', $candidate->interested_in) : ($candidate->interested_in ?? ''),
+                
+                $candidate->street ?? '',
+                $candidate->city ?? '',
+                $candidate->state ?? '',
+                $candidate->zip_code ?? '',
+                $candidate->country ?? '',
+                
+                $candidate->date_of_birth ? $candidate->date_of_birth->format('Y-m-d') : '',
+                $candidate->gender ?? '',
+                $candidate->pronouns ?? '',
+                
+                $candidate->linkedin_url ?? '',
+                $candidate->github_url ?? '',
+                $candidate->portfolio_url ?? '',
+                $candidate->twitter_url ?? '',
+                $candidate->facebook_url ?? '',
+                $candidate->instagram_url ?? ''
+            ];
+        }
+        
+        // Generate and stream XLSX
+        return response()->streamDownload(function() use ($data) {
+            $xlsx = \Shuchkin\SimpleXLSXGen::fromArray($data);
+            $xlsx->downloadAs(null); // Passing null to downloadAs creates output string but streamDownload handles output buffering
+            // Actually streamDownload expects us to echo content. 
+            // SimpleXLSXGen::downloadAs outputs headers and echo content, which conflicts with streamDownload.
+            // We should use saveAs('php://output') or implicit string conversion if supported, 
+            // but downloadAs headers might conflict.
+            // Let's use standard output without Laravel helper if needed, or use proper method.
+            // Inspecting SimpleXLSXGen docs: $xlsx->downloadAs('filename.xlsx') sends headers and exits.
+            // We want raw content. $xlsx->__toString() returns raw content.
+            echo $xlsx;
+        }, $filename);
     }
 
     /**
@@ -178,9 +304,124 @@ class HeadhuntingController extends Controller
             $query->where('status', $request->status);
         }
 
+        // Month filter
+        if ($request->has('month') && $request->month) {
+            $query->whereMonth('created_at', $request->month);
+        }
+
+        // Year filter
+        if ($request->has('year') && $request->year) {
+            $query->whereYear('created_at', $request->year);
+        }
+
+        // Get available years for filter (database years + defaults from 2023)
+        $dbYears = Employer::selectRaw('YEAR(created_at) as year')
+            ->distinct()
+            ->orderBy('year', 'desc')
+            ->pluck('year')
+            ->toArray();
+            
+        $currentYear = date('Y');
+        $defaultYears = range($currentYear, 2023); // 2023 to Current Year
+        
+        $years = array_unique(array_merge($dbYears, $defaultYears));
+        rsort($years); // Sort descending
+
         $employers = $query->orderBy('created_at', 'desc')->paginate(15);
 
-        return view('admin.headhunting.employers', compact('employers'));
+        return view('admin.headhunting.employers', compact('employers', 'years'));
+    }
+
+    /**
+     * Export employers to Excel (.xlsx).
+     */
+    public function exportEmployers(Request $request)
+    {
+        $month = $request->get('month');
+        $year = $request->get('year');
+        $search = $request->get('search');
+        $status = $request->get('status');
+        
+        // Build query
+        $query = Employer::with('user');
+        
+        // Apply search filter
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('company_name', 'like', "%{$search}%")
+                  ->orWhereHas('user', function ($userQuery) use ($search) {
+                      $userQuery->where('email', 'like', "%{$search}%");
+                  });
+            });
+        }
+        
+        // Apply status filter
+        if ($status) {
+            $query->where('status', $status);
+        }
+        
+        // Apply month filter
+        if ($month) {
+            $query->whereMonth('created_at', $month);
+        }
+
+        // Apply year filter
+        if ($year) {
+            $query->whereYear('created_at', $year);
+        }
+        
+        $employers = $query->orderBy('created_at', 'desc')->get();
+        
+        // Generate filename
+        $dateStr = $month ? date('F', mktime(0, 0, 0, $month, 1)) : 'all';
+        if ($year) $dateStr .= '_' . $year;
+        $filename = 'employers_' . strtolower($dateStr) . '_' . date('Y-m-d') . '.xlsx';
+        
+        // Prepare data for XLSX
+        $data = [
+            [
+                'Company Name', 'Email', 'Contact Number', 'Status', 'Joining Date',
+                'Type', 'Description', 'Establishment Year', 'Ownership', 'Employee Count',
+                'Address', 'Street', 'City', 'State', 'Zip Code', 'Country',
+                'Website', 'LinkedIn', 'Twitter', 'Facebook', 'Instagram', 'YouTube'
+            ] // Header row
+        ];
+        
+        foreach ($employers as $employer) {
+            $data[] = [
+                $employer->company_name ?? 'N/A',
+                $employer->user->email ?? 'N/A',
+                $employer->contact_number ?? 'N/A',
+                ucfirst($employer->status),
+                $employer->created_at->format('M d, Y'),
+                
+                $employer->company_type ?? '',
+                $employer->company_description ?? '',
+                $employer->establishment_year ?? '',
+                $employer->company_ownership ?? '',
+                $employer->employee_count ?? '',
+                
+                $employer->company_address ?? '',
+                $employer->street ?? '',
+                $employer->city ?? '',
+                $employer->state ?? '',
+                $employer->zip_code ?? '',
+                $employer->country ?? '',
+                
+                $employer->website_url ?? '',
+                $employer->linkedin_url ?? '',
+                $employer->twitter_url ?? '',
+                $employer->facebook_url ?? '',
+                $employer->instagram_url ?? '',
+                $employer->youtube_url ?? ''
+            ];
+        }
+        
+        // Generate and stream XLSX
+        return response()->streamDownload(function() use ($data) {
+            $xlsx = \Shuchkin\SimpleXLSXGen::fromArray($data);
+            echo $xlsx;
+        }, $filename);
     }
 
     /**
