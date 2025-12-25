@@ -464,6 +464,14 @@
                 </svg>
                 Registered {{ $employer->created_at->format('M d, Y') }}
             </div>
+            @if($employer->status === 'approved' && $employer->approved_at)
+                <div class="meta-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    Approved {{ $employer->approved_at->format('M d, Y') }}
+                </div>
+            @endif
             @if($employer->contact_number)
                 <div class="meta-item">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -605,6 +613,96 @@
             </div>
         @endif
 
+        <!-- Company Values -->
+        @if($employer->company_values)
+            <div class="card">
+                <h3 class="card-title">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                    </svg>
+                    Company Values
+                </h3>
+                @if(is_array($employer->company_values))
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.75rem;">
+                        @foreach($employer->company_values as $value)
+                            <span style="background-color: var(--surface-hover); color: var(--text-main); padding: 0.5rem 1rem; border-radius: 8px; font-size: 0.9rem;">
+                                {{ $value }}
+                            </span>
+                        @endforeach
+                    </div>
+                @else
+                    <p class="text-content">{{ $employer->company_values }}</p>
+                @endif
+            </div>
+        @endif
+
+        <!-- Products & Services -->
+        @if($employer->products_services)
+            <div class="card">
+                <h3 class="card-title">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                        <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                        <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                    </svg>
+                    Products & Services
+                </h3>
+                <p class="text-content">{{ $employer->products_services }}</p>
+            </div>
+        @endif
+
+        <!-- Company History -->
+        @if($employer->company_history)
+            <div class="card">
+                <h3 class="card-title">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                    Company History
+                </h3>
+                @if(is_array($employer->company_history))
+                    <ul style="list-style-type: none; padding: 0;">
+                        @foreach($employer->company_history as $history)
+                            <li style="margin-bottom: 1rem; padding-left: 1rem; border-left: 2px solid var(--primary);">
+                                @if(is_array($history) && isset($history['year']))
+                                    <strong style="color: var(--primary);">{{ $history['year'] }}</strong>
+                                    <p style="margin: 0.25rem 0 0 0; font-size: 0.95rem;">{{ $history['description'] ?? '' }}</p>
+                                @else
+                                    <p style="margin: 0;">{{ is_string($history) ? $history : json_encode($history) }}</p>
+                                @endif
+                            </li>
+                        @endforeach
+                    </ul>
+                @else
+                    <p class="text-content">{{ $employer->company_history }}</p>
+                @endif
+            </div>
+        @endif
+
+        <!-- Employee Benefits -->
+        @if($employer->employee_benefits)
+            <div class="card">
+                <h3 class="card-title">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                    </svg>
+                    Employee Benefits
+                </h3>
+                @if(is_array($employer->employee_benefits))
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.75rem;">
+                        @foreach($employer->employee_benefits as $benefit)
+                            <span style="background-color: var(--surface-hover); color: var(--text-main); padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.9rem;">
+                                {{ $benefit }}
+                            </span>
+                        @endforeach
+                    </div>
+                @else
+                    <p class="text-content">{{ $employer->employee_benefits }}</p>
+                @endif
+            </div>
+        @endif
+
         <!-- Team Members -->
         @if($employer->teamMembers->count() > 0)
             <div class="card">
@@ -631,6 +729,35 @@
                                 <h5>{{ $member->name }}</h5>
                                 <p>{{ $member->position }}</p>
                             </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        @endif
+
+        <!-- Media Gallery -->
+        @if($employer->media->count() > 0)
+            <div class="card">
+                <h3 class="card-title">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                        <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                        <polyline points="21 15 16 10 5 21"></polyline>
+                    </svg>
+                    Media Gallery
+                </h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem;">
+                    @foreach($employer->media as $media)
+                        <div style="aspect-ratio: 16/9; background-color: var(--surface-hover); border-radius: 8px; overflow: hidden; position: relative;">
+                            @if($media->media_type === 'image')
+                                <img src="{{ asset('storage/' . $media->file_path) }}" alt="{{ $media->caption }}" style="width: 100%; height: 100%; object-fit: cover;">
+                            @else
+                                <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--text-muted);">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 32px; height: 32px;">
+                                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                                    </svg>
+                                </div>
+                            @endif
                         </div>
                     @endforeach
                 </div>
@@ -709,7 +836,25 @@
                         Facebook
                     </a>
                 @endif
-                @if(!$employer->website_url && !$employer->linkedin_url && !$employer->twitter_url && !$employer->facebook_url)
+                @if($employer->instagram_url)
+                    <a href="{{ $employer->instagram_url }}" target="_blank" class="social-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                        </svg>
+                        Instagram
+                    </a>
+                @endif
+                @if($employer->youtube_url)
+                    <a href="{{ $employer->youtube_url }}" target="_blank" class="social-link">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                        </svg>
+                        YouTube
+                    </a>
+                @endif
+                @if(!$employer->website_url && !$employer->linkedin_url && !$employer->twitter_url && !$employer->facebook_url && !$employer->instagram_url && !$employer->youtube_url)
                     <p class="empty-section">No links provided.</p>
                 @endif
             </div>

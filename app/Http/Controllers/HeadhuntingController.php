@@ -380,10 +380,11 @@ class HeadhuntingController extends Controller
         // Prepare data for XLSX
         $data = [
             [
-                'Company Name', 'Email', 'Contact Number', 'Status', 'Joining Date',
-                'Type', 'Description', 'Establishment Year', 'Ownership', 'Employee Count',
+                'Company Name', 'Email', 'Contact Number', 'Status', 'Joining Date', 'Approved Date',
+                'Type', 'Description', 'Establishment Year', 'Ownership', 'Employee Count', 'Trade License No',
                 'Address', 'Street', 'City', 'State', 'Zip Code', 'Country',
-                'Website', 'LinkedIn', 'Twitter', 'Facebook', 'Instagram', 'YouTube'
+                'Website', 'LinkedIn', 'Twitter', 'Facebook', 'Instagram', 'YouTube',
+                'Products & Services', 'Company History', 'Employee Benefits', 'Company Values', 'Media Count'
             ] // Header row
         ];
         
@@ -394,12 +395,14 @@ class HeadhuntingController extends Controller
                 $employer->contact_number ?? 'N/A',
                 ucfirst($employer->status),
                 $employer->created_at->format('M d, Y'),
+                $employer->approved_at ? $employer->approved_at->format('M d, Y') : 'N/A',
                 
                 $employer->company_type ?? '',
                 $employer->company_description ?? '',
                 $employer->establishment_year ?? '',
                 $employer->company_ownership ?? '',
                 $employer->employee_count ?? '',
+                $employer->trade_license_no ?? '',
                 
                 $employer->company_address ?? '',
                 $employer->street ?? '',
@@ -413,7 +416,13 @@ class HeadhuntingController extends Controller
                 $employer->twitter_url ?? '',
                 $employer->facebook_url ?? '',
                 $employer->instagram_url ?? '',
-                $employer->youtube_url ?? ''
+                $employer->youtube_url ?? '',
+                
+                $employer->products_services ?? '',
+                is_array($employer->company_history) ? json_encode($employer->company_history) : ($employer->company_history ?? ''),
+                is_array($employer->employee_benefits) ? implode(', ', $employer->employee_benefits) : ($employer->employee_benefits ?? ''),
+                is_array($employer->company_values) ? implode(', ', $employer->company_values) : ($employer->company_values ?? ''),
+                $employer->media()->count()
             ];
         }
         
