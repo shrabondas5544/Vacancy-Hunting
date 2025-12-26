@@ -522,6 +522,7 @@
                     <a href="#" class="dropdown-item">Skill Development Program</a>
                     <a href="#" class="dropdown-item">People Empowerment</a>
                     <a href="#" class="dropdown-item">Consultancy & Advisory</a>
+                    <a href="{{ route('services.campus-bird') }}" class="dropdown-item">Campus Bird Internship Program</a>
                 </div>
             </div>
             <a href="{{ route('blog.index') }}" class="nav-link">Blog</a>

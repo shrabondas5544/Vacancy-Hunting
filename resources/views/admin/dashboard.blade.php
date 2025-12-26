@@ -250,6 +250,18 @@
                 <h3 class="card-title">Consultancy & Advisory</h3>
                 <p class="card-desc">Professional consultancy services for businesses.</p>
             </div>
+
+            <!-- Campus Bird Internship -->
+            <a href="{{ route('admin.campus-bird.index') }}" class="card">
+                <div class="card-icon-wrapper">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                    </svg>
+                </div>
+                <h3 class="card-title">Campus Bird Internship</h3>
+                <p class="card-desc">Manage internship programs and campus activities.</p>
+            </a>
+
         </div>
     </div>
 </div>
