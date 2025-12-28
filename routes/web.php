@@ -15,6 +15,8 @@ Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
 
 // Public Services Routes
 Route::get('/services/campus-bird-internship', [App\Http\Controllers\CampusBirdController::class, 'description'])->name('services.campus-bird');
+Route::get('/campus-bird/apply/{department}', [App\Http\Controllers\CampusBirdController::class, 'applicationForm'])->name('campus-bird.apply');
+Route::post('/campus-bird/submit', [App\Http\Controllers\CampusBirdController::class, 'submitApplication'])->name('campus-bird.submit');
 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
@@ -92,6 +94,15 @@ Route::middleware(['auth', 'admin'])->prefix('adminview')->name('admin.')->group
     // Campus Bird Internship
     Route::prefix('campus-bird')->name('campus-bird.')->group(function () {
         Route::get('/', [App\Http\Controllers\CampusBirdController::class, 'index'])->name('index');
-        Route::get('/candidates', [App\Http\Controllers\CampusBirdController::class, 'candidates'])->name('candidates');
+        
+        // Applicants Management
+        Route::get('/applicants', [App\Http\Controllers\CampusBirdController::class, 'applicants'])->name('applicants');
+        Route::get('/applicants/{id}', [App\Http\Controllers\CampusBirdController::class, 'showApplicant'])->name('applicants.show');
+        Route::post('/applicants/{id}/status', [App\Http\Controllers\CampusBirdController::class, 'updateApplicantStatus'])->name('applicants.status');
+        Route::delete('/applicants/{id}', [App\Http\Controllers\CampusBirdController::class, 'destroyApplicant'])->name('applicants.destroy');
+        
+        // Form Builder
+        Route::resource('forms', App\Http\Controllers\InternshipFormController::class);
+        Route::post('forms/{form}/toggle', [App\Http\Controllers\InternshipFormController::class, 'toggle'])->name('forms.toggle');
     });
 });

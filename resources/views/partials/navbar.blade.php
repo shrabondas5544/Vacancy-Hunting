@@ -261,17 +261,18 @@
     .hamburger-btn {
         display: none;
         flex-direction: column;
-        gap: 5px;
-        background: rgba(255, 255, 255, 0.1);
-        border: none;
-        padding: 10px;
+        gap: 6px;
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 8px 10px;
         border-radius: 8px;
         cursor: pointer;
         transition: all 0.3s ease;
     }
-    
+
     .hamburger-btn:hover {
-        background: rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.4);
     }
     
     .hamburger-btn span {
@@ -706,6 +707,7 @@
                 <a href="#" class="drawer-nav-link" style="font-size: 0.9rem;">Skill Development Program</a>
                 <a href="#" class="drawer-nav-link" style="font-size: 0.9rem;">People Empowerment</a>
                 <a href="#" class="drawer-nav-link" style="font-size: 0.9rem;">Consultancy & Advisory</a>
+                <a href="{{ route('services.campus-bird') }}" class="drawer-nav-link" style="font-size: 0.9rem;">Campus Bird Internship Program</a>
             </div>
         </div>
         <a href="{{ route('blog.index') }}" class="drawer-nav-link">

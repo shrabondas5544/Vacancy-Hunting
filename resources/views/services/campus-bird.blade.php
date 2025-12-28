@@ -303,6 +303,26 @@
 <body>
     @include('partials.navbar')
 
+    @if(session('success'))
+        <div style="position: fixed; top: 80px; right: 20px; background: linear-gradient(135deg, #00bcd4 0%, #0099cc 100%); color: white; padding: 1rem 2rem; border-radius: 12px; box-shadow: 0 8px 24px rgba(0, 188, 212, 0.4); z-index: 999; animation: slideIn 0.3s ease;">
+            {{ session('success') }}
+        </div>
+        <style>
+            @keyframes slideIn {
+                from { transform: translateX(400px); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+        </style>
+        <script>
+            setTimeout(function() {
+                document.querySelector('[style*="slideIn"]').style.animation = 'slideOut 0.3s ease forwards';
+                setTimeout(function() {
+                    document.querySelector('[style*="slideIn"]')?.remove();
+                }, 300);
+            }, 5000);
+        </script>
+    @endif
+
     <header class="page-header">
         <h1 class="page-title">Campus Bird Internship Program</h1>
         <p class="page-subtitle">Kickstart your career with real-world experience and professional mentorship right from your campus.</p>
@@ -367,39 +387,24 @@
             </div>
             <div class="modal-body">
                 <div class="category-grid">
-                    <a href="#" class="category-btn">
-                        IT & Graphics
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                    </a>
-                    <a href="#" class="category-btn">
-                        Marketing & Promotions
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                    </a>
-                    <a href="#" class="category-btn">
-                        Content & Creations
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                    </a>
-                    <a href="#" class="category-btn">
-                        Human Resources
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                    </a>
-                    <a href="#" class="category-btn">
-                        Business Development
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                    </a>
-                    <a href="#" class="category-btn">
-                        Client Management & Public Relation (CM & PR)
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                    </a>
-                    <a href="#" class="category-btn">
-                        Product Design & Development (PDDT)
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                    </a>
-                    <a href="#" class="category-btn">
-                        Education Consultancy
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                    </a>
+                    @foreach($departments as $dept)
+                        <a href="{{ route('campus-bird.apply', ['department' => $dept['name']]) }}" class="category-btn" style="{{ !$dept['available'] ? 'opacity: 0.7;' : '' }}">
+                            {{ $dept['name'] }}
+                            @if($dept['available'])
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                            @else
+                                <span style="font-size: 0.75rem; color: #ff6b6b;">Not Available</span>
+                            @endif
+                        </a>
+                    @endforeach
                 </div>
+                <p style="text-align: center; color: rgba(255, 255, 255, 0.6); font-size: 0.9rem; margin-top: 1.5rem; line-height: 1.6;">
+                    Programs marked as "Not Available" are currently not offered.<br>
+                    Stay tuned at our 
+                    <a href="https://www.facebook.com/vacancyhuntingbd" target="_blank" style="color: #00d4ff; text-decoration: none;">Facebook</a> / 
+                    <a href="https://www.linkedin.com/company/vacancy-hunting" target="_blank" style="color: #00d4ff; text-decoration: none;">LinkedIn</a> 
+                    page for future updates.
+                </p>
             </div>
         </div>
     </div>
