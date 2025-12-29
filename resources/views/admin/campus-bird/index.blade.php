@@ -55,7 +55,7 @@
 
     .stats-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
         gap: 1.25rem;
         margin-bottom: 2rem;
     }
@@ -107,6 +107,21 @@
         color: #f97316;
     }
 
+    .stat-icon.emerald {
+        background-color: rgba(16, 185, 129, 0.15);
+        color: #10b981;
+    }
+
+    .stat-icon.red {
+        background-color: rgba(239, 68, 68, 0.15);
+        color: #ef4444;
+    }
+
+    .stat-icon.purple {
+        background-color: rgba(139, 92, 246, 0.15);
+        color: #8b5cf6;
+    }
+
     .stat-info h3 {
         font-size: 1.5rem;
         font-weight: 700;
@@ -120,11 +135,9 @@
         color: var(--text-muted);
     }
 
-    .quick-actions {
-        background-color: var(--surface);
-        border: 1px solid var(--border);
-        border-radius: var(--radius);
-        padding: 1.5rem;
+    /* Charts Section */
+    .charts-section {
+        margin-bottom: 2rem;
     }
 
     .section-title {
@@ -135,6 +148,133 @@
         display: flex;
         align-items: center;
         gap: 0.5rem;
+    }
+
+    .section-title svg {
+        width: 20px;
+        height: 20px;
+        color: var(--primary);
+    }
+
+    .chart-card {
+        background-color: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .chart-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .chart-title {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--text-main);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .chart-title-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .chart-title-icon svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .chart-title-icon.green {
+        background-color: rgba(6, 131, 233, 0.15);
+        color: #075af3ff;
+    }
+
+    .chart-title-icon.orange {
+        background-color: rgba(249, 115, 22, 0.15);
+        color: #f97316;
+    }
+
+    .chart-title-icon.emerald {
+        background-color: rgba(16, 185, 129, 0.15);
+        color: #8cb910ff;
+    }
+
+    .chart-container {
+        position: relative;
+        height: 280px;
+    }
+
+    .charts-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        gap: 1.5rem;
+    }
+
+    /* Combined Chart */
+    .combined-chart-card {
+        background-color: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .combined-chart-container {
+        height: 350px;
+        position: relative;
+    }
+
+    .chart-legend {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        margin-top: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.85rem;
+        color: var(--text-muted);
+    }
+
+    .legend-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+    }
+
+    .legend-dot.applicants {
+        background-color: #3b82f6;
+    }
+
+    .legend-dot.pending {
+        background-color: #f97316;
+    }
+
+    .legend-dot.shortlisted {
+        background-color: #22c55e;
+    }
+
+   .quick-actions {
+        background-color: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 1.5rem;
     }
 
     .action-links {
@@ -161,6 +301,44 @@
         color: white;
         transform: translateX(5px);
     }
+
+    .action-link svg {
+        width: 20px;
+        height: 20px;
+        flex-shrink: 0;
+    }
+
+    @media (max-width: 768px) {
+        .dashboard-hero {
+            padding: 1.5rem;
+        }
+
+        .hero-title {
+            font-size: 1.5rem;
+        }
+
+        .stats-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .charts-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .chart-container {
+            height: 220px;
+        }
+
+        .combined-chart-container {
+            height: 280px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .stats-grid {
+            grid-template-columns: 1fr;
+        }
+    }
 </style>
 @endsection
 
@@ -185,8 +363,8 @@
             </svg>
         </div>
         <div class="stat-info">
-            <h3>{{ $stats['total_interns'] ?? 0 }}</h3>
-            <p>Total Interns</p>
+            <h3>{{ $stats['total_applicants'] ?? 0 }}</h3>
+            <p>Total Applicants</p>
         </div>
     </div>
 
@@ -198,8 +376,8 @@
             </svg>
         </div>
         <div class="stat-info">
-            <h3>{{ $stats['active_programs'] ?? 0 }}</h3>
-            <p>Active Programs</p>
+            <h3>{{ $stats['active_forms'] ?? 0 }}</h3>
+            <p>Active Forms</p>
         </div>
     </div>
 
@@ -216,6 +394,142 @@
         <div class="stat-info">
             <h3>{{ $stats['pending_applications'] ?? 0 }}</h3>
             <p>Pending Applications</p>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon emerald">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+        </div>
+        <div class="stat-info">
+            <h3>{{ $stats['shortlisted_applications'] ?? 0 }}</h3>
+            <p>Shortlisted</p>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon red">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="15" y1="9" x2="9" y2="15"></line>
+                <line x1="9" y1="9" x2="15" y2="15"></line>
+            </svg>
+        </div>
+        <div class="stat-info">
+            <h3>{{ $stats['rejected_applications'] ?? 0 }}</h3>
+            <p>Rejected</p>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon purple">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+        </div>
+        <div class="stat-info">
+            <h3>{{ $stats['recent_applicants'] ?? 0 }}</h3>
+            <p>Last 30 Days</p>
+        </div>
+    </div>
+</div>
+
+<!-- Charts Section -->
+<div class="charts-section">
+    <h2 class="section-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="20" x2="18" y2="10"></line>
+            <line x1="12" y1="20" x2="12" y2="4"></line>
+            <line x1="6" y1="20" x2="6" y2="14"></line>
+        </svg>
+        Growth Analytics (Last 12 Months)
+    </h2>
+
+    <!-- Combined Chart -->
+    <div class="combined-chart-card">
+        <div class="chart-header">
+            <div class="chart-title">
+                <span>Application Submissions & Status Over Time</span>
+            </div>
+        </div>
+        <div class="combined-chart-container">
+            <canvas id="combinedChart"></canvas>
+        </div>
+        <div class="chart-legend">
+            <div class="legend-item">
+                <span class="legend-dot applicants"></span>
+                <span>All Applicants</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-dot pending"></span>
+                <span>Pending</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-dot shortlisted"></span>
+                <span>Shortlisted</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Individual Charts -->
+    <div class="charts-grid">
+        <div class="chart-card">
+            <div class="chart-header">
+                <div class="chart-title">
+                    <div class="chart-title-icon green">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                    </div>
+                    <span>Total Applicants</span>
+                </div>
+            </div>
+            <div class="chart-container">
+                <canvas id="applicantsChart"></canvas>
+            </div>
+        </div>
+
+        <div class="chart-card">
+            <div class="chart-header">
+                <div class="chart-title">
+                    <div class="chart-title-icon orange">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                        </svg>
+                    </div>
+                    <span>Pending Applications</span>
+                </div>
+            </div>
+            <div class="chart-container">
+                <canvas id="pendingChart"></canvas>
+            </div>
+        </div>
+
+        <div class="chart-card">
+            <div class="chart-header">
+                <div class="chart-title">
+                    <div class="chart-title-icon emerald">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                    </div>
+                    <span>Shortlisted Applicants</span>
+                </div>
+            </div>
+            <div class="chart-container">
+                <canvas id="shortlistedChart"></canvas>
+            </div>
         </div>
     </div>
 </div>
@@ -248,6 +562,14 @@
             </svg>
             Manage Application Forms
         </a>
+        <a href="{{ route('admin.campus-bird.applicants') }}?status=pending" class="action-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            Pending Applications
+        </a>
         <a href="{{ route('admin.dashboard') }}" class="action-link">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <rect x="3" y="3" width="7" height="7"></rect>
@@ -259,4 +581,218 @@
         </a>
     </div>
 </div>
+
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    // Chart data from controller
+    const chartData = @json($chartData);
+
+    // Chart.js default configuration for dark theme
+    Chart.defaults.color = '#94a3b8';
+    Chart.defaults.borderColor = 'rgba(148, 163, 184, 0.1)';
+
+    // Combined Chart
+    const combinedCtx = document.getElementById('combinedChart').getContext('2d');
+    new Chart(combinedCtx, {
+        type: 'line',
+        data: {
+            labels: chartData.labels,
+            datasets: [
+                {
+                    label: 'All Applicants',
+                    data: chartData.applicants,
+                    borderColor: '#3b82f6',
+                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                    fill: true,
+                    tension: 0.4,
+                    borderWidth: 2,
+                    pointRadius: 4,
+                    pointHoverRadius: 6
+                },
+                {
+                    label: 'Pending',
+                    data: chartData.pending,
+                    borderColor: '#f97316',
+                    backgroundColor: 'rgba(249, 115, 22, 0.1)',
+                    fill: true,
+                    tension: 0.4,
+                    borderWidth: 2,
+                    pointRadius: 4,
+                    pointHoverRadius: 6
+                },
+                {
+                    label: 'Shortlisted',
+                    data: chartData.shortlisted,
+                    borderColor: '#22c55e',
+                    backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                    fill: true,
+                    tension: 0.4,
+                    borderWidth: 2,
+                    pointRadius: 4,
+                    pointHoverRadius: 6
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: {
+                intersect: false,
+                mode: 'index'
+            },
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                    titleColor: '#fff',
+                    bodyColor: '#94a3b8',
+                    borderColor: 'rgba(148, 163, 184, 0.2)',
+                    borderWidth: 1,
+                    padding: 12,
+                    cornerRadius: 8
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        color: 'rgba(148, 163, 184, 0.1)'
+                    },
+                    ticks: {
+                        stepSize: 1
+                    }
+                },
+                x: {
+                    grid: {
+                        display: false
+                    }
+                }
+            }
+        }
+    });
+
+    // Applicants Chart
+    const applicantsCtx = document.getElementById('applicantsChart').getContext('2d');
+    new Chart(applicantsCtx, {
+        type: 'bar',
+        data: {
+            labels: chartData.labels,
+            datasets: [{
+                label: 'Applicants',
+                data: chartData.applicants,
+                backgroundColor: 'rgba(59, 130, 246, 0.7)',
+                borderColor: '#3b82f6',
+                borderWidth: 1,
+                borderRadius: 4,
+                borderSkipped: false
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                    padding: 12,
+                    cornerRadius: 8
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: { color: 'rgba(148, 163, 184, 0.1)' },
+                    ticks: { stepSize: 1 }
+                },
+                x: {
+                    grid: { display: false }
+                }
+            }
+        }
+    });
+
+    // Pending Chart
+    const pendingCtx = document.getElementById('pendingChart').getContext('2d');
+    new Chart(pendingCtx, {
+        type: 'bar',
+        data: {
+            labels: chartData.labels,
+            datasets: [{
+                label: 'Pending',
+                data: chartData.pending,
+                backgroundColor: 'rgba(249, 115, 22, 0.7)',
+                borderColor: '#f97316',
+                borderWidth: 1,
+                borderRadius: 4,
+                borderSkipped: false
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                    padding: 12,
+                    cornerRadius: 8
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: { color: 'rgba(148, 163, 184, 0.1)' },
+                    ticks: { stepSize: 1 }
+                },
+                x: {
+                    grid: { display: false }
+                }
+            }
+        }
+    });
+
+    // Shortlisted Chart
+    const shortlistedCtx = document.getElementById('shortlistedChart').getContext('2d');
+    new Chart(shortlistedCtx, {
+        type: 'bar',
+        data: {
+            labels: chartData.labels,
+            datasets: [{
+                label: 'Shortlisted',
+                data: chartData.shortlisted,
+                backgroundColor: 'rgba(34, 197, 94, 0.7)',
+                borderColor: '#22c55e',
+                borderWidth: 1,
+                borderRadius: 4,
+                borderSkipped: false
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                    padding: 12,
+                    cornerRadius: 8
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: { color: 'rgba(148, 163, 184, 0.1)' },
+                    ticks: { stepSize: 1 }
+                },
+                x: {
+                    grid: { display: false }
+                }
+            }
+        }
+    });
+</script>
 @endsection

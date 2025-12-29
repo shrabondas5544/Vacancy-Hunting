@@ -97,6 +97,7 @@ Route::middleware(['auth', 'admin'])->prefix('adminview')->name('admin.')->group
         
         // Applicants Management
         Route::get('/applicants', [App\Http\Controllers\CampusBirdController::class, 'applicants'])->name('applicants');
+        Route::get('/applicants/export', [App\Http\Controllers\CampusBirdController::class, 'exportApplicants'])->name('applicants.export');
         Route::get('/applicants/{id}', [App\Http\Controllers\CampusBirdController::class, 'showApplicant'])->name('applicants.show');
         Route::post('/applicants/{id}/status', [App\Http\Controllers\CampusBirdController::class, 'updateApplicantStatus'])->name('applicants.status');
         Route::delete('/applicants/{id}', [App\Http\Controllers\CampusBirdController::class, 'destroyApplicant'])->name('applicants.destroy');

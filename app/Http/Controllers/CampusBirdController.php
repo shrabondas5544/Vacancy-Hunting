@@ -15,14 +15,65 @@ class CampusBirdController extends Controller
      */
     public function index()
     {
-        // Placeholder stats for now
+        // Get real statistics
+        $totalApplicants = InternshipFormSubmission::count();
+        $activeForms = InternshipForm::where('is_active', true)->count();
+        $pendingApplicants = InternshipFormSubmission::where('status', 'pending')->count();
+        $shortlistedApplicants = InternshipFormSubmission::where('status', 'shortlisted')->count();
+        $rejectedApplicants = InternshipFormSubmission::where('status', 'rejected')->count();
+        $recentApplicants = InternshipFormSubmission::where('created_at', '>=', now()->subDays(30))->count();
+        
         $stats = [
-            'total_interns' => Candidate::count(), // Assuming all candidates for now, or we could filter if there was a type
-            'active_programs' => 5, // Dummy data
-            'pending_applications' => 12, // Dummy data
+            'total_applicants' => $totalApplicants,
+            'active_forms' => $activeForms,
+            'pending_applications' => $pendingApplicants,
+            'shortlisted_applications' => $shortlistedApplicants,
+            'rejected_applications' => $rejectedApplicants,
+            'recent_applicants' => $recentApplicants,
         ];
 
-        return view('admin.campus-bird.index', compact('stats'));
+        // Get chart data for the last 12 months
+        $chartData = $this->getChartData();
+
+        return view('admin.campus-bird.index', compact('stats', 'chartData'));
+    }
+
+    /**
+     * Get chart data for applicants and forms.
+     */
+    private function getChartData()
+    {
+        $months = [];
+        $applicantData = [];
+        $pendingData = [];
+        $shortlistedData = [];
+
+        // Get data for last 12 months
+        for ($i = 11; $i >= 0; $i--) {
+            $date = now()->subMonths($i);
+            $months[] = $date->format('M Y');
+            
+            $applicantData[] = InternshipFormSubmission::whereYear('created_at', $date->year)
+                ->whereMonth('created_at', $date->month)
+                ->count();
+            
+            $pendingData[] = InternshipFormSubmission::whereYear('created_at', $date->year)
+                ->whereMonth('created_at', $date->month)
+                ->where('status', 'pending')
+                ->count();
+            
+            $shortlistedData[] = InternshipFormSubmission::whereYear('created_at', $date->year)
+                ->whereMonth('created_at', $date->month)
+                ->where('status', 'shortlisted')
+                ->count();
+        }
+
+        return [
+            'labels' => $months,
+            'applicants' => $applicantData,
+            'pending' => $pendingData,
+            'shortlisted' => $shortlistedData,
+        ];
     }
 
     /**
@@ -86,6 +137,99 @@ class CampusBirdController extends Controller
 
         return redirect()->route('admin.campus-bird.applicants')->with('success', 'Applicant deleted successfully.');
     }
+
+    /**
+     * Export applicants to Excel (.xlsx).
+     */
+    public function exportApplicants(Request $request)
+    {
+        $search = $request->get('search');
+        $status = $request->get('status');
+        
+        // Build query
+        $query = InternshipFormSubmission::with('form');
+        
+        // Apply search filter
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('applicant_name', 'like', "%{$search}%")
+                  ->orWhere('applicant_email', 'like', "%{$search}%");
+            });
+        }
+        
+        // Apply status filter
+        if ($status && in_array($status, ['pending', 'shortlisted', 'rejected'])) {
+            $query->where('status', $status);
+        }
+        
+        $applicants = $query->orderBy('created_at', 'desc')->get();
+        
+        // Generate filename
+        $statusText = $status ? $status . '_' : '';
+        $filename = 'campus_bird_applicants_' . $statusText . date('Y-m-d') . '.xlsx';
+        
+        // Collect all unique custom field names across all applicants
+        $allCustomFields = [];
+        foreach ($applicants as $applicant) {
+            if ($applicant->form_data && is_array($applicant->form_data)) {
+                foreach (array_keys($applicant->form_data) as $fieldName) {
+                    if (!in_array($fieldName, $allCustomFields)) {
+                        $allCustomFields[] = $fieldName;
+                    }
+                }
+            }
+        }
+        
+        // Prepare header row
+        $headers = [
+            'Name', 'Email', 'Phone', 'Department', 'Form Title', 
+            'Submission Date', 'Status'
+        ];
+        
+        // Add custom field headers
+        foreach ($allCustomFields as $fieldName) {
+            $headers[] = ucwords(str_replace('_', ' ', $fieldName));
+        }
+        
+        $data = [$headers];
+        
+        // Prepare data rows
+        foreach ($applicants as $applicant) {
+            $row = [
+                $applicant->applicant_name ?? 'N/A',
+                $applicant->applicant_email ?? 'N/A',
+                $applicant->applicant_phone ?? 'N/A',
+                $applicant->form->department ?? 'N/A',
+                $applicant->form->title ?? 'N/A',
+                $applicant->created_at->format('M d, Y H:i'),
+                ucfirst($applicant->status)
+            ];
+            
+            // Add custom field values
+            foreach ($allCustomFields as $fieldName) {
+                $value = '';
+                if (isset($applicant->form_data[$fieldName])) {
+                    $fieldValue = $applicant->form_data[$fieldName];
+                    
+                    if (is_array($fieldValue)) {
+                        $value = implode(', ', $fieldValue);
+                    } else {
+                        $value = $fieldValue;
+                    }
+                }
+                $row[] = $value;
+            }
+            
+            $data[] = $row;
+        }
+        
+        // Generate and stream XLSX
+        return response()->streamDownload(function() use ($data) {
+            $xlsx = \Shuchkin\SimpleXLSXGen::fromArray($data);
+            echo $xlsx;
+        }, $filename);
+    }
+
 
     /**
      * Display the public description page for Campus Bird Internship.

@@ -252,7 +252,7 @@
         <div class="sidebar-header">
             <a href="{{ route('admin.headhunting.index') }}" class="sidebar-logo">
                 <img src="{{ asset('assets/images/vh-logo.jpg') }}" alt="VH Logo">
-                Vacancy Hunting
+                Headhunting
             </a>
         </div>
 

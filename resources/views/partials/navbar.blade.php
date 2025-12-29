@@ -523,10 +523,15 @@
                     <a href="#" class="dropdown-item">Skill Development Program</a>
                     <a href="#" class="dropdown-item">People Empowerment</a>
                     <a href="#" class="dropdown-item">Consultancy & Advisory</a>
-                    <a href="{{ route('services.campus-bird') }}" class="dropdown-item">Campus Bird Internship Program</a>
                 </div>
             </div>
             <a href="{{ route('blog.index') }}" class="nav-link">Blog</a>
+            <div class="nav-drop-wrapper">
+                <a href="#" class="nav-link">VH Career <span style="font-size: 0.7em; margin-left: 4px;"></span></a>
+                <div class="nav-drop-menu">
+                    <a href="{{ route('services.campus-bird') }}" class="dropdown-item">Campus Bird Internship Program</a>
+                </div>
+            </div>
             <a href="#" class="nav-link">Policy</a>
         </div>
         

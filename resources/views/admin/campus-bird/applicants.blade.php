@@ -156,28 +156,65 @@
         padding: 1.5rem;
         border-top: 1px solid var(--border);
     }
+
+    .export-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.7rem 1.25rem;
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(16, 185, 129, 0.25);
+    }
+
+    .export-btn:hover {
+        background: linear-gradient(135deg, #059669 0%, #047857 100%);
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
+        transform: translateY(-1px);
+    }
+
+    .export-btn svg {
+        flex-shrink: 0;
+    }
 </style>
 @endsection
 
 @section('page-content')
 <!-- Search and Filter -->
 <div class="search-filter-row">
-    <form action="{{ route('admin.campus-bird.applicants') }}" method="GET" id="filterForm" style="display: flex; gap: 1rem; flex: 1;">
-        <input 
-            type="text" 
-            name="search" 
-            class="search-input" 
-            placeholder="Search by name or email..."
-            value="{{ request('search') }}"
-            id="searchInput"
-        >
-        <select name="status" class="status-select" id="statusFilter">
-            <option value="">All Status</option>
-            <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
-            <option value="shortlisted" {{ request('status') == 'shortlisted' ? 'selected' : '' }}>Shortlisted</option>
-            <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>Rejected</option>
-        </select>
-    </form>
+    <input 
+        type="text" 
+        name="search" 
+        class="search-input" 
+        placeholder="Search by name or email..."
+        value="{{ request('search') }}"
+        id="searchInput"
+        form="filterForm"
+    >
+    <select name="status" class="status-select" id="statusFilter" form="filterForm">
+        <option value="">All Status</option>
+        <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
+        <option value="shortlisted" {{ request('status') == 'shortlisted' ? 'selected' : '' }}>Shortlisted</option>
+        <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>Rejected</option>
+    </select>
+    <a href="{{ route('admin.campus-bird.applicants.export', ['search' => request('search'), 'status' => request('status')]) }}" 
+       class="export-btn"
+       title="Export to Excel">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+        </svg>
+        Export to Excel
+    </a>
+    <form action="{{ route('admin.campus-bird.applicants') }}" method="GET" id="filterForm" style="display: none;"></form>
 </div>
 
 <script>
