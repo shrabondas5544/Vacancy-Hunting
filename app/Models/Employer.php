@@ -83,7 +83,8 @@ class Employer extends Model
             'company_name', 'company_type', 'contact_number', 'company_description',
             'establishment_year', 'company_ownership', 'employee_count', 'company_address',
             'website_url', 'mission_statement', 'vision_statement', 'street', 'city', 
-            'state', 'zip_code', 'country'
+            'state', 'zip_code', 'country', 'profile_picture', 'trade_license_no',
+            'linkedin_url', 'products_services'
         ];
         
         $filledFields = 0;
@@ -93,12 +94,15 @@ class Employer extends Model
             }
         }
         
-        // Add bonus for relationships
+        // Add bonus for relationships and arrays
         if ($this->locations()->count() > 0) $filledFields++;
         if ($this->teamMembers()->count() > 0) $filledFields++;
         if ($this->media()->count() > 0) $filledFields++;
+        if (!empty($this->company_values) && is_array($this->company_values) && count($this->company_values) > 0) $filledFields++;
+        if (!empty($this->employee_benefits) && is_array($this->employee_benefits) && count($this->employee_benefits) > 0) $filledFields++;
+        if (!empty($this->company_history) && is_array($this->company_history) && count($this->company_history) > 0) $filledFields++;
         
-        $totalFields = count($fields) + 3; // +3 for relationships
+        $totalFields = count($fields) + 6; // +6 for relationships and arrays
         return round(($filledFields / $totalFields) * 100);
     }
 }

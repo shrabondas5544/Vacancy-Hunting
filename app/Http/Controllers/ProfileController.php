@@ -546,6 +546,8 @@ class ProfileController extends Controller
                 $updateData['hero_banner'] = $path;
             }
             
+            \Log::info('Employer Update Data:', $updateData);
+            
             // Handle media gallery uploads
             if ($request->hasFile('media_gallery')) {
                 $mediaFiles = $request->file('media_gallery');
@@ -623,7 +625,7 @@ class ProfileController extends Controller
                             // Update existing member
                             $member = $user->employer->teamMembers()->find($memberData['id']);
                             if ($member) {
-                                $updateData = [
+                                $memberUpdateData = [
                                     'name' => $memberData['name'],
                                     'title' => $memberData['title'] ?? null,
                                     'bio' => $memberData['bio'] ?? null,
@@ -635,10 +637,10 @@ class ProfileController extends Controller
                                     if ($member->photo) {
                                         Storage::disk('public')->delete($member->photo);
                                     }
-                                    $updateData['photo'] = $photoPath;
+                                    $memberUpdateData['photo'] = $photoPath;
                                 }
                                 
-                                $member->update($updateData);
+                                $member->update($memberUpdateData);
                                 $existingMemberIds[] = $member->id;
                             }
                         } else {
@@ -664,7 +666,9 @@ class ProfileController extends Controller
                 }
             }
             
-            $user->employer->update($updateData);
+            \Log::info('About to update employer with data:', $updateData);
+            $result = $user->employer->update($updateData);
+            \Log::info('Employer update result:', ['success' => $result, 'profile_picture' => $user->employer->fresh()->profile_picture]);
         }
         
         return redirect()->route('profile.show')->with('success', 'Profile updated successfully!');

@@ -1303,5 +1303,7 @@ margin-bottom: 4px;
             event.target.closest('.tab-button').classList.add('active');
         }
     </script>
+
+    @include('partials.footer')
 </body>
 </html>

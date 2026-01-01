@@ -58,7 +58,7 @@
             color: var(--text-primary);
             line-height: 1.6;
             min-height: 100vh;
-            padding: 20px;
+            padding: 0;
         }
 
         /* THEME TOGGLE */
@@ -92,6 +92,7 @@
         .container {
             max-width: 1200px;
             margin: 0 auto;
+            padding: 20px;
         }
 
         .page-header {
@@ -494,45 +495,31 @@
         <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
             @csrf
 
-            <!-- COMPANY LOGO & HERO BANNER -->
+            <!-- COMPANY LOGO -->
             <div class="section-card">
                 <div class="section-header">
                     <i class="fas fa-image"></i>
                     <h2>Company Branding</h2>
                 </div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label">Company Logo</label>
-                        <div class="file-upload-area" onclick="document.getElementById('profilePictureInput').click()">
-                            <i class="fas fa-cloud-upload-alt"></i>
-                            <div class="file-upload-text">
-                                <strong>Click to upload your company logo</strong><br>
-                                <small>PNG, JPG or GIF (Max 2MB)</small>
-                            </div>
-                            <input type="file" id="profilePictureInput" name="profile_picture" accept="image/*" onchange="previewLogo(event)">
+                <div class="form-group">
+                    <label class="form-label">Company Logo</label>
+                    <div class="file-upload-area" onclick="document.getElementById('profilePictureInput').click()">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <div class="file-upload-text">
+                            <strong>Click to upload your company logo</strong><br>
+                            <small>PNG, JPG or GIF (Max 2MB)</small>
                         </div>
-                        <img id="logoPreview" src="{{ $employer->profile_picture ? asset('storage/' . $employer->profile_picture) : '' }}" alt="Logo Preview" class="image-preview" style="display: {{ $employer->profile_picture ? 'block' : 'none' }}">
-                        @error('profile_picture')
-                            <div class="error-message"><i class="fas fa-exclamation-circle"></i> {{ $message }}</div>
-                        @enderror
+                        <input type="file" id="profilePictureInput" name="profile_picture" accept="image/*" onchange="previewLogo(event)">
                     </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Hero Banner</label>
-                        <div class="file-upload-area" onclick="document.getElementById('heroBannerInput').click()">
-                            <i class="fas fa-panorama"></i>
-                            <div class="file-upload-text">
-                                <strong>Click to upload hero banner</strong><br>
-                                <small>Recommended: 1920x400px (Max 5MB)</small>
-                            </div>
-                            <input type="file" id="heroBannerInput" name="hero_banner" accept="image/*" onchange="previewBanner(event)">
-                        </div>
-                        <img id="bannerPreview" src="{{ $employer->hero_banner ? asset('storage/' . $employer->hero_banner) : '' }}" alt="Banner Preview" class="image-preview" style="display: {{ $employer->hero_banner ? 'block' : 'none' }}">
-                        @error('hero_banner')
-                            <div class="error-message"><i class="fas fa-exclamation-circle"></i> {{ $message }}</div>
-                        @enderror
-                    </div>
+                    @if($employer->profile_picture)
+                        <img id="logoPreview" src="{{ asset('storage/' . $employer->profile_picture) }}" alt="Current Logo" class="image-preview" style="display: block; margin-top: 16px;">
+                    @else
+                        <img id="logoPreview" src="" alt="Logo Preview" class="image-preview" style="display: none; margin-top: 16px;">
+                    @endif
+                    @error('profile_picture')
+                        <div class="error-message"><i class="fas fa-exclamation-circle"></i> {{ $message }}</div>
+                    @enderror
                 </div>
             </div>
 

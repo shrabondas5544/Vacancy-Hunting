@@ -184,5 +184,7 @@
             Back to Campus Bird
         </a>
     </div>
+
+    @include('partials.footer')
 </body>
 </html>
