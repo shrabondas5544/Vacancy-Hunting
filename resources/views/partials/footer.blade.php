@@ -175,9 +175,9 @@
         <div class="footer-column">
             <h4>Legal</h4>
             <ul class="footer-links">
-                <li><a href="#">Privacy Policy</a></li>
-                <li><a href="#">Terms of Service</a></li>
-                <li><a href="#">Cookie Policy</a></li>
+                <li><a href="{{ route('privacy') }}">Privacy Policy</a></li>
+                <li><a href="{{ route('terms') }}">Terms of Service</a></li>
+                <li><a href="{{ route('cookie-policy') }}">Cookie Policy</a></li>
                 <li><a href="#">GDPR Compliance</a></li>
             </ul>
         </div>

@@ -13,6 +13,11 @@ Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
 Route::get('/blog/my-articles', [BlogController::class, 'myArticles'])->name('blog.my-articles')->middleware('auth');
 Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
 
+// Legal Pages
+Route::view('/terms-of-service', 'terms')->name('terms');
+Route::view('/privacy-policy', 'privacy')->name('privacy');
+Route::view('/cookie-policy', 'cookie-policy')->name('cookie-policy');
+
 // Public Services Routes
 Route::get('/services/campus-bird-internship', [App\Http\Controllers\CampusBirdController::class, 'description'])->name('services.campus-bird');
 Route::get('/campus-bird/apply/{department}', [App\Http\Controllers\CampusBirdController::class, 'applicationForm'])->name('campus-bird.apply');
