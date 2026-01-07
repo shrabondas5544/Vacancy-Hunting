@@ -517,7 +517,7 @@
             <div class="nav-drop-wrapper">
                 <a href="#" class="nav-link">Services <span style="font-size: 0.7em; margin-left: 4px;"></span></a>
                 <div class="nav-drop-menu">
-                    <a href="#" class="dropdown-item">Headhunting</a>
+                    <a href="{{ route('employer.dashboard') }}" class="dropdown-item">Headhunting</a>
                     <a href="#" class="dropdown-item">Corporate Workshop</a>
                     <a href="#" class="dropdown-item">Career Counselling</a>
                     <a href="#" class="dropdown-item">Skill Development Program</a>
@@ -713,7 +713,7 @@
                 <span class="submenu-arrow" style="margin-left: auto;">▼</span>
             </a>
             <div id="services-submenu" class="drawer-submenu" style="display: none; padding-left: 1.5rem; background: rgba(0,0,0,0.1);">
-                <a href="#" class="drawer-nav-link" style="font-size: 0.9rem;">Headhunting</a>
+                <a href="{{ route('employer.dashboard') }}" class="drawer-nav-link" style="font-size: 0.9rem;">Headhunting</a>
                 <a href="#" class="drawer-nav-link" style="font-size: 0.9rem;">Corporate Workshop</a>
                 <a href="#" class="drawer-nav-link" style="font-size: 0.9rem;">Career Counselling</a>
                 <a href="#" class="drawer-nav-link" style="font-size: 0.9rem;">Skill Development Program</a>

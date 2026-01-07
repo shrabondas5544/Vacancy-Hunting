@@ -58,6 +58,19 @@ Route::middleware(['auth'])->group(function () {
 
 });
 
+// Employer Headhunting Routes
+
+// Employer Headhunting Routes
+Route::middleware(['auth', App\Http\Middleware\EnsureUserIsEmployer::class])->prefix('headhunting')->name('employer.')->group(function () {
+    Route::get('/', [App\Http\Controllers\EmployerController::class, 'index'])->name('index');
+    Route::get('/dashboard', [App\Http\Controllers\EmployerController::class, 'dashboard'])->name('dashboard');
+    Route::get('/post-job', [App\Http\Controllers\EmployerController::class, 'postJob'])->name('post-job');
+    Route::get('/create-job', [App\Http\Controllers\EmployerController::class, 'createJob'])->name('create-job');
+    Route::get('/job/{id}', [App\Http\Controllers\EmployerController::class, 'showJob'])->name('show-job');
+    Route::post('/post-job', [App\Http\Controllers\EmployerController::class, 'storeJob'])->name('store-job');
+    Route::delete('/job/{id}', [App\Http\Controllers\EmployerController::class, 'destroyJob'])->name('destroy-job');
+});
+
 
 // Admin Routes
 Route::get('/adminview/login', [App\Http\Controllers\AdminController::class, 'loginView'])->name('admin.login');

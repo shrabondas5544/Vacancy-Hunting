@@ -69,6 +69,11 @@ class Employer extends Model
     {
         return $this->hasMany(EmployerMedia::class)->orderBy('display_order');
     }
+
+    public function jobs()
+    {
+        return $this->hasMany(Job::class);
+    }
     
     // Scope to find only approved employers
     public function scopeApproved($query)
