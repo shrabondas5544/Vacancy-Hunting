@@ -31,6 +31,8 @@
         font-weight: 700;
         color: #fff;
         text-decoration: none;
+        white-space: nowrap; /* Prevent text wrapping */
+        text-align: left; /* Ensure text alignment */
     }
     
     .logo-icon {
@@ -258,201 +260,6 @@
         padding: 0;
     }
     
-    .hamburger-btn {
-        display: none;
-        flex-direction: column;
-        gap: 6px;
-        background: transparent;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        padding: 8px 10px;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-
-    .hamburger-btn:hover {
-        background: rgba(255, 255, 255, 0.1);
-        border-color: rgba(255, 255, 255, 0.4);
-    }
-    
-    .hamburger-btn span {
-        display: block;
-        width: 25px;
-        height: 3px;
-        background: white;
-        border-radius: 2px;
-        transition: all 0.3s ease;
-    }
-    
-    .hamburger-btn.active span:nth-child(1) {
-        transform: rotate(45deg) translate(8px, 8px);
-    }
-    
-    .hamburger-btn.active span:nth-child(2) {
-        opacity: 0;
-    }
-    
-    .hamburger-btn.active span:nth-child(3) {
-        transform: rotate(-45deg) translate(7px, -7px);
-    }
-    
-    .mobile-drawer-overlay {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.5);
-        backdrop-filter: blur(4px);
-        z-index: 1999;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-    }
-    
-    .mobile-drawer-overlay.active {
-        display: block;
-        opacity: 1;
-    }
-    
-    .mobile-drawer {
-        position: fixed;
-        top: 0;
-        right: -100%;
-        width: 280px;
-        max-width: 85%;
-        height: 100vh;
-        background-color: #0f172a;
-        background-image: 
-            linear-gradient(135deg, rgba(56, 189, 248, 0.1) 0%, rgba(30, 58, 138, 0.15) 100%),
-            radial-gradient(at 50% 0%, rgba(0, 212, 255, 0.1) 0px, transparent 50%);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
-        box-shadow: -4px 0 30px rgba(0, 0, 0, 0.5);
-        z-index: 2000;
-        transition: right 0.5s cubic-bezier(0.4, 0.0, 0.2, 1);
-        overflow-y: auto;
-        border-left: 1px solid rgba(255, 255, 255, 0.1);
-        display: flex;
-        flex-direction: column;
-    }
-    
-    .mobile-drawer.active {
-        right: 0;
-    }
-    
-    .drawer-header {
-        padding: 2rem 1.5rem 1.5rem;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        background: linear-gradient(180deg, rgba(0, 212, 255, 0.1) 0%, transparent 100%);
-    }
-    
-    .drawer-user-profile {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        margin-bottom: 1rem;
-    }
-    
-    .drawer-profile-icon {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        font-weight: 700;
-        font-size: 1.3rem;
-        box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
-    }
-    
-    .drawer-user-info h3 {
-        font-size: 1.1rem;
-        color: white;
-        margin: 0 0 0.25rem 0;
-        font-weight: 600;
-    }
-    
-    .drawer-user-info p {
-        font-size: 0.85rem;
-        color: rgba(255, 255, 255, 0.6);
-        margin: 0;
-    }
-    
-    .drawer-nav {
-        padding: 1rem 0;
-        flex: 1;
-    }
-    
-    .drawer-logout-section {
-        margin-top: auto;
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-        padding: 0;
-    }
-    
-    .drawer-nav-link {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        padding: 1rem 1.5rem;
-        color: rgba(255, 255, 255, 0.8);
-        text-decoration: none;
-        font-size: 1rem;
-        font-weight: 500;
-        transition: all 0.3s ease;
-        border-left: 3px solid transparent;
-        background: transparent;
-    }
-    
-    .drawer-nav-link:hover {
-        background: rgba(0, 212, 255, 0.1) !important;
-        color: #00d4ff !important;
-        border-left-color: #00d4ff;
-    }
-    
-    .drawer-nav-link[type="submit"] {
-        background: transparent !important;
-        color: rgba(255, 255, 255, 0.8) !important;
-    }
-    
-    .drawer-nav-link[type="submit"]:hover {
-        background: rgba(0, 212, 255, 0.1) !important;
-        color: #00d4ff !important;
-    }
-    
-    .drawer-nav-link svg {
-        width: 22px;
-        height: 22px;
-        flex-shrink: 0;
-    }
-    
-    @media (max-width: 1024px) {
-        .nav-center {
-            display: none;
-        }
-        
-        .hamburger-btn {
-            display: flex;
-        }
-        
-        .user-menu {
-            display: none;
-        }
-    }
-    
-    @media (max-width: 768px) {
-        .navbar {
-            padding: 1rem;
-        }
-        
-        .username {
-            display: none;
-        }
-    }
-
-    /* Navigation Dropdown Styles */
     /* Navigation Dropdown Styles */
     .nav-drop-wrapper {
         position: relative;
@@ -501,13 +308,223 @@
         opacity: 1;
         transform: translateY(0);
     }
+
+    /* ------- MOBILE BOTTOM NAVIGATION STYLES ------- */
+    .mobile-bottom-nav {
+        display: none;
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 90%;
+        height: 70px;
+        background: rgba(15, 23, 42, 0.9);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        z-index: 2000;
+        justify-content: space-around;
+        align-items: center;
+        padding: 0 10px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+        border-radius: 40px;
+    }
+
+    .mobile-nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 0.75rem;
+        gap: 4px;
+        flex: 1;
+        height: 100%;
+        transition: all 0.3s ease;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+    }
+
+    .mobile-nav-item svg {
+        width: 24px;
+        height: 24px;
+        stroke-width: 2;
+        transition: all 0.3s ease;
+    }
+
+    .mobile-nav-item.active,
+    .mobile-nav-item:hover {
+        color: #00d4ff;
+    }
+
+    .mobile-nav-item.active svg,
+    .mobile-nav-item:hover svg {
+        transform: translateY(-2px);
+        filter: drop-shadow(0 0 5px rgba(0, 212, 255, 0.5));
+    }
+
+    /* Center Item (Home) Special Style */
+    .mobile-nav-item.center-item {
+        position: relative;
+        top: -20px;
+        background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        flex: none;
+        color: white;
+        box-shadow: 0 4px 15px rgba(0, 212, 255, 0.4);
+        border: 4px solid #0f172a; /* Match body bg to create cutout effect */
+    }
+
+    .mobile-nav-item.center-item svg {
+        width: 28px;
+        height: 28px;
+        color: white !important;
+    }
+
+    .mobile-nav-item.center-item span {
+        display: none;
+    }
+
+    .mobile-nav-item.center-item:hover {
+        transform: translateY(-5px);
+        color: white;
+    }
+
+    /* Bottom Sheet Styles */
+    .bottom-sheet-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(4px);
+        z-index: 2001;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .bottom-sheet-overlay.active {
+        display: block;
+        opacity: 1;
+    }
+
+    .bottom-sheet {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background: #1e293b;
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+        padding: 20px 0;
+        transform: translateY(100%);
+        transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        z-index: 2002;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+
+    .bottom-sheet.active {
+        transform: translateY(0);
+    }
+
+    .sheet-handle {
+        width: 40px;
+        height: 4px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 2px;
+        margin: 0 auto 20px;
+    }
+
+    .sheet-header {
+        padding: 0 20px 15px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        margin-bottom: 10px;
+    }
+
+    .sheet-title {
+        color: white;
+        font-size: 1.2rem;
+        font-weight: 700;
+    }
+
+    .sheet-content {
+        padding: 0 10px;
+    }
+
+    .sheet-item {
+        display: flex;
+        align-items: center;
+        padding: 15px 20px;
+        color: rgba(255, 255, 255, 0.9);
+        text-decoration: none;
+        font-size: 1rem;
+        border-radius: 12px;
+        transition: background 0.2s;
+        gap: 12px;
+    }
+
+    .sheet-item:hover {
+        background: rgba(255, 255, 255, 0.05);
+        color: #00d4ff;
+    }
+
+    .sheet-item svg {
+        width: 20px;
+        height: 20px;
+        opacity: 0.7;
+    }
+    
+    .sheet-item:hover svg {
+        opacity: 1;
+        color: #00d4ff;
+    }
+
+    @media (max-width: 1024px) {
+        .nav-center {
+            display: none;
+        }
+        
+        .user-menu {
+            display: none;
+        }
+    }
+    
+    @media (max-width: 1024px) {
+        .navbar-container {
+            justify-content: flex-end; /* Align logo to right on mobile */
+        }
+        .logo {
+            flex-direction: row-reverse; /* Text on Left, Icon on Right */
+        }
+        
+        .username {
+            display: none;
+        }
+
+        .mobile-bottom-nav {
+            display: flex;
+        }
+
+        /* Adjust body padding for bottom nav */
+        body {
+            padding-bottom: 80px;
+        }
+    }
 </style>
 
 <!-- Navbar -->
 <nav class="navbar">
     <div class="navbar-container">
         <a href="{{ url('/') }}" class="logo">
-            <span class="logo-icon"><img src="{{ asset('assets/images/vh-logo.jpg') }}" alt="VH"></span>
+            <span class="logo-icon"><img src="{{ asset('assets/images/VH logo.png') }}" alt="VH"></span>
             Vacancy Hunting
         </a>
         
@@ -543,13 +560,6 @@
         </div>
         
         <div class="nav-right">
-            <!-- Hamburger Menu for Mobile -->
-            <button class="hamburger-btn" id="hamburgerBtn" aria-label="Menu">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-            
             @auth
                 <!-- Logged in user with dropdown -->
                 <div class="user-menu">
@@ -634,263 +644,152 @@
     </div>
 </nav>
 
-<!-- Mobile Drawer Overlay -->
-<div class="mobile-drawer-overlay" id="drawerOverlay"></div>
+<!-- Mobile Bottom Navigation -->
+<div class="mobile-bottom-nav">
+    <!-- Services (Triggers Bottom Sheet) -->
+    <button class="mobile-nav-item {{ request()->routeIs('employer.dashboard') ? 'active' : '' }}" onclick="openBottomSheet('servicesSheet')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+        </svg>
+        <span>Services</span>
+    </button>
 
-<!-- Mobile Drawer -->
-<div class="mobile-drawer" id="mobileDrawer">
-    <div class="drawer-header">
-        @auth
-            <div class="drawer-user-profile">
-                <div class="drawer-profile-icon">
-                    @if(Auth::user()->isCandidate() && Auth::user()->candidate)
-                        {{ strtoupper(substr(Auth::user()->candidate->name, 0, 1)) }}
-                    @elseif(Auth::user()->isEmployer() && Auth::user()->employer)
-                        {{ strtoupper(substr(Auth::user()->employer->company_name, 0, 1)) }}
-                    @elseif(Auth::user()->isAdmin())
-                        {{ strtoupper(substr(Auth::user()->admin->name ?? Auth::user()->email, 0, 1)) }}
-                    @else
-                        {{ strtoupper(substr(Auth::user()->email, 0, 1)) }}
-                    @endif
-                </div>
-                <div class="drawer-user-info">
-                    <h3>
-                        @if(Auth::user()->isCandidate() && Auth::user()->candidate)
-                            {{ Auth::user()->candidate->name }}
-                        @elseif(Auth::user()->isEmployer() && Auth::user()->employer)
-                            {{ Auth::user()->employer->company_name }}
-                        @elseif(Auth::user()->isAdmin())
-                            {{ Auth::user()->admin->name ?? Auth::user()->email }}
-                        @else
-                            {{ Auth::user()->email }}
-                        @endif
-                    </h3>
-                    <p>
-                        @if(Auth::user()->isCandidate())
-                            Candidate
-                        @elseif(Auth::user()->isEmployer())
-                            Employer
-                        @elseif(Auth::user()->isAdmin())
-                            Admin
-                        @endif
-                    </p>
-                </div>
-            </div>
-        @else
-            <div class="drawer-user-profile">
-                <div class="drawer-profile-icon">👤</div>
-                <div class="drawer-user-info">
-                    <h3>Welcome!</h3>
-                    <p>Sign in to continue</p>
-                </div>
-            </div>
-        @endauth
+    <!-- Blog -->
+    <a href="{{ route('blog.index') }}" class="mobile-nav-item {{ request()->routeIs('blog.*') ? 'active' : '' }}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" y1="13" x2="8" y2="13"></line>
+            <line x1="16" y1="17" x2="8" y2="17"></line>
+            <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+        <span>Blog</span>
+    </a>
+
+    <!-- Home (Center) -->
+    <a href="{{ url('/') }}" class="mobile-nav-item center-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+        <span>Home</span>
+    </a>
+
+    <!-- VH Career (Triggers Bottom Sheet) -->
+    <button class="mobile-nav-item {{ request()->routeIs('services.campus-bird') ? 'active' : '' }}" onclick="openBottomSheet('vhCareerSheet')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+        </svg>
+        <span>VH Career</span>
+    </button>
+
+    <!-- Profile or SignIn -->
+    @auth
+        <a href="{{ route('profile.show') }}" class="mobile-nav-item {{ request()->routeIs('profile.*') ? 'active' : '' }}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <span>Profile</span>
+        </a>
+    @else
+        <a href="{{ route('login') }}" class="mobile-nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                <polyline points="10 17 15 12 10 7"></polyline>
+                <line x1="15" y1="12" x2="3" y2="12"></line>
+            </svg>
+            <span>Sign In</span>
+        </a>
+    @endauth
+</div>
+
+<!-- Bottom Sheet Overlay -->
+<div class="bottom-sheet-overlay" id="bottomSheetOverlay" onclick="closeAllBottomSheets()"></div>
+
+<!-- Services Bottom Sheet -->
+<div class="bottom-sheet" id="servicesSheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-header">
+        <div class="sheet-title">Services</div>
     </div>
-    
-    <nav class="drawer-nav">
-        <a href="{{ url('/') }}" class="drawer-nav-link">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                <polyline points="9 22 9 12 15 12 15 22"></polyline>
-            </svg>
-            <span>Home</span>
-        </a>
-        <a href="#" class="drawer-nav-link">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <div class="sheet-content">
+        <a href="{{ route('employer.dashboard') }}" class="sheet-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="10"></circle>
-                <path d="M12 16v-4"></path>
-                <path d="M12 8h.01"></path>
+                <polyline points="12 6 12 12 16 14"></polyline>
             </svg>
-            <span>About</span>
+            Headhunting
         </a>
-        <div class="drawer-nav-group">
-            <a href="#" class="drawer-nav-link" onclick="toggleDrawerSubmenu(event, 'services-submenu')">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
-                    <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
-                </svg>
-                <span>Services</span>
-                <span class="submenu-arrow" style="margin-left: auto;">▼</span>
-            </a>
-            <div id="services-submenu" class="drawer-submenu" style="display: none; padding-left: 1.5rem; background: rgba(0,0,0,0.1);">
-                <a href="{{ route('employer.dashboard') }}" class="drawer-nav-link" style="font-size: 0.9rem;">Headhunting</a>
-                <a href="#" class="drawer-nav-link" style="font-size: 0.9rem;">Corporate Workshop</a>
-                <a href="#" class="drawer-nav-link" style="font-size: 0.9rem;">Career Counselling</a>
-                <a href="#" class="drawer-nav-link" style="font-size: 0.9rem;">Skill Development Program</a>
-                <a href="#" class="drawer-nav-link" style="font-size: 0.9rem;">People Empowerment</a>
-                <a href="#" class="drawer-nav-link" style="font-size: 0.9rem;">Consultancy & Advisory</a>
-                
-            </div>
-        </div>
-        <a href="{{ route('blog.index') }}" class="drawer-nav-link">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                <polyline points="14 2 14 8 20 8"></polyline>
+        <a href="#" class="sheet-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
             </svg>
-            <span>Blog</span>
+            Corporate Workshop
         </a>
-        <div class="drawer-nav-group">
-            <a href="#" class="drawer-nav-link" onclick="toggleDrawerSubmenu(event, 'vh-career-submenu')">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                    <polyline points="14 2 14 8 20 8"></polyline>
-                    <line x1="16" y1="13" x2="8" y2="13"></line>
-                    <line x1="16" y1="17" x2="8" y2="17"></line>
-                    <polyline points="10 9 9 9 8 9"></polyline>
-                </svg>
-                <span>VH Career</span>
-                <span class="submenu-arrow" style="margin-left: auto;">▼</span>
-            </a>
-            <div id="vh-career-submenu" class="drawer-submenu" style="display: none; padding-left: 1.5rem; background: rgba(0,0,0,0.1);">
-                <a href="{{ route('services.campus-bird') }}" class="drawer-nav-link" style="font-size: 0.9rem;">Campus Bird Internship Program</a>
-            </div>
-        </div>
-         
-        <div class="drawer-nav-group">
-            <a href="#" class="drawer-nav-link" onclick="toggleDrawerSubmenu(event, 'policy-submenu')">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                    <polyline points="14 2 14 8 20 8"></polyline>
-                    <line x1="16" y1="13" x2="8" y2="13"></line>
-                    <line x1="16" y1="17" x2="8" y2="17"></line>
-                    <polyline points="10 9 9 9 8 9"></polyline>
-                </svg>
-                <span>Legal</span>
-                <span class="submenu-arrow" style="margin-left: auto;">▼</span>
-            </a>
-            <div id="policy-submenu" class="drawer-submenu" style="display: none; padding-left: 1.5rem; background: rgba(0,0,0,0.1);">
-                <a href="{{ route('terms') }}" class="drawer-nav-link" style="font-size: 0.9rem;">Terms of Service</a>
-                <a href="{{ route('privacy') }}" class="drawer-nav-link" style="font-size: 0.9rem;">Privacy Policy</a>
-                <a href="{{ route('cookie-policy') }}" class="drawer-nav-link" style="font-size: 0.9rem;">Cookie Policy</a>
-            </div>
-        </div>
-    </nav>
-    
-    <!-- Profile and Logout Section at Bottom -->
-    <div class="drawer-logout-section">
-        @auth
-            <a href="{{ route('profile.show') }}" class="drawer-nav-link">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                    <circle cx="12" cy="7" r="4"></circle>
-                </svg>
-                <span>My Profile</span>
-            </a>
-            <form action="{{ route('logout') }}" method="POST" style="margin: 0;">
-                @csrf
-                <button type="submit" class="drawer-nav-link" style="width: 100%; cursor: pointer;">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                        <polyline points="16 17 21 12 16 7"></polyline>
-                        <line x1="21" y1="12" x2="9" y2="12"></line>
-                    </svg>
-                    <span>Logout</span>
-                </button>
-            </form>
-        @else
-            <a href="{{ route('login') }}" class="drawer-nav-link">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
-                    <polyline points="10 17 15 12 10 7"></polyline>
-                    <line x1="15" y1="12" x2="3" y2="12"></line>
-                </svg>
-                <span>Sign In</span>
-            </a>
-            <a href="{{ route('register') }}" class="drawer-nav-link">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                    <circle cx="8.5" cy="7" r="4"></circle>
-                    <line x1="20" y1="8" x2="20" y2="14"></line>
-                    <line x1="23" y1="11" x2="17" y2="11"></line>
-                </svg>
-                <span>Sign Up</span>
-            </a>
-        @endauth
+        <a href="#" class="sheet-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 12h5l2 5 3-10 2 5h5v-6h-5l-2-5-3 10-2-5h-5z"></path>
+            </svg>
+            Career Counselling
+        </a>
+        <a href="#" class="sheet-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                <polyline points="17 6 23 6 23 12"></polyline>
+            </svg>
+            Skill Development Program
+        </a>
+        <a href="#" class="sheet-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+            People Empowerment
+        </a>
+        <a href="#" class="sheet-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+            Consultancy & Advisory
+        </a>
+        <!-- Add more services as needed -->
+    </div>
+</div>
+
+<!-- VH Career Bottom Sheet -->
+<div class="bottom-sheet" id="vhCareerSheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-header">
+        <div class="sheet-title">VH Career</div>
+    </div>
+    <div class="sheet-content">
+        <a href="{{ route('services.campus-bird') }}" class="sheet-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+            Campus Bird Internship Program
+        </a>
     </div>
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // User menu dropdown toggle functionality
-        const userMenu = document.querySelector('.user-menu');
-        const userMenuTrigger = document.querySelector('.user-menu-trigger');
-        
-        if (userMenuTrigger && userMenu) {
-            userMenuTrigger.addEventListener('click', function(e) {
-                e.stopPropagation();
-                userMenu.classList.toggle('active');
-            });
-            
-            document.addEventListener('click', function(e) {
-                if (!userMenu.contains(e.target)) {
-                    userMenu.classList.remove('active');
-                }
-            });
-            
-            const dropdownItems = document.querySelectorAll('.dropdown-item');
-            dropdownItems.forEach(item => {
-                item.addEventListener('click', function() {
-                    userMenu.classList.remove('active');
-                });
-            });
-        }
-        
-        // Mobile drawer functionality
-        const hamburgerBtn = document.getElementById('hamburgerBtn');
-        const mobileDrawer = document.getElementById('mobileDrawer');
-        const drawerOverlay = document.getElementById('drawerOverlay');
-        const drawerLinks = document.querySelectorAll('.drawer-nav-link');
-        
-        function openDrawer() {
-            mobileDrawer.classList.add('active');
-            drawerOverlay.classList.add('active');
-            hamburgerBtn.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-        
-        function closeDrawer() {
-            mobileDrawer.classList.remove('active');
-            drawerOverlay.classList.remove('active');
-            hamburgerBtn.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-        
-        if (hamburgerBtn) {
-            hamburgerBtn.addEventListener('click', function() {
-                if (mobileDrawer.classList.contains('active')) {
-                    closeDrawer();
-                } else {
-                    openDrawer();
-                }
-            });
-        }
-        
-        if (drawerOverlay) {
-            drawerOverlay.addEventListener('click', closeDrawer);
-        }
-        
-        drawerLinks.forEach(link => {
-            // Only close drawer for links that don't have a custom onclick handler (like submenus)
-            if (!link.hasAttribute('onclick')) {
-                link.addEventListener('click', closeDrawer);
-            }
-        });
-        
-        window.addEventListener('resize', function() {
-            if (window.innerWidth > 1024 && mobileDrawer.classList.contains('active')) {
-                closeDrawer();
-            }
-        });
+    function openBottomSheet(id) {
+        document.getElementById('bottomSheetOverlay').classList.add('active');
+        document.getElementById(id).classList.add('active');
+        document.body.style.overflow = 'hidden'; // Prevent background scrolling
+    }
 
-        // Mobile submenu toggle
-        window.toggleDrawerSubmenu = function(e, id) {
-            e.preventDefault();
-            const submenu = document.getElementById(id);
-            if (submenu.style.display === 'none') {
-                submenu.style.display = 'block';
-            } else {
-                submenu.style.display = 'none';
-            }
-        };
-    });
+    function closeAllBottomSheets() {
+        document.getElementById('bottomSheetOverlay').classList.remove('active');
+        document.querySelectorAll('.bottom-sheet').forEach(sheet => {
+            sheet.classList.remove('active');
+        });
+        document.body.style.overflow = '';
+    }
 </script>
