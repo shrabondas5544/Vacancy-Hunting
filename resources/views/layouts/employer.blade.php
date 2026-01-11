@@ -3,7 +3,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ config('app.name', 'Vacancy Hunting') }} - Employer Portal</title>
+    
+    @vite(['resources/css/app.css', 'resources/js/app.tsx'])
+    @inertiaHead
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -34,7 +36,6 @@
         }
 
         /* Content container with sidebar */
-        /* Content container with sidebar */
         .employer-container {
             flex: 1;
             display: flex;
@@ -49,8 +50,8 @@
             background-image: 
                 radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.15) 0px, transparent 50%), 
                 radial-gradient(at 100% 100%, rgba(30, 58, 138, 0.2) 0px, transparent 50%);
-            backdrop-filter: blur(20px) saturate(180%);
             -webkit-backdrop-filter: blur(20px) saturate(180%);
+            backdrop-filter: blur(20px) saturate(180%);
             border-right: 1px solid rgba(255, 255, 255, 0.1);
             padding: 2rem 0;
             position: sticky;
@@ -133,6 +134,7 @@
 
         .stat-card {
             background: rgba(255, 255, 255, 0.05);
+            -webkit-backdrop-filter: blur(20px);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 12px;
@@ -197,76 +199,9 @@
 </head>
 <body>
     @include('partials.navbar')
-
-    <div class="employer-wrapper">
-        <div class="employer-container">
-            <!-- Sidebar -->
-            <aside class="employer-sidebar">
-                <div class="sidebar-header">
-                    <h2>Employer Portal</h2>
-                </div>
-                <nav class="sidebar-nav">
-                    <a href="{{ route('employer.dashboard') }}" class="sidebar-link {{ request()->routeIs('employer.dashboard') ? 'active' : '' }}">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="3" y="3" width="7" height="7"></rect>
-                            <rect x="14" y="3" width="7" height="7"></rect>
-                            <rect x="14" y="14" width="7" height="7"></rect>
-                            <rect x="3" y="14" width="7" height="7"></rect>
-                        </svg>
-                        <span>Dashboard</span>
-                    </a>
-                    <a href="{{ route('employer.post-job') }}" class="sidebar-link {{ request()->routeIs('employer.post-job') ? 'active' : '' }}">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M12 5v14M5 12h14"></path>
-                        </svg>
-                        <span>Post a Job</span>
-                    </a>
-                </nav>
-            </aside>
-
-            <!-- Main Content -->
-            <main class="employer-content">
-                @yield('content')
-            </main>
-        </div>
-    </div>
+    
+    @inertia
 
     @include('partials.footer')
-
-    <script>
-        // Add navbar mobile drawer functionality
-        const hamburgerBtn = document.getElementById('hamburgerBtn');
-        const mobileDrawer = document.getElementById('mobileDrawer');
-        const drawerOverlay = document.getElementById('drawerOverlay');
-
-        if (hamburgerBtn && mobileDrawer && drawerOverlay) {
-            hamburgerBtn.addEventListener('click', () => {
-                hamburgerBtn.classList.toggle('active');
-                mobileDrawer.classList.toggle('active');
-                drawerOverlay.classList.toggle('active');
-            });
-
-            drawerOverlay.addEventListener('click', () => {
-                hamburgerBtn.classList.remove('active');
-                mobileDrawer.classList.remove('active');
-                drawerOverlay.classList.remove('active');
-            });
-        }
-
-        // Drawer submenu toggle
-        function toggleDrawerSubmenu(event, submenuId) {
-            event.preventDefault();
-            const submenu = document.getElementById(submenuId);
-            const arrow = event.currentTarget.querySelector('.submenu-arrow');
-            
-            if (submenu.style.display === 'none' || submenu.style.display === '') {
-                submenu.style.display = 'block';
-                if (arrow) arrow.textContent = '▲';
-            } else {
-                submenu.style.display = 'none';
-                if (arrow) arrow.textContent = '▼';
-            }
-        }
-    </script>
 </body>
 </html>

@@ -34,7 +34,9 @@ class EmployerController extends Controller
             'pending_applications' => 0,
         ];
 
-        return view('employer.dashboard', compact('stats'));
+        return \Inertia\Inertia::render('Employer/Dashboard', [
+            'stats' => $stats
+        ]);
     }
 
     /**
@@ -62,7 +64,16 @@ class EmployerController extends Controller
         }
 
         $jobs = $query->get();
-        return view('employer.post-job', compact('jobs'));
+        
+        return \Inertia\Inertia::render('Employer/PostJob', [
+            'jobs' => $jobs,
+            'filters' => [
+                'search' => $request->get('search'),
+                'field_type' => $request->get('field_type'),
+                'job_type' => $request->get('job_type'),
+                'status' => $request->get('status'),
+            ]
+        ]);
     }
 
     /**
@@ -70,7 +81,7 @@ class EmployerController extends Controller
      */
     public function createJob()
     {
-        return view('employer.create-job');
+        return \Inertia\Inertia::render('Employer/CreateJob');
     }
 
     /**
@@ -110,7 +121,9 @@ class EmployerController extends Controller
     public function showJob($id)
     {
         $job = auth()->user()->employer->jobs()->findOrFail($id);
-        return view('employer.show-job', compact('job'));
+        return \Inertia\Inertia::render('Employer/ShowJob', [
+            'job' => $job
+        ]);
     }
 
     /**

@@ -5,8 +5,8 @@
         background-image: 
             radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.15) 0px, transparent 50%), 
             radial-gradient(at 100% 0%, rgba(30, 58, 138, 0.2) 0px, transparent 50%);
-        backdrop-filter: blur(20px) saturate(180%);
         -webkit-backdrop-filter: blur(20px) saturate(180%);
+        backdrop-filter: blur(20px) saturate(180%);
         padding: 1rem 2rem;
         position: sticky;
         top: 0;
@@ -143,6 +143,7 @@
         right: 0;
         top: 100%; /* Positions it right at the bottom of the padded wrapper */
         background: rgba(255, 255, 255, 0.98);
+        -webkit-backdrop-filter: blur(20px);
         backdrop-filter: blur(20px);
         border-radius: 12px;
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08);
@@ -279,6 +280,7 @@
         left: 0;
         top: 100%; /* Positions it right at the bottom of the padded wrapper */
         background: rgba(255, 255, 255, 0.98);
+        -webkit-backdrop-filter: blur(20px);
         backdrop-filter: blur(20px);
         border-radius: 12px;
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08);
@@ -319,8 +321,8 @@
         width: 90%;
         height: 70px;
         background: rgba(15, 23, 42, 0.9);
-        backdrop-filter: blur(15px);
         -webkit-backdrop-filter: blur(15px);
+        backdrop-filter: blur(15px);
         border: 1px solid rgba(255, 255, 255, 0.1);
         z-index: 2000;
         justify-content: space-around;
@@ -403,6 +405,7 @@
         width: 100%;
         height: 100%;
         background: rgba(0, 0, 0, 0.6);
+        -webkit-backdrop-filter: blur(4px);
         backdrop-filter: blur(4px);
         z-index: 2001;
         opacity: 0;
@@ -518,6 +521,11 @@
             padding-bottom: 80px;
         }
     }
+
+    .nav-spacer-icon {
+        font-size: 0.7em; 
+        margin-left: 4px;
+    }
 </style>
 
 <!-- Navbar -->
@@ -532,7 +540,7 @@
             <a href="{{ url('/') }}" class="nav-link">Home</a>
             <a href="#" class="nav-link">About</a>
             <div class="nav-drop-wrapper">
-                <a href="#" class="nav-link">Services <span style="font-size: 0.7em; margin-left: 4px;"></span></a>
+                <a href="#" class="nav-link">Services <span class="nav-spacer-icon"></span></a>
                 <div class="nav-drop-menu">
                     <a href="{{ route('employer.dashboard') }}" class="dropdown-item">Headhunting</a>
                     <a href="#" class="dropdown-item">Corporate Workshop</a>
@@ -544,13 +552,13 @@
             </div>
             <a href="{{ route('blog.index') }}" class="nav-link">Blog</a>
             <div class="nav-drop-wrapper">
-                <a href="#" class="nav-link">VH Career <span style="font-size: 0.7em; margin-left: 4px;"></span></a>
+                <a href="#" class="nav-link">VH Career <span class="nav-spacer-icon"></span></a>
                 <div class="nav-drop-menu">
                     <a href="{{ route('services.campus-bird') }}" class="dropdown-item">Campus Bird Internship Program</a>
                 </div>
             </div>
             <div class="nav-drop-wrapper">
-                <a href="#" class="nav-link">Legal <span style="font-size: 0.7em; margin-left: 4px;"></span></a>
+                <a href="#" class="nav-link">Legal <span class="nav-spacer-icon"></span></a>
                 <div class="nav-drop-menu">
                     <a href="{{ route('terms') }}" class="dropdown-item">Terms of Service</a>
                     <a href="{{ route('privacy') }}" class="dropdown-item">Privacy Policy</a>
@@ -613,7 +621,7 @@
             @else
                 <!-- Not logged in - Show dropdown menu -->
                 <div class="user-menu">
-                    <button class="user-menu-trigger">
+                    <button class="user-menu-trigger" aria-label="User Menu">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                             <circle cx="12" cy="7" r="4"></circle>
@@ -665,7 +673,7 @@
     </a>
 
     <!-- Home (Center) -->
-    <a href="{{ url('/') }}" class="mobile-nav-item center-item">
+    <a href="{{ url('/') }}" class="mobile-nav-item center-item" aria-label="Home">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
             <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
             <polyline points="9 22 9 12 15 12 15 22"></polyline>
