@@ -647,7 +647,7 @@
 <!-- Mobile Bottom Navigation -->
 <div class="mobile-bottom-nav">
     <!-- Services (Triggers Bottom Sheet) -->
-    <button class="mobile-nav-item {{ request()->routeIs('employer.dashboard') ? 'active' : '' }}" onclick="openBottomSheet('servicesSheet')">
+    <button class="mobile-nav-item {{ (request()->routeIs('employer.dashboard*') || (request()->is('services*') && !request()->routeIs('services.campus-bird*'))) ? 'active' : '' }}" onclick="openBottomSheet('servicesSheet')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
             <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
             <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
@@ -657,12 +657,9 @@
 
     <!-- Blog -->
     <a href="{{ route('blog.index') }}" class="mobile-nav-item {{ request()->routeIs('blog.*') ? 'active' : '' }}">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-            <polyline points="14 2 14 8 20 8"></polyline>
-            <line x1="16" y1="13" x2="8" y2="13"></line>
-            <line x1="16" y1="17" x2="8" y2="17"></line>
-            <polyline points="10 9 9 9 8 9"></polyline>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
         </svg>
         <span>Blog</span>
     </a>
@@ -677,9 +674,13 @@
     </a>
 
     <!-- VH Career (Triggers Bottom Sheet) -->
-    <button class="mobile-nav-item {{ request()->routeIs('services.campus-bird') ? 'active' : '' }}" onclick="openBottomSheet('vhCareerSheet')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+    <button class="mobile-nav-item {{ request()->routeIs('services.campus-bird*') ? 'active' : '' }}" onclick="openBottomSheet('vhCareerSheet')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <!-- Graduation Cap -->
+            <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+            <!-- Briefcase -->
+            <rect x="6" y="14" width="12" height="8" rx="2" />
+            <path d="M9 14v-2a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2" />
         </svg>
         <span>VH Career</span>
     </button>
@@ -769,7 +770,7 @@
     </div>
     <div class="sheet-content">
         <a href="{{ route('services.campus-bird') }}" class="sheet-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
                 <polyline points="22 4 12 14.01 9 11.01"></polyline>
             </svg>
