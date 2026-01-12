@@ -7,11 +7,18 @@ interface Job {
     title: string;
     field_type: string;
     job_type: string;
+    experience_level?: string;
+    division?: string;
+    vacancies?: number;
     location?: string;
     salary_range?: string;
     status: string;
     description: string;
     requirements?: string;
+    educational_qualifications?: string;
+    experience?: string;
+    required_skills?: string;
+    job_benefits?: string;
     created_at: string;
     deadline?: string;
 }
@@ -108,10 +115,28 @@ export default function ShowJob({ job }: ShowJobProps) {
                             <label>Job Type</label>
                             <div className="value">{job.job_type}</div>
                         </div>
+                        {job.experience_level && (
+                            <div className="detail-item">
+                                <label>Experience Level</label>
+                                <div className="value">{job.experience_level}</div>
+                            </div>
+                        )}
+                        {job.division && (
+                            <div className="detail-item">
+                                <label>Division</label>
+                                <div className="value">{job.division}</div>
+                            </div>
+                        )}
                         <div className="detail-item">
                             <label>Location</label>
                             <div className="value">{job.location || 'Not specified'}</div>
                         </div>
+                        {job.vacancies && (
+                            <div className="detail-item">
+                                <label>Vacancies</label>
+                                <div className="value">{job.vacancies} {job.vacancies === 1 ? 'Position' : 'Positions'}</div>
+                            </div>
+                        )}
                         <div className="detail-item">
                             <label>Salary Range</label>
                             <div className="value">{job.salary_range || 'Negotiable'}</div>
@@ -130,9 +155,64 @@ export default function ShowJob({ job }: ShowJobProps) {
                         </div>
                     </div>
 
+                    {job.educational_qualifications && (
+                        <div className="job-description-section">
+                            <h3 className="section-title">Educational Qualifications</h3>
+                            <div className="description-content">
+                                {job.educational_qualifications.split('\n').map((line, index) => (
+                                    <React.Fragment key={index}>
+                                        {line}
+                                        <br />
+                                    </React.Fragment>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    {job.experience && (
+                        <div className="job-description-section">
+                            <h3 className="section-title">Experience Required</h3>
+                            <div className="description-content">
+                                {job.experience.split('\n').map((line, index) => (
+                                    <React.Fragment key={index}>
+                                        {line}
+                                        <br />
+                                    </React.Fragment>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    {job.required_skills && (
+                        <div className="job-description-section">
+                            <h3 className="section-title">Required Skills</h3>
+                            <div className="skills-list">
+                                {job.required_skills.split(',').map((skill, index) => (
+                                    <span key={index} className="skill-tag">
+                                        {skill.trim()}
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    {job.job_benefits && (
+                        <div className="job-description-section">
+                            <h3 className="section-title">Job Benefits</h3>
+                            <div className="description-content">
+                                {job.job_benefits.split('\n').map((line, index) => (
+                                    <React.Fragment key={index}>
+                                        {line}
+                                        <br />
+                                    </React.Fragment>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
                     {job.requirements && (
                         <div className="job-description-section">
-                            <h3 className="section-title">Requirements</h3>
+                            <h3 className="section-title">Other Requirements</h3>
                             <div className="description-content">
                                 {job.requirements.split('\n').map((line, index) => (
                                     <React.Fragment key={index}>
@@ -287,6 +367,22 @@ export default function ShowJob({ job }: ShowJobProps) {
                 .btn-danger:hover {
                     background: #ef4444;
                     color: white;
+                }
+
+                .skills-list {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 0.75rem;
+                }
+
+                .skill-tag {
+                    background: rgba(0, 212, 255, 0.15);
+                    color: #00d4ff;
+                    padding: 0.5rem 1rem;
+                    border-radius: 8px;
+                    font-size: 0.9rem;
+                    font-weight: 600;
+                    border: 1.5px solid rgba(0, 212, 255, 0.3);
                 }
             `}</style>
         </EmployerLayout>

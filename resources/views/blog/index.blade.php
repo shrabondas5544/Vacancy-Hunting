@@ -141,12 +141,12 @@
             color: white;
         }
 
-        /* Articles Feed - Stacked Layout like Instagram/Facebook */
+        /* Articles Feed - 2 Column Grid */
         .articles-feed {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-            max-width: 680px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
@@ -157,11 +157,42 @@
             overflow: hidden;
             border: 1px solid rgba(255, 255, 255, 0.08);
             transition: all 0.3s ease;
+            position: relative;
         }
 
         .article-card:hover {
             border-color: rgba(0, 212, 255, 0.3);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .share-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .share-btn:hover {
+            background: rgba(0, 212, 255, 0.8);
+            border-color: #00d4ff;
+            transform: scale(1.1);
+        }
+
+        .share-btn svg {
+            width: 18px;
+            height: 18px;
         }
 
         .article-image {
@@ -380,7 +411,8 @@
             }
 
             .articles-feed {
-                max-width: 100%;
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
             }
 
             .article-image {
@@ -468,6 +500,15 @@
             <div class="articles-feed">
                 @foreach($articles as $article)
                     <article class="article-card">
+                        <button class="share-btn" onclick="shareArticle('{{ route('blog.show', $article->slug) }}', '{{ addslashes($article->title) }}')" title="Share article">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="18" cy="5" r="3"></circle>
+                                <circle cx="6" cy="12" r="3"></circle>
+                                <circle cx="18" cy="19" r="3"></circle>
+                                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                            </svg>
+                        </button>
                         <a href="{{ route('blog.show', $article->slug) }}">
                             @if($article->featured_image)
                                 <img src="{{ asset('storage/' . $article->featured_image) }}" alt="{{ $article->title }}" class="article-image">
@@ -527,6 +568,37 @@
     </main>
 
     @include('partials.footer')
+
+    <script>
+        function shareArticle(url, title) {
+            if (navigator.share) {
+                // Use native share API if available
+                navigator.share({
+                    title: title,
+                    url: url
+                }).catch((error) => {
+                    console.log('Error sharing', error);
+                });
+            } else {
+                // Fallback to clipboard
+                navigator.clipboard.writeText(url).then(() => {
+                    // Show a temporary notification
+                    const btn = event.target.closest('.share-btn');
+                    const originalHTML = btn.innerHTML;
+                    btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+                    btn.style.background = 'rgba(16, 185, 129, 0.8)';
+                    
+                    setTimeout(() => {
+                        btn.innerHTML = originalHTML;
+                        btn.style.background = '';
+                    }, 2000);
+                }).catch((error) => {
+                    console.error('Failed to copy link', error);
+                    alert('Failed to copy link to clipboard');
+                });
+            }
+        }
+    </script>
 
 </body>
 </html>

@@ -19,9 +19,16 @@ return new class extends Migration
             $table->text('requirements')->nullable();
             $table->string('field_type'); // IT, Marketing, HR, etc.
             $table->string('job_type'); // Full Time, Part Time, Remote, Freelance, Internship
+            $table->string('experience_level'); // Beginner, Intermediate, Experienced, Expert
             $table->string('location')->nullable();
+            $table->string('division')->nullable(); // Bangladesh divisions
+            $table->integer('vacancies')->nullable(); // Number of positions
             $table->string('salary_range')->nullable();
-            $table->date('deadline')->nullable();
+            $table->date('deadline');
+            $table->text('educational_qualifications')->nullable();
+            $table->text('experience')->nullable();
+            $table->text('required_skills')->nullable(); // Comma-separated skills
+            $table->text('job_benefits')->nullable();
             $table->enum('status', ['active', 'closed', 'draft'])->default('active');
             $table->timestamps();
         });

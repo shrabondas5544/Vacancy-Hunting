@@ -16,9 +16,16 @@ class Job extends Model
         'requirements',
         'field_type',
         'job_type',
+        'experience_level',
         'location',
+        'division',
+        'vacancies',
         'salary_range',
         'deadline',
+        'educational_qualifications',
+        'experience',
+        'required_skills',
+        'job_benefits',
         'status',
     ];
 

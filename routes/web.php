@@ -60,6 +60,9 @@ Route::middleware(['auth'])->group(function () {
 
 // Employer Headhunting Routes
 
+// Public Company Profile Route (accessible to all)
+Route::get('/company/{id}/profile', [App\Http\Controllers\CompanyProfileController::class, 'show'])->name('company.profile');
+
 // Employer Headhunting Routes
 Route::middleware(['auth', App\Http\Middleware\EnsureUserIsEmployer::class])->prefix('headhunting')->name('employer.')->group(function () {
     Route::get('/', [App\Http\Controllers\EmployerController::class, 'index'])->name('index');
@@ -67,8 +70,12 @@ Route::middleware(['auth', App\Http\Middleware\EnsureUserIsEmployer::class])->pr
     Route::get('/post-job', [App\Http\Controllers\EmployerController::class, 'postJob'])->name('post-job');
     Route::get('/create-job', [App\Http\Controllers\EmployerController::class, 'createJob'])->name('create-job');
     Route::get('/job/{id}', [App\Http\Controllers\EmployerController::class, 'showJob'])->name('show-job');
+    Route::get('/job/{id}/edit', [App\Http\Controllers\EmployerController::class, 'editJob'])->name('edit-job');
     Route::post('/post-job', [App\Http\Controllers\EmployerController::class, 'storeJob'])->name('store-job');
+    Route::put('/job/{id}', [App\Http\Controllers\EmployerController::class, 'updateJob'])->name('update-job');
+    Route::post('/job/{id}/toggle-status', [App\Http\Controllers\EmployerController::class, 'toggleJobStatus'])->name('toggle-job-status');
     Route::delete('/job/{id}', [App\Http\Controllers\EmployerController::class, 'destroyJob'])->name('destroy-job');
+    Route::get('/other-jobs', [App\Http\Controllers\EmployerController::class, 'otherJobs'])->name('other-jobs');
 });
 
 

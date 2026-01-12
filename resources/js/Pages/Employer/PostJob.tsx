@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import EmployerLayout from '../../Layouts/EmployerLayout';
 import { router } from '@inertiajs/react';
 
@@ -22,6 +22,8 @@ interface PostJobProps {
 }
 
 export default function PostJob({ jobs, filters }: PostJobProps) {
+    const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+
     const handleFilterChange = (name: string, value: string) => {
         router.get(
             '/headhunting/post-job',
@@ -42,13 +44,38 @@ export default function PostJob({ jobs, filters }: PostJobProps) {
         }
     };
 
+    const handleToggleStatus = (jobId: number, currentStatus: string) => {
+        const newStatus = currentStatus === 'active' ? 'closed' : 'active';
+        router.post(`/headhunting/job/${jobId}/toggle-status`, { status: newStatus }, {
+            preserveScroll: true,
+        });
+    };
+
     const hasFilters = filters.search || filters.field_type || filters.job_type || filters.status;
 
     return (
-        <EmployerLayout>
+        <EmployerLayout
+            isMobileSidebarOpen={isMobileSidebarOpen}
+            setIsMobileSidebarOpen={setIsMobileSidebarOpen}
+        >
             <div className="content-header">
-                <h1>Job Directory</h1>
-                <p>Manage and filter your job postings</p>
+                <div className="header-with-menu">
+                    <button
+                        className="mobile-menu-btn"
+                        onClick={() => setIsMobileSidebarOpen(true)}
+                        aria-label="Open menu"
+                    >
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <line x1="3" y1="12" x2="21" y2="12"></line>
+                            <line x1="3" y1="6" x2="21" y2="6"></line>
+                            <line x1="3" y1="18" x2="21" y2="18"></line>
+                        </svg>
+                    </button>
+                    <div className="header-content">
+                        <h1>Job Directory</h1>
+                        <p>Manage and filter your job postings</p>
+                    </div>
+                </div>
             </div>
 
             {/* Filter Section */}
@@ -84,13 +111,55 @@ export default function PostJob({ jobs, filters }: PostJobProps) {
                                 onChange={(e) => handleFilterChange('field_type', e.target.value)}
                             >
                                 <option value="">All Fields</option>
-                                <option value="IT">IT & Software</option>
-                                <option value="Marketing">Marketing</option>
-                                <option value="HR">Human Resources</option>
-                                <option value="Finance">Finance</option>
-                                <option value="Design">Design</option>
-                                <option value="Sales">Sales</option>
-                                <option value="Engineering">Engineering</option>
+                                <option value="Accounting">Accounting</option>
+                                <option value="Administration">Administration</option>
+                                <option value="Agriculture">Agriculture</option>
+                                <option value="Architecture">Architecture</option>
+                                <option value="Armed Forces">Armed Forces</option>
+                                <option value="Aviation">Aviation</option>
+                                <option value="Banking">Banking</option>
+                                <option value="Business">Business</option>
+                                <option value="Call Center / Customer Service">Call Center / Customer Service</option>
+                                <option value="Civil Engineering">Civil Engineering</option>
+                                <option value="Construction">Construction</option>
+                                <option value="Consulting">Consulting</option>
+                                <option value="Data Entry">Data Entry</option>
+                                <option value="Defense">Defense</option>
+                                <option value="Driving / Transport">Driving / Transport</option>
+                                <option value="Education">Education</option>
+                                <option value="Electrical Engineering">Electrical Engineering</option>
+                                <option value="Engineering (General)">Engineering (General)</option>
+                                <option value="Freelancing">Freelancing</option>
+                                <option value="Garments / Textile">Garments / Textile</option>
+                                <option value="Government Service">Government Service</option>
+                                <option value="Graphic Design">Graphic Design</option>
+                                <option value="Healthcare">Healthcare</option>
+                                <option value="Hospitality / Tourism">Hospitality / Tourism</option>
+                                <option value="Human Resources">Human Resources</option>
+                                <option value="Import / Export">Import / Export</option>
+                                <option value="Information Technology (IT)">Information Technology (IT)</option>
+                                <option value="Journalism / Media">Journalism / Media</option>
+                                <option value="Law / Legal">Law / Legal</option>
+                                <option value="Manufacturing">Manufacturing</option>
+                                <option value="Marketing / Sales">Marketing / Sales</option>
+                                <option value="Mechanical Engineering">Mechanical Engineering</option>
+                                <option value="NGO / Development">NGO / Development</option>
+                                <option value="Nursing">Nursing</option>
+                                <option value="Pharmacy">Pharmacy</option>
+                                <option value="Police">Police</option>
+                                <option value="Private Service">Private Service</option>
+                                <option value="Public Service">Public Service</option>
+                                <option value="Real Estate">Real Estate</option>
+                                <option value="Research">Research</option>
+                                <option value="Retail / Shopkeeping">Retail / Shopkeeping</option>
+                                <option value="Security Service">Security Service</option>
+                                <option value="Self-Employed">Self-Employed</option>
+                                <option value="Shipping / Logistics">Shipping / Logistics</option>
+                                <option value="Software Development">Software Development</option>
+                                <option value="Teaching">Teaching</option>
+                                <option value="Telecommunications">Telecommunications</option>
+                                <option value="Trading">Trading</option>
+                                <option value="Transport / Logistics">Transport / Logistics</option>
                             </select>
                         </div>
 
@@ -191,6 +260,38 @@ export default function PostJob({ jobs, filters }: PostJobProps) {
                                                             <circle cx="12" cy="12" r="3"></circle>
                                                         </svg>
                                                     </a>
+                                                    <a
+                                                        href={`/headhunting/job/${job.id}/edit`}
+                                                        className="btn-icon"
+                                                        title="Edit"
+                                                    >
+                                                        <svg
+                                                            viewBox="0 0 24 24"
+                                                            fill="none"
+                                                            stroke="currentColor"
+                                                            strokeWidth="2"
+                                                        >
+                                                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                                        </svg>
+                                                    </a>
+                                                    <button
+                                                        onClick={() => handleToggleStatus(job.id, job.status)}
+                                                        className={`btn-icon ${job.status === 'active' ? 'text-warning' : 'text-success'}`}
+                                                        title={job.status === 'active' ? 'Deactivate' : 'Activate'}
+                                                    >
+                                                        {job.status === 'active' ? (
+                                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                                            </svg>
+                                                        ) : (
+                                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                                                <path d="M7 11V7a5 5 0 0 1 9.9-1"></path>
+                                                            </svg>
+                                                        )}
+                                                    </button>
                                                     <button
                                                         onClick={() => handleDelete(job.id)}
                                                         className="btn-icon text-danger"
@@ -440,6 +541,22 @@ export default function PostJob({ jobs, filters }: PostJobProps) {
                     color: #00d4ff;
                 }
 
+                .text-warning {
+                    color: #fbbf24 !important;
+                }
+
+                .text-warning:hover {
+                    color: #fbbf24 !important;
+                }
+
+                .text-success {
+                    color: #10b981 !important;
+                }
+
+                .text-success:hover {
+                    color: #10b981 !important;
+                }
+
                 .btn-icon.text-danger:hover {
                     color: #ef4444;
                 }
@@ -452,6 +569,10 @@ export default function PostJob({ jobs, filters }: PostJobProps) {
 
                 .mb-4 {
                     margin-bottom: 1.5rem;
+                }
+
+                .mobile-menu-btn {
+                    display: none;
                 }
 
                 @media (max-width: 1024px) {
@@ -471,6 +592,40 @@ export default function PostJob({ jobs, filters }: PostJobProps) {
                     .create-btn {
                         flex: 1 1 100%;
                         justify-content: center;
+                    }
+
+                    .header-with-menu {
+                        display: flex;
+                        align-items: flex-start;
+                        gap: 1rem;
+                    }
+
+                    .mobile-menu-btn {
+                        display: block;
+                        background: transparent;
+                        border: none;
+                        color: white;
+                        cursor: pointer;
+                        padding: 0.5rem;
+                        margin-top: -0.5rem;
+                    }
+
+                    .mobile-menu-btn svg {
+                        width: 24px;
+                        height: 24px;
+                    }
+
+                    .header-content {
+                        flex: 1;
+                        text-align: right;
+                    }
+
+                    .header-content h1 {
+                        text-align: right;
+                    }
+
+                    .header-content p {
+                        text-align: right;
                     }
                 }
 
