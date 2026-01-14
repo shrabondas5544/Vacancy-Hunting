@@ -519,6 +519,170 @@ class HeadhuntingController extends Controller
     }
 
     // ========================
+    // JOB POSTS METHODS
+    // ========================
+
+    /**
+     * Display the list of all job posts.
+     */
+    public function jobs(Request $request)
+    {
+        $query = \App\Models\Job::with(['employer.user']);
+
+        // Single search field for company name, email, or phone
+        if ($request->has('search') && $request->search) {
+            $search = $request->search;
+            $query->whereHas('employer', function($q) use ($search) {
+                $q->where('company_name', 'like', "%{$search}%")
+                  ->orWhere('contact_number', 'like', "%{$search}%")
+                  ->orWhereHas('user', function($userQuery) use ($search) {
+                      $userQuery->where('email', 'like', "%{$search}%");
+                  });
+            });
+        }
+
+        // Filter by status
+        if ($request->has('status') && $request->status) {
+            $query->where('status', $request->status);
+        }
+
+        // Filter by field type
+        if ($request->has('field_type') && $request->field_type) {
+            $query->where('field_type', $request->field_type);
+        }
+
+        // Filter by job type
+        if ($request->has('job_type') && $request->job_type) {
+            $query->where('job_type', $request->job_type);
+        }
+
+        // Filter by division (district)
+        if ($request->has('division') && $request->division) {
+            $query->where('division', $request->division);
+        }
+
+        // Year filter
+        if ($request->has('year') && $request->year) {
+            $query->whereYear('created_at', $request->year);
+        }
+
+        // Get available years for filter
+        $dbYears = \App\Models\Job::selectRaw('YEAR(created_at) as year')
+            ->distinct()
+            ->orderBy('year', 'desc')
+            ->pluck('year')
+            ->toArray();
+            
+        $currentYear = date('Y');
+        $defaultYears = range($currentYear, 2023);
+        
+        $years = array_unique(array_merge($dbYears, $defaultYears));
+        rsort($years);
+
+        $jobs = $query->orderBy('created_at', 'desc')->paginate(15);
+
+        return view('admin.headhunting.jobs', compact('jobs', 'years'));
+    }
+
+    /**
+     * Export job posts to Excel (.xlsx).
+     */
+    public function exportJobs(Request $request)
+    {
+        $search = $request->get('search');
+        $status = $request->get('status');
+        $field_type = $request->get('field_type');
+        $job_type = $request->get('job_type');
+        $division = $request->get('division');
+        $year = $request->get('year');
+        
+        // Build query
+        $query = \App\Models\Job::with(['employer.user']);
+        
+        // Apply search filter
+        if ($search) {
+            $query->whereHas('employer', function($q) use ($search) {
+                $q->where('company_name', 'like', "%{$search}%")
+                  ->orWhere('contact_number', 'like', "%{$search}%")
+                  ->orWhereHas('user', function($userQuery) use ($search) {
+                      $userQuery->where('email', 'like', "%{$search}%");
+                  });
+            });
+        }
+        
+        // Apply status filter
+        if ($status) {
+            $query->where('status', $status);
+        }
+        
+        // Apply field type filter
+        if ($field_type) {
+            $query->where('field_type', $field_type);
+        }
+        
+        // Apply job type filter
+        if ($job_type) {
+            $query->where('job_type', $job_type);
+        }
+        
+        // Apply division (district) filter
+        if ($division) {
+            $query->where('division', $division);
+        }
+        
+        // Apply year filter
+        if ($year) {
+            $query->whereYear('created_at', $year);
+        }
+        
+        $jobs = $query->orderBy('created_at', 'desc')->get();
+        
+        // Generate filename
+        $dateStr = $year ? $year : 'all';
+        $filename = 'job-posts_' . strtolower($dateStr) . '_' . date('Y-m-d') . '.xlsx';
+        
+        // Prepare data for XLSX
+        $data = [
+            [
+                'Company Name', 'Email', 'Phone', 'Post Date', 'Job Title', 
+                'Field Type', 'Job Type', 'Division', 'Deadline', 'Status'
+            ] // Header row
+        ];
+        
+        foreach ($jobs as $job) {
+            $data[] = [
+                $job->employer->company_name ?? 'N/A',
+                $job->employer->user->email ?? 'N/A',
+                $job->employer->contact_number ?? 'N/A',
+                $job->created_at->format('M d, Y'),
+                $job->title ?? 'N/A',
+                $job->field_type ?? '',
+                $job->job_type ?? '',
+                $job->division ?? '',
+                $job->deadline ? $job->deadline->format('M d, Y') : '',
+                ucfirst($job->status ?? 'active')
+            ];
+        }
+        
+        // Generate and stream XLSX
+        return response()->streamDownload(function() use ($data) {
+            $xlsx = \Shuchkin\SimpleXLSXGen::fromArray($data);
+            echo $xlsx;
+        }, $filename);
+    }
+
+    /**
+     * Delete a job post.
+     */
+    public function destroyJob($id)
+    {
+        $job = \App\Models\Job::findOrFail($id);
+        $job->delete();
+
+        return redirect()->route('admin.headhunting.jobs')->with('status', 'job-deleted');
+    }
+
+    // ========================
     // BLOG METHODS
     // ========================
 

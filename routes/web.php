@@ -111,6 +111,11 @@ Route::middleware(['auth', 'admin'])->prefix('adminview')->name('admin.')->group
         Route::post('/employers/{id}/password', [App\Http\Controllers\HeadhuntingController::class, 'updateEmployerPassword'])->name('employers.password');
         Route::delete('/employers/{id}', [App\Http\Controllers\HeadhuntingController::class, 'destroyEmployer'])->name('employers.destroy');
         
+        // Job Posts Routes
+        Route::get('/jobs', [App\Http\Controllers\HeadhuntingController::class, 'jobs'])->name('jobs');
+        Route::get('/jobs/export', [App\Http\Controllers\HeadhuntingController::class, 'exportJobs'])->name('jobs.export');
+        Route::delete('/jobs/{id}', [App\Http\Controllers\HeadhuntingController::class, 'destroyJob'])->name('jobs.destroy');
+        
         // Blog Routes
         Route::get('/blogs', [App\Http\Controllers\HeadhuntingController::class, 'blogs'])->name('blogs');
         Route::delete('/blogs/{id}', [App\Http\Controllers\HeadhuntingController::class, 'destroyBlog'])->name('blogs.destroy');

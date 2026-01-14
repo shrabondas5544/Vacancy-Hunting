@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import EmployerLayout from '../../Layouts/EmployerLayout';
 import { router } from '@inertiajs/react';
 
@@ -37,6 +37,7 @@ interface OtherJobsProps {
 export default function OtherJobs({ jobs, filters }: OtherJobsProps) {
     const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
     const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
+    const [tempFilters, setTempFilters] = useState(filters);
 
     // Helper function to calculate relative time
     const getTimeAgo = (dateString: string) => {
@@ -62,18 +63,45 @@ export default function OtherJobs({ jobs, filters }: OtherJobsProps) {
             { ...filters, [name]: value },
             { preserveState: true, replace: true }
         );
-        // Close modal on mobile after selecting a filter
-        if (window.innerWidth <= 768) {
-            setIsFilterModalOpen(false);
-        }
+    };
+
+    // Handle temp filter changes in modal (don't apply immediately)
+    const handleTempFilterChange = (name: string, value: string) => {
+        setTempFilters(prev => ({ ...prev, [name]: value }));
+    };
+
+    // Apply filters and close modal
+    const applyFilters = () => {
+        router.get(
+            '/headhunting/other-jobs',
+            tempFilters,
+            { preserveState: true, replace: true }
+        );
+        setIsFilterModalOpen(false);
     };
 
     const clearFilters = () => {
+        const emptyFilters = { company_type: '', ownership_type: '', field_type: '', job_type: '', division: '' };
+        setTempFilters(emptyFilters);
         router.get('/headhunting/other-jobs', {}, { replace: true });
         setIsFilterModalOpen(false);
     };
 
+    // Check if temp filters have changed from applied filters
+    const hasTempChanges = () => {
+        return tempFilters.company_type !== (filters.company_type || '') ||
+            tempFilters.ownership_type !== (filters.ownership_type || '') ||
+            tempFilters.field_type !== (filters.field_type || '') ||
+            tempFilters.job_type !== (filters.job_type || '') ||
+            tempFilters.division !== (filters.division || '');
+    };
+
     const hasFilters = filters.company_type || filters.ownership_type || filters.field_type || filters.job_type || filters.division;
+
+    // Sync tempFilters with applied filters when component updates
+    useEffect(() => {
+        setTempFilters(filters);
+    }, [filters]);
 
     return (
         <EmployerLayout
@@ -119,8 +147,8 @@ export default function OtherJobs({ jobs, filters }: OtherJobsProps) {
                                 <label>Company Type</label>
                                 <select
                                     className="form-control"
-                                    value={filters.company_type || ''}
-                                    onChange={(e) => handleFilterChange('company_type', e.target.value)}
+                                    value={tempFilters.company_type || ''}
+                                    onChange={(e) => handleTempFilterChange('company_type', e.target.value)}
                                 >
                                     <option value="">All Types</option>
                                     <option value="Startup">Startup</option>
@@ -135,8 +163,8 @@ export default function OtherJobs({ jobs, filters }: OtherJobsProps) {
                                 <label>Ownership Type</label>
                                 <select
                                     className="form-control"
-                                    value={filters.ownership_type || ''}
-                                    onChange={(e) => handleFilterChange('ownership_type', e.target.value)}
+                                    value={tempFilters.ownership_type || ''}
+                                    onChange={(e) => handleTempFilterChange('ownership_type', e.target.value)}
                                 >
                                     <option value="">All Ownership</option>
                                     <option value="Private">Private</option>
@@ -148,17 +176,59 @@ export default function OtherJobs({ jobs, filters }: OtherJobsProps) {
                                 <label>Job Field</label>
                                 <select
                                     className="form-control"
-                                    value={filters.field_type || ''}
-                                    onChange={(e) => handleFilterChange('field_type', e.target.value)}
+                                    value={tempFilters.field_type || ''}
+                                    onChange={(e) => handleTempFilterChange('field_type', e.target.value)}
                                 >
                                     <option value="">All Fields</option>
-                                    <option value="IT">IT & Software</option>
-                                    <option value="Marketing">Marketing</option>
-                                    <option value="HR">Human Resources</option>
-                                    <option value="Finance">Finance</option>
-                                    <option value="Design">Design</option>
-                                    <option value="Sales">Sales</option>
-                                    <option value="Engineering">Engineering</option>
+                                    <option value="Accounting">Accounting</option>
+                                    <option value="Administration">Administration</option>
+                                    <option value="Agriculture">Agriculture</option>
+                                    <option value="Architecture">Architecture</option>
+                                    <option value="Armed Forces">Armed Forces</option>
+                                    <option value="Aviation">Aviation</option>
+                                    <option value="Banking">Banking</option>
+                                    <option value="Business">Business</option>
+                                    <option value="Call Center / Customer Service">Call Center / Customer Service</option>
+                                    <option value="Civil Engineering">Civil Engineering</option>
+                                    <option value="Construction">Construction</option>
+                                    <option value="Consulting">Consulting</option>
+                                    <option value="Data Entry">Data Entry</option>
+                                    <option value="Defense">Defense</option>
+                                    <option value="Driving / Transport">Driving / Transport</option>
+                                    <option value="Education">Education</option>
+                                    <option value="Electrical Engineering">Electrical Engineering</option>
+                                    <option value="Engineering (General)">Engineering (General)</option>
+                                    <option value="Freelancing">Freelancing</option>
+                                    <option value="Garments / Textile">Garments / Textile</option>
+                                    <option value="Government Service">Government Service</option>
+                                    <option value="Graphic Design">Graphic Design</option>
+                                    <option value="Healthcare">Healthcare</option>
+                                    <option value="Hospitality / Tourism">Hospitality / Tourism</option>
+                                    <option value="Human Resources">Human Resources</option>
+                                    <option value="Import / Export">Import / Export</option>
+                                    <option value="Information Technology (IT)">Information Technology (IT)</option>
+                                    <option value="Journalism / Media">Journalism / Media</option>
+                                    <option value="Law / Legal">Law / Legal</option>
+                                    <option value="Manufacturing">Manufacturing</option>
+                                    <option value="Marketing / Sales">Marketing / Sales</option>
+                                    <option value="Mechanical Engineering">Mechanical Engineering</option>
+                                    <option value="NGO / Development">NGO / Development</option>
+                                    <option value="Nursing">Nursing</option>
+                                    <option value="Pharmacy">Pharmacy</option>
+                                    <option value="Police">Police</option>
+                                    <option value="Private Service">Private Service</option>
+                                    <option value="Public Service">Public Service</option>
+                                    <option value="Real Estate">Real Estate</option>
+                                    <option value="Research">Research</option>
+                                    <option value="Retail / Shopkeeping">Retail / Shopkeeping</option>
+                                    <option value="Security Service">Security Service</option>
+                                    <option value="Self-Employed">Self-Employed</option>
+                                    <option value="Shipping / Logistics">Shipping / Logistics</option>
+                                    <option value="Software Development">Software Development</option>
+                                    <option value="Teaching">Teaching</option>
+                                    <option value="Telecommunications">Telecommunications</option>
+                                    <option value="Trading">Trading</option>
+                                    <option value="Transport / Logistics">Transport / Logistics</option>
                                 </select>
                             </div>
 
@@ -166,8 +236,8 @@ export default function OtherJobs({ jobs, filters }: OtherJobsProps) {
                                 <label>Job Type</label>
                                 <select
                                     className="form-control"
-                                    value={filters.job_type || ''}
-                                    onChange={(e) => handleFilterChange('job_type', e.target.value)}
+                                    value={tempFilters.job_type || ''}
+                                    onChange={(e) => handleTempFilterChange('job_type', e.target.value)}
                                 >
                                     <option value="">All Job Types</option>
                                     <option value="Full Time">Full Time</option>
@@ -182,8 +252,8 @@ export default function OtherJobs({ jobs, filters }: OtherJobsProps) {
                                 <label>Division</label>
                                 <select
                                     className="form-control"
-                                    value={filters.division || ''}
-                                    onChange={(e) => handleFilterChange('division', e.target.value)}
+                                    value={tempFilters.division || ''}
+                                    onChange={(e) => handleTempFilterChange('division', e.target.value)}
                                 >
                                     <option value="">All Divisions</option>
                                     <option value="Barishal">Barishal</option>
@@ -197,9 +267,21 @@ export default function OtherJobs({ jobs, filters }: OtherJobsProps) {
                                 </select>
                             </div>
 
-                            {hasFilters && (
+                            {hasTempChanges() ? (
+                                <button onClick={applyFilters} className="btn-search-modal">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                        <circle cx="11" cy="11" r="8"></circle>
+                                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                    </svg>
+                                    Search
+                                </button>
+                            ) : hasFilters ? (
                                 <button onClick={clearFilters} className="btn-clear-modal">
                                     Clear All Filters
+                                </button>
+                            ) : (
+                                <button onClick={() => setIsFilterModalOpen(false)} className="btn-close-modal">
+                                    Close
                                 </button>
                             )}
                         </div>
@@ -507,6 +589,51 @@ export default function OtherJobs({ jobs, filters }: OtherJobsProps) {
                     font-weight: 600;
                     cursor: pointer;
                     margin-top: 1rem;
+                }
+
+                .btn-search-modal {
+                    width: 100%;
+                    background: linear-gradient(135deg, #00d4ff, #00bcd4);
+                    color: white;
+                    border: none;
+                    padding: 0.75rem 1rem;
+                    border-radius: 8px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    margin-top: 1rem;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 0.5rem;
+                    transition: all 0.3s ease;
+                }
+
+                .btn-search-modal svg {
+                    width: 18px;
+                    height: 18px;
+                }
+
+                .btn-search-modal:hover {
+                    background: linear-gradient(135deg, #00bcd4, #00a5bb);
+                    transform: translateY(-1px);
+                }
+
+                .btn-close-modal {
+                    width: 100%;
+                    background: rgba(255, 255, 255, 0.1);
+                    color: rgba(255, 255, 255, 0.7);
+                    border: 1px solid rgba(255, 255, 255, 0.2);
+                    padding: 0.75rem;
+                    border-radius: 8px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    margin-top: 1rem;
+                    transition: all 0.3s ease;
+                }
+
+                .btn-close-modal:hover {
+                    background: rgba(255, 255, 255, 0.15);
+                    color: white;
                 }
 
                 .mobile-filter-btn {

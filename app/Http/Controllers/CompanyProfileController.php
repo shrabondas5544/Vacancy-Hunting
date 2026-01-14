@@ -12,7 +12,15 @@ class CompanyProfileController extends Controller
      */
     public function show($id)
     {
-        $employer = Employer::with('user')->findOrFail($id);
+        $employer = Employer::with([
+            'user',
+            'locations',
+            'teamMembers',
+            'media',
+            'jobs' => function($query) {
+                $query->where('status', 'active')->latest();
+            }
+        ])->findOrFail($id);
         
         return view('company.profile', compact('employer'));
     }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import EmployerLayout from '../../Layouts/EmployerLayout';
 import { router } from '@inertiajs/react';
 
@@ -8,6 +8,7 @@ interface Job {
     field_type: string;
     job_type: string;
     status: string;
+    deadline: string;
     created_at: string;
 }
 
@@ -23,6 +24,8 @@ interface PostJobProps {
 
 export default function PostJob({ jobs, filters }: PostJobProps) {
     const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+    const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
+    const [tempFilters, setTempFilters] = useState(filters);
 
     const handleFilterChange = (name: string, value: string) => {
         router.get(
@@ -32,8 +35,26 @@ export default function PostJob({ jobs, filters }: PostJobProps) {
         );
     };
 
+    // Handle temp filter changes in modal (don't apply immediately)
+    const handleTempFilterChange = (name: string, value: string) => {
+        setTempFilters(prev => ({ ...prev, [name]: value }));
+    };
+
+    // Apply filters and close modal
+    const applyFilters = () => {
+        router.get(
+            '/headhunting/post-job',
+            tempFilters,
+            { preserveState: true, replace: true }
+        );
+        setIsFilterModalOpen(false);
+    };
+
     const clearFilters = () => {
+        const emptyFilters = { search: '', field_type: '', job_type: '', status: '' };
+        setTempFilters(emptyFilters);
         router.get('/headhunting/post-job', {}, { replace: true });
+        setIsFilterModalOpen(false);
     };
 
     const handleDelete = (jobId: number) => {
@@ -51,7 +72,29 @@ export default function PostJob({ jobs, filters }: PostJobProps) {
         });
     };
 
+    // Helper function to check if deadline has passed
+    const isDeadlinePassed = (deadline: string) => {
+        const deadlineDate = new Date(deadline);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        deadlineDate.setHours(0, 0, 0, 0);
+        return deadlineDate < today;
+    };
+
+    // Check if temp filters have changed from applied filters
+    const hasTempChanges = () => {
+        return tempFilters.search !== (filters.search || '') ||
+            tempFilters.field_type !== (filters.field_type || '') ||
+            tempFilters.job_type !== (filters.job_type || '') ||
+            tempFilters.status !== (filters.status || '');
+    };
+
     const hasFilters = filters.search || filters.field_type || filters.job_type || filters.status;
+
+    // Sync tempFilters with applied filters when component updates
+    useEffect(() => {
+        setTempFilters(filters);
+    }, [filters]);
 
     return (
         <EmployerLayout
@@ -78,8 +121,158 @@ export default function PostJob({ jobs, filters }: PostJobProps) {
                 </div>
             </div>
 
-            {/* Filter Section */}
-            <div className="card mb-4">
+            {/* Filter Modal for Mobile */}
+            {isFilterModalOpen && (
+                <>
+                    <div className="filter-modal-overlay" onClick={() => setIsFilterModalOpen(false)}></div>
+                    <div className="filter-modal">
+                        <div className="filter-modal-header">
+                            <h3>Filter Jobs</h3>
+                            <button onClick={() => setIsFilterModalOpen(false)} className="close-modal-btn">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                            </button>
+                        </div>
+                        <div className="filter-modal-body">
+                            <div className="filter-group">
+                                <label>Search</label>
+                                <div className="search-input-wrapper">
+                                    <svg
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        strokeWidth="2"
+                                        className="search-icon"
+                                    >
+                                        <circle cx="11" cy="11" r="8"></circle>
+                                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                    </svg>
+                                    <input
+                                        type="text"
+                                        className="form-control search-control"
+                                        placeholder="Search by job title..."
+                                        value={tempFilters.search || ''}
+                                        onChange={(e) => handleTempFilterChange('search', e.target.value)}
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="filter-group">
+                                <label>Field Type</label>
+                                <select
+                                    className="form-control"
+                                    value={tempFilters.field_type || ''}
+                                    onChange={(e) => handleTempFilterChange('field_type', e.target.value)}
+                                >
+                                    <option value="">All Fields</option>
+                                    <option value="Accounting">Accounting</option>
+                                    <option value="Administration">Administration</option>
+                                    <option value="Agriculture">Agriculture</option>
+                                    <option value="Architecture">Architecture</option>
+                                    <option value="Armed Forces">Armed Forces</option>
+                                    <option value="Aviation">Aviation</option>
+                                    <option value="Banking">Banking</option>
+                                    <option value="Business">Business</option>
+                                    <option value="Call Center / Customer Service">Call Center / Customer Service</option>
+                                    <option value="Civil Engineering">Civil Engineering</option>
+                                    <option value="Construction">Construction</option>
+                                    <option value="Consulting">Consulting</option>
+                                    <option value="Data Entry">Data Entry</option>
+                                    <option value="Defense">Defense</option>
+                                    <option value="Driving / Transport">Driving / Transport</option>
+                                    <option value="Education">Education</option>
+                                    <option value="Electrical Engineering">Electrical Engineering</option>
+                                    <option value="Engineering (General)">Engineering (General)</option>
+                                    <option value="Freelancing">Freelancing</option>
+                                    <option value="Garments / Textile">Garments / Textile</option>
+                                    <option value="Government Service">Government Service</option>
+                                    <option value="Graphic Design">Graphic Design</option>
+                                    <option value="Healthcare">Healthcare</option>
+                                    <option value="Hospitality / Tourism">Hospitality / Tourism</option>
+                                    <option value="Human Resources">Human Resources</option>
+                                    <option value="Import / Export">Import / Export</option>
+                                    <option value="Information Technology (IT)">Information Technology (IT)</option>
+                                    <option value="Journalism / Media">Journalism / Media</option>
+                                    <option value="Law / Legal">Law / Legal</option>
+                                    <option value="Manufacturing">Manufacturing</option>
+                                    <option value="Marketing / Sales">Marketing / Sales</option>
+                                    <option value="Mechanical Engineering">Mechanical Engineering</option>
+                                    <option value="NGO / Development">NGO / Development</option>
+                                    <option value="Nursing">Nursing</option>
+                                    <option value="Pharmacy">Pharmacy</option>
+                                    <option value="Police">Police</option>
+                                    <option value="Private Service">Private Service</option>
+                                    <option value="Public Service">Public Service</option>
+                                    <option value="Real Estate">Real Estate</option>
+                                    <option value="Research">Research</option>
+                                    <option value="Retail / Shopkeeping">Retail / Shopkeeping</option>
+                                    <option value="Security Service">Security Service</option>
+                                    <option value="Self-Employed">Self-Employed</option>
+                                    <option value="Shipping / Logistics">Shipping / Logistics</option>
+                                    <option value="Software Development">Software Development</option>
+                                    <option value="Teaching">Teaching</option>
+                                    <option value="Telecommunications">Telecommunications</option>
+                                    <option value="Trading">Trading</option>
+                                    <option value="Transport / Logistics">Transport / Logistics</option>
+                                </select>
+                            </div>
+
+                            <div className="filter-group">
+                                <label>Job Type</label>
+                                <select
+                                    className="form-control"
+                                    value={tempFilters.job_type || ''}
+                                    onChange={(e) => handleTempFilterChange('job_type', e.target.value)}
+                                >
+                                    <option value="">All Job Types</option>
+                                    <option value="Full Time">Full Time</option>
+                                    <option value="Part Time">Part Time</option>
+                                    <option value="Remote">Remote</option>
+                                    <option value="Freelance">Freelance</option>
+                                    <option value="Internship">Internship</option>
+                                </select>
+                            </div>
+
+                            <div className="filter-group">
+                                <label>Status</label>
+                                <select
+                                    className="form-control"
+                                    value={tempFilters.status || ''}
+                                    onChange={(e) => handleTempFilterChange('status', e.target.value)}
+                                >
+                                    <option value="">All Status</option>
+                                    <option value="active">Active</option>
+                                    <option value="closed">Closed</option>
+                                    <option value="draft">Draft</option>
+                                </select>
+                            </div>
+
+                            {hasTempChanges() ? (
+                                <button onClick={applyFilters} className="btn-search-modal">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                        <circle cx="11" cy="11" r="8"></circle>
+                                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                    </svg>
+                                    Search
+                                </button>
+                            ) : hasFilters ? (
+                                <button onClick={clearFilters} className="btn-clear-modal">
+                                    Clear All Filters
+                                </button>
+                            ) : (
+                                <button onClick={() => setIsFilterModalOpen(false)} className="btn-close-modal">
+                                    Close
+                                </button>
+                            )}
+                        </div>
+                    </div>
+                </>
+            )}
+
+            {/* Filter Section - Desktop */}
+            <div className="card mb-4 desktop-filters">
                 <div className="card-body">
                     <div className="filter-form">
                         <div className="filter-group search-group">
@@ -206,11 +399,23 @@ export default function PostJob({ jobs, filters }: PostJobProps) {
             <div className="card">
                 <div className="card-header">
                     <h3>Posted Jobs ({jobs.length})</h3>
-                    {hasFilters && (
-                        <button onClick={clearFilters} className="btn-text">
-                            Clear Filters
+                    <div className="header-actions">
+                        {hasFilters && (
+                            <button onClick={clearFilters} className="btn-text">
+                                Clear Filters
+                            </button>
+                        )}
+                        <button
+                            className="mobile-filter-btn"
+                            onClick={() => setIsFilterModalOpen(true)}
+                            aria-label="Open filters"
+                        >
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                            </svg>
+                            {hasFilters && <span className="filter-indicator"></span>}
                         </button>
-                    )}
+                    </div>
                 </div>
                 <div className="card-body p-0">
                     {jobs.length > 0 ? (
@@ -222,6 +427,7 @@ export default function PostJob({ jobs, filters }: PostJobProps) {
                                         <th>Title</th>
                                         <th>Field</th>
                                         <th>Type</th>
+                                        <th>Deadline</th>
                                         <th>Status</th>
                                         <th>Action</th>
                                     </tr>
@@ -235,12 +441,13 @@ export default function PostJob({ jobs, filters }: PostJobProps) {
                                             <td>
                                                 <span className="badge badge-blue">{job.job_type}</span>
                                             </td>
+                                            <td>{new Date(job.deadline).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</td>
                                             <td>
                                                 <span
-                                                    className={`badge ${job.status === 'active' ? 'badge-green' : 'badge-gray'
+                                                    className={`badge ${isDeadlinePassed(job.deadline) ? 'badge-red' : job.status === 'active' ? 'badge-green' : 'badge-gray'
                                                         }`}
                                                 >
-                                                    {job.status.charAt(0).toUpperCase() + job.status.slice(1)}
+                                                    {isDeadlinePassed(job.deadline) ? 'Deactive' : job.status.charAt(0).toUpperCase() + job.status.slice(1)}
                                                 </span>
                                             </td>
                                             <td>
@@ -353,6 +560,12 @@ export default function PostJob({ jobs, filters }: PostJobProps) {
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
+                }
+
+                .header-actions {
+                    display: flex;
+                    align-items: center;
+                    gap: 1rem;
                 }
 
                 .card-header h3 {
@@ -510,6 +723,11 @@ export default function PostJob({ jobs, filters }: PostJobProps) {
                     color: #10b981;
                 }
 
+                .badge-red {
+                    background: rgba(239, 68, 68, 0.15);
+                    color: #ef4444;
+                }
+
                 .badge-gray {
                     background: rgba(148, 163, 184, 0.15);
                     color: #94a3b8;
@@ -575,6 +793,181 @@ export default function PostJob({ jobs, filters }: PostJobProps) {
                     display: none;
                 }
 
+                .mobile-filter-btn {
+                    display: none;
+                    position: relative;
+                    background: rgba(255, 255, 255, 0.1);
+                    border: 1px solid rgba(255, 255, 255, 0.2);
+                    color: white;
+                    padding: 0.5rem;
+                    border-radius: 8px;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                }
+
+                .mobile-filter-btn svg {
+                    width: 20px;
+                    height: 20px;
+                }
+
+                .mobile-filter-btn:hover {
+                    background: rgba(255, 255, 255, 0.15);
+                }
+
+                .filter-indicator {
+                    position: absolute;
+                    top: 4px;
+                    right: 4px;
+                    width: 8px;
+                    height: 8px;
+                    background: #00d4ff;
+                    border-radius: 50%;
+                }
+
+                .filter-modal-overlay {
+                    display: none;
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: rgba(0, 0, 0, 0.7);
+                    z-index: 3999;
+                }
+
+                .filter-modal {
+                    display: none;
+                    position: fixed;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                    background: rgba(15, 23, 42, 0.98);
+                    border-top-left-radius: 20px;
+                    border-top-right-radius: 20px;
+                    z-index: 4000;
+                    max-height: 80vh;
+                    overflow-y: auto;
+                    -webkit-backdrop-filter: blur(20px) saturate(180%);
+                    backdrop-filter: blur(20px) saturate(180%);
+                    animation: slideUp 0.3s ease;
+                }
+
+                @keyframes slideUp {
+                    from {
+                        transform: translateY(100%);
+                    }
+                    to {
+                        transform: translateY(0);
+                    }
+                }
+
+                .filter-modal-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 1.5rem;
+                    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                }
+
+                .filter-modal-header h3 {
+                    margin: 0;
+                    color: white;
+                    font-size: 1.2rem;
+                }
+
+                .close-modal-btn {
+                    background: transparent;
+                    border: none;
+                    color: rgba(255, 255, 255, 0.7);
+                    cursor: pointer;
+                    padding: 0.5rem;
+                }
+
+                .close-modal-btn svg {
+                    width: 24px;
+                    height: 24px;
+                }
+
+                .filter-modal-body {
+                    padding: 1.5rem;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 1.5rem;
+                }
+
+                .filter-modal-body .filter-group {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.5rem;
+                }
+
+                .filter-modal-body .filter-group label {
+                    color: rgba(255, 255, 255, 0.8);
+                    font-size: 0.9rem;
+                    font-weight: 500;
+                }
+
+                .btn-clear-modal {
+                    width: 100%;
+                    background: #00bcd4;
+                    color: white;
+                    border: none;
+                    padding: 0.75rem;
+                    border-radius: 8px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    margin-top: 1rem;
+                }
+
+                .btn-search-modal {
+                    width: 100%;
+                    background: linear-gradient(135deg, #00d4ff, #00bcd4);
+                    color: white;
+                    border: none;
+                    padding: 0.75rem 1rem;
+                    border-radius: 8px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    margin-top: 1rem;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 0.5rem;
+                    transition: all 0.3s ease;
+                }
+
+                .btn-search-modal svg {
+                    width: 18px;
+                    height: 18px;
+                }
+
+                .btn-search-modal:hover {
+                    background: linear-gradient(135deg, #00bcd4, #00a5bb);
+                    transform: translateY(-1px);
+                }
+
+                .btn-close-modal {
+                    width: 100%;
+                    background: rgba(255, 255, 255, 0.1);
+                    color: rgba(255, 255, 255, 0.7);
+                    border: 1px solid rgba(255, 255, 255, 0.2);
+                    padding: 0.75rem;
+                    border-radius: 8px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    margin-top: 1rem;
+                    transition: all 0.3s ease;
+                }
+
+                .btn-close-modal:hover {
+                    background: rgba(255, 255, 255, 0.15);
+                    color: white;
+                }
+
+                .desktop-filters {
+                    display: block;
+                }
+
                 @media (max-width: 1024px) {
                     .filter-form {
                         flex-wrap: wrap;
@@ -630,6 +1023,22 @@ export default function PostJob({ jobs, filters }: PostJobProps) {
                 }
 
                 @media (max-width: 768px) {
+                    .desktop-filters {
+                        display: none;
+                    }
+
+                    .mobile-filter-btn {
+                        display: block;
+                    }
+
+                    .filter-modal-overlay {
+                        display: block;
+                    }
+
+                    .filter-modal {
+                        display: block;
+                    }
+
                     .filter-group {
                         flex: 1 1 100%;
                     }
