@@ -180,6 +180,10 @@ class EmployerController extends Controller
             $query->where('job_type', $request->job_type);
         }
 
+        if ($request->filled('division')) {
+            $query->where('division', $request->division);
+        }
+
         $jobs = $query->get();
 
         return \Inertia\Inertia::render('Employer/OtherJobs', [
@@ -189,6 +193,7 @@ class EmployerController extends Controller
                 'ownership_type' => $request->get('ownership_type'),
                 'field_type' => $request->get('field_type'),
                 'job_type' => $request->get('job_type'),
+                'division' => $request->get('division'),
             ]
         ]);
     }

@@ -329,13 +329,55 @@ export default function OtherJobs({ jobs, filters }: OtherJobsProps) {
                             onChange={(e) => handleFilterChange('field_type', e.target.value)}
                         >
                             <option value="">All Fields</option>
-                            <option value="IT">IT & Software</option>
-                            <option value="Marketing">Marketing</option>
-                            <option value="HR">Human Resources</option>
-                            <option value="Finance">Finance</option>
-                            <option value="Design">Design</option>
-                            <option value="Sales">Sales</option>
-                            <option value="Engineering">Engineering</option>
+                            <option value="Accounting">Accounting</option>
+                            <option value="Administration">Administration</option>
+                            <option value="Agriculture">Agriculture</option>
+                            <option value="Architecture">Architecture</option>
+                            <option value="Armed Forces">Armed Forces</option>
+                            <option value="Aviation">Aviation</option>
+                            <option value="Banking">Banking</option>
+                            <option value="Business">Business</option>
+                            <option value="Call Center / Customer Service">Call Center / Customer Service</option>
+                            <option value="Civil Engineering">Civil Engineering</option>
+                            <option value="Construction">Construction</option>
+                            <option value="Consulting">Consulting</option>
+                            <option value="Data Entry">Data Entry</option>
+                            <option value="Defense">Defense</option>
+                            <option value="Driving / Transport">Driving / Transport</option>
+                            <option value="Education">Education</option>
+                            <option value="Electrical Engineering">Electrical Engineering</option>
+                            <option value="Engineering (General)">Engineering (General)</option>
+                            <option value="Freelancing">Freelancing</option>
+                            <option value="Garments / Textile">Garments / Textile</option>
+                            <option value="Government Service">Government Service</option>
+                            <option value="Graphic Design">Graphic Design</option>
+                            <option value="Healthcare">Healthcare</option>
+                            <option value="Hospitality / Tourism">Hospitality / Tourism</option>
+                            <option value="Human Resources">Human Resources</option>
+                            <option value="Import / Export">Import / Export</option>
+                            <option value="Information Technology (IT)">Information Technology (IT)</option>
+                            <option value="Journalism / Media">Journalism / Media</option>
+                            <option value="Law / Legal">Law / Legal</option>
+                            <option value="Manufacturing">Manufacturing</option>
+                            <option value="Marketing / Sales">Marketing / Sales</option>
+                            <option value="Mechanical Engineering">Mechanical Engineering</option>
+                            <option value="NGO / Development">NGO / Development</option>
+                            <option value="Nursing">Nursing</option>
+                            <option value="Pharmacy">Pharmacy</option>
+                            <option value="Police">Police</option>
+                            <option value="Private Service">Private Service</option>
+                            <option value="Public Service">Public Service</option>
+                            <option value="Real Estate">Real Estate</option>
+                            <option value="Research">Research</option>
+                            <option value="Retail / Shopkeeping">Retail / Shopkeeping</option>
+                            <option value="Security Service">Security Service</option>
+                            <option value="Self-Employed">Self-Employed</option>
+                            <option value="Shipping / Logistics">Shipping / Logistics</option>
+                            <option value="Software Development">Software Development</option>
+                            <option value="Teaching">Teaching</option>
+                            <option value="Telecommunications">Telecommunications</option>
+                            <option value="Trading">Trading</option>
+                            <option value="Transport / Logistics">Transport / Logistics</option>
                         </select>
                     </div>
 
