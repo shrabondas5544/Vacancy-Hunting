@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\AdminUser;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Seeder;
@@ -16,14 +17,30 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Seed Admin User
-        User::updateOrCreate(
-            ['email' => 'admin@vacancyHunting.com'],
+        // Create Super Admin User in users table
+        $user = User::updateOrCreate(
+            ['email' => 'superadmin@vacancyHunting.com'],
             [
-                'name' => 'Super Admin',
                 'password' => Hash::make('vhadmin12345'),
                 'role' => 'admin',
             ]
         );
+
+        // Create corresponding entry in admin_users table
+        AdminUser::updateOrCreate(
+            ['email' => 'superadmin@vacancyHunting.com'],
+            [
+                'user_id' => $user->id,
+                'password' => Hash::make('vhadmin12345'),
+                'permissions' => [], // Empty array, super admin doesn't need specific permissions
+                'is_active' => true,
+                'is_super_admin' => true,
+            ]
+        );
+
+        $this->command->info('Super Admin created successfully!');
+        $this->command->info('Email: superadmin@vacancyHunting.com');
+        $this->command->info('Password: vhadmin12345');
     }
 }
+//php artisan db:seed --class=DatabaseSeeder

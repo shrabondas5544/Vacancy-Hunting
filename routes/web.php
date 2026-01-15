@@ -91,9 +91,6 @@ Route::middleware(['auth', 'admin'])->prefix('adminview')->name('admin.')->group
     Route::get('/dashboard', [App\Http\Controllers\AdminController::class, 'dashboardView'])->name('dashboard');
     Route::post('/logout', [App\Http\Controllers\AdminController::class, 'logout'])->name('logout');
     
-    // Profile Routes
-    Route::get('/profile', [App\Http\Controllers\AdminController::class, 'profileView'])->name('profile');
-    Route::post('/profile/password', [App\Http\Controllers\AdminController::class, 'updatePassword'])->name('profile.password');
 
     // Headhunting Routes
     Route::prefix('headhunting')->name('headhunting.')->group(function () {
@@ -123,6 +120,30 @@ Route::middleware(['auth', 'admin'])->prefix('adminview')->name('admin.')->group
         // Blog Routes
         Route::get('/blogs', [App\Http\Controllers\HeadhuntingController::class, 'blogs'])->name('blogs');
         Route::delete('/blogs/{id}', [App\Http\Controllers\HeadhuntingController::class, 'destroyBlog'])->name('blogs.destroy');
+    });
+
+    // Corporate Workshop
+    Route::get('/corporate-workshop', [App\Http\Controllers\AdminController::class, 'corporateWorkshop'])->name('corporate-workshop');
+    
+    // Career Counselling
+    Route::get('/career-counselling', [App\Http\Controllers\AdminController::class, 'careerCounselling'])->name('career-counselling');
+    
+    // Skill Development
+    Route::get('/skill-development', [App\Http\Controllers\AdminController::class, 'skillDevelopment'])->name('skill-development');
+    
+    // People Empowerment
+    Route::get('/people-empowerment', [App\Http\Controllers\AdminController::class, 'peopleEmpowerment'])->name('people-empowerment');
+    
+    // Consultancy & Advisory
+    Route::get('/consultancy-advisory', [App\Http\Controllers\AdminController::class, 'consultancyAdvisory'])->name('consultancy-advisory');
+
+    // Manage Admin Users (Super Admin Only)
+    Route::prefix('manage-admins')->name('manage-admins.')->group(function () {
+        Route::get('/', [App\Http\Controllers\AdminController::class, 'manageAdmins'])->name('index');
+        Route::get('/create', [App\Http\Controllers\AdminController::class, 'createAdminForm'])->name('create');
+        Route::post('/', [App\Http\Controllers\AdminController::class, 'storeAdmin'])->name('store');
+        Route::post('/{id}/toggle-status', [App\Http\Controllers\AdminController::class, 'toggleAdminStatus'])->name('toggle-status');
+        Route::delete('/{id}', [App\Http\Controllers\AdminController::class, 'deleteAdmin'])->name('delete');
     });
 
     // Campus Bird Internship
