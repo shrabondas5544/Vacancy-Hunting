@@ -81,6 +81,12 @@
 - **Approval Workflow** - Verified employer accounts with admin approval
 - **Blog Publishing** - Share company news and insights
 - **Excel Export** - Download complete employer data
+- **Job Recruitment** ✨ **NEW**
+  - Post new job vacancies
+  - Manage active job listings (Edit/Delete/Close)
+  - Detailed job descriptions with requirements and benefits
+  - Set salary ranges and job types (Full-time, Part-time, Remote)
+  - View applicant count (integration with candidate application)
 
 ### 🎓 Campus Bird Internship
 - **Public Application Portal**
@@ -207,6 +213,15 @@
    - **Admin Panel**: `http://localhost:8000/adminview/login`
    - **Campus Bird**: `http://localhost:8000/services/campus-bird-internship`
 
+### 🔑 Default Credentials
+
+After running the seeder, you can login to the admin panel with:
+
+- **Email**: `superadmin@vacancyHunting.com`
+- **Password**: `vhadmin12345`
+
+> ⚠️ **Important**: Change the default password after first login for security.
+
 ### Manual Installation
 
 ```bash
@@ -220,6 +235,9 @@ php artisan key:generate
 
 # Database
 php artisan migrate
+
+# Seed super admin account
+php artisan db:seed --class=DatabaseSeeder
 
 # Build assets
 npm run build
@@ -241,11 +259,11 @@ php artisan serve
 └─────────────────────────────────────────────────────────────────┘
            │                    │                    │
            ▼                    ▼                    ▼
-    ┌──────────┐        ┌─────────────┐       ┌───────────┐
-    │  ADMINS  │        │ CANDIDATES  │       │ EMPLOYERS │
-    │(role:str)│        │(enhanced)   │       │(approved) │
-    └──────────┘        └─────────────┘       └───────────┘
-                               │                    │
+    ┌──────────────┐    ┌─────────────┐       ┌───────────┐
+    │ ADMIN_USERS  │    │ CANDIDATES  │       │ EMPLOYERS │
+    │(permissions) │    │(enhanced)   │       │(approved) │
+    │(cascade del) │    └─────────────┘       └───────────┘
+    └──────────────┘           │                    │
                     ┌──────────┼──────────┐         │
                     ▼          ▼          ▼         ▼
               ┌──────────┐ ┌────────┐ ┌─────┐  ┌──────────┐
@@ -325,6 +343,27 @@ The following departments are available for internship applications:
   - Reset passwords for any user
   - Delete user accounts
   - Export data to Excel
+- **Admin User Management** ✨ **NEW**
+  - Create and manage multiple admin users
+  - **Role-Based Permissions**:
+    - **Super Admin**: Full access to all modules + can manage other admins
+    - **Regular Admins**: Restricted access based on assigned module permissions
+  - **Module Permissions** (7 modules):
+    - Headhunting
+    - Corporate Workshop
+    - Career Counselling
+    - Skill Development
+    - People Empowerment
+    - Consultancy & Advisory
+    - Campus Bird Internship
+  - **Admin Features**:
+    - Create new admins with email/password
+    - Assign module-specific permissions
+    - Toggle super admin privileges
+    - Activate/deactivate admin accounts
+    - Delete admin users (cascade delete from both tables)
+    - Inactive admins are blocked from login
+    - Last login timestamp tracking
 - **Campus Bird Management**
   - Create and edit application forms for each department
   - Add custom fields (text, date, radio, select, file upload)
@@ -335,9 +374,6 @@ The following departments are available for internship applications:
 - **Content Moderation**
   - Manage and delete blog articles
   - Monitor user activity
-- **Profile Management**
-  - Change own password
-  - Update admin profile
 
 ---
 
