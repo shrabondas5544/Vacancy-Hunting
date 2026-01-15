@@ -605,6 +605,13 @@
                             </svg>
                             <span>Profile</span>
                         </a>
+                        <a href="{{ route('password.change') }}" class="dropdown-item">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                            <span>Change Password</span>
+                        </a>
                         <form action="{{ route('logout') }}" method="POST">
                             @csrf
                             <button type="submit" class="dropdown-item">
@@ -695,13 +702,13 @@
 
     <!-- Profile or SignIn -->
     @auth
-        <a href="{{ route('profile.show') }}" class="mobile-nav-item {{ request()->routeIs('profile.*') ? 'active' : '' }}">
+        <button class="mobile-nav-item {{ request()->routeIs('profile.*') || request()->routeIs('password.*') ? 'active' : '' }}" onclick="openBottomSheet('profileSheet')">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                 <circle cx="12" cy="7" r="4"></circle>
             </svg>
             <span>Profile</span>
-        </a>
+        </button>
     @else
         <a href="{{ route('login') }}" class="mobile-nav-item">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
@@ -784,6 +791,41 @@
             </svg>
             Campus Bird Internship Program
         </a>
+    </div>
+</div>
+
+<!-- Profile Bottom Sheet -->
+<div class="bottom-sheet" id="profileSheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-header">
+        <div class="sheet-title">Account</div>
+    </div>
+    <div class="sheet-content">
+        <a href="{{ route('profile.show') }}" class="sheet-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            Profile
+        </a>
+        <a href="{{ route('password.change') }}" class="sheet-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
+            Change Password
+        </a>
+        <form action="{{ route('logout') }}" method="POST" style="margin: 0;">
+            @csrf
+            <button type="submit" class="sheet-item" style="width: 100%; text-align: left; background: none; border: none; cursor: pointer; color: inherit; font: inherit; padding: 15px 20px;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                    <polyline points="16 17 21 12 16 7"></polyline>
+                    <line x1="21" y1="12" x2="9" y2="12"></line>
+                </svg>
+                Logout
+            </button>
+        </form>
     </div>
 </div>
 

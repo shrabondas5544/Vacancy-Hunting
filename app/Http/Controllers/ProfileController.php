@@ -712,4 +712,31 @@ class ProfileController extends Controller
         
         return back()->with('error', 'No file uploaded.');
     }
+
+    // Show Change Password Form
+    public function showChangePasswordForm()
+    {
+        return view('profile.change-password');
+    }
+
+    // Update Password
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => 'required',
+            'new_password' => 'required|min:8|confirmed',
+        ]);
+
+        // Verify current password
+        if (!\Hash::check($request->current_password, auth()->user()->password)) {
+            return back()->withErrors(['current_password' => 'Current password is incorrect']);
+        }
+
+        // Update password
+        auth()->user()->update([
+            'password' => \Hash::make($request->new_password)
+        ]);
+
+        return redirect()->back()->with('success', 'Password updated successfully!');
+    }
 }

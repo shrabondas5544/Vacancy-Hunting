@@ -43,6 +43,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
     Route::post('/profile/picture', [ProfileController::class, 'updateProfilePicture'])->name('profile.picture');
+    
+    // Password Change Routes
+    Route::get('/change-password', [ProfileController::class, 'showChangePasswordForm'])->name('password.change');
+    Route::post('/change-password', [ProfileController::class, 'updatePassword'])->name('password.update');
 
     // Protected Blog Routes
     Route::prefix('blog')->name('blog.')->group(function () {
