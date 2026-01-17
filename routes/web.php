@@ -137,11 +137,16 @@ Route::middleware(['auth', 'admin'])->prefix('adminview')->name('admin.')->group
     // Consultancy & Advisory
     Route::get('/consultancy-advisory', [App\Http\Controllers\AdminController::class, 'consultancyAdvisory'])->name('consultancy-advisory');
 
+    // Create Alumni
+    Route::get('/alumni', [App\Http\Controllers\AlumniController::class, 'index'])->name('alumni');
+
     // Manage Admin Users (Super Admin Only)
     Route::prefix('manage-admins')->name('manage-admins.')->group(function () {
         Route::get('/', [App\Http\Controllers\AdminController::class, 'manageAdmins'])->name('index');
         Route::get('/create', [App\Http\Controllers\AdminController::class, 'createAdminForm'])->name('create');
         Route::post('/', [App\Http\Controllers\AdminController::class, 'storeAdmin'])->name('store');
+        Route::get('/{id}/edit', [App\Http\Controllers\AdminController::class, 'editAdminForm'])->name('edit');
+        Route::put('/{id}', [App\Http\Controllers\AdminController::class, 'updateAdmin'])->name('update');
         Route::post('/{id}/toggle-status', [App\Http\Controllers\AdminController::class, 'toggleAdminStatus'])->name('toggle-status');
         Route::delete('/{id}', [App\Http\Controllers\AdminController::class, 'deleteAdmin'])->name('delete');
     });

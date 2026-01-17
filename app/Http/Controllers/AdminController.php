@@ -188,6 +188,58 @@ class AdminController extends Controller
         return redirect()->route('admin.manage-admins.index')->with('success', 'Admin user created successfully!');
     }
 
+    // Show edit admin form
+    public function editAdminForm($id)
+    {
+        $admin = \App\Models\AdminUser::findOrFail($id);
+        $modules = \App\Models\AdminUser::getAvailableModules();
+        return view('admin.manage-admins.edit', compact('admin', 'modules'));
+    }
+
+    // Update admin user
+    public function updateAdmin(Request $request, $id)
+    {
+        $admin = \App\Models\AdminUser::findOrFail($id);
+
+        $request->validate([
+            'email' => 'required|email|unique:admin_users,email,'.$id.'|unique:users,email,'.$admin->user_id,
+            'password' => 'nullable|min:8',
+            'permissions' => 'nullable|array',
+            'is_super_admin' => 'nullable|boolean',
+        ]);
+
+        $isSuperAdmin = $request->has('is_super_admin') && $request->is_super_admin;
+
+        // Build permissions array (ignore if super admin)
+        $permissions = [];
+        if (!$isSuperAdmin && $request->has('permissions')) {
+            foreach ($request->permissions as $module) {
+                $permissions[$module] = true;
+            }
+        }
+
+        // 1. Update User table (for Login)
+        $user = \App\Models\User::find($admin->user_id);
+        if ($user) {
+            $user->email = $request->email;
+            if ($request->filled('password')) {
+                $user->password = \Illuminate\Support\Facades\Hash::make($request->password);
+            }
+            $user->save();
+        }
+
+        // 2. Update AdminUsers table
+        $admin->email = $request->email;
+        if ($request->filled('password')) {
+            $admin->password = $request->password; // Mutator will hash it
+        }
+        $admin->is_super_admin = $isSuperAdmin;
+        $admin->permissions = $permissions;
+        $admin->save();
+
+        return redirect()->route('admin.manage-admins.index')->with('success', 'Admin user updated successfully!');
+    }
+
     // Toggle admin user active/inactive status
     public function toggleAdminStatus($id)
     {

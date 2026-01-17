@@ -276,6 +276,20 @@
             </a>
             @endif
 
+            <!-- Create Alumni -->
+            @if($isSuperAdmin || (isset($permissions['alumni']) && $permissions['alumni']))
+            <a href="{{ route('admin.alumni') }}" class="card">
+                <div class="card-icon-wrapper">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                        <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+                    </svg>
+                </div>
+                <h3 class="card-title">Create Alumni</h3>
+                <p class="card-desc">Manage alumni records and networking.</p>
+            </a>
+            @endif
+
             <!-- Manage Admin Users (Super Admin Only) -->
             @if($isSuperAdmin)
             <a href="{{ route('admin.manage-admins.index') }}" class="card">
