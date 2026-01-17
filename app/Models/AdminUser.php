@@ -55,6 +55,7 @@ class AdminUser extends Model
             'people_empowerment' => 'People Empowerment',
             'consultancy_advisory' => 'Consultancy & Advisory',
             'campus_bird' => 'Campus Bird Internship',
+            'blog' => 'Blog Management',
             'alumni' => 'Create Alumni',
         ];
     }

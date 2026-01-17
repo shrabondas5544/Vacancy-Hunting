@@ -116,10 +116,6 @@ Route::middleware(['auth', 'admin'])->prefix('adminview')->name('admin.')->group
         Route::get('/jobs', [App\Http\Controllers\HeadhuntingController::class, 'jobs'])->name('jobs');
         Route::get('/jobs/export', [App\Http\Controllers\HeadhuntingController::class, 'exportJobs'])->name('jobs.export');
         Route::delete('/jobs/{id}', [App\Http\Controllers\HeadhuntingController::class, 'destroyJob'])->name('jobs.destroy');
-        
-        // Blog Routes
-        Route::get('/blogs', [App\Http\Controllers\HeadhuntingController::class, 'blogs'])->name('blogs');
-        Route::delete('/blogs/{id}', [App\Http\Controllers\HeadhuntingController::class, 'destroyBlog'])->name('blogs.destroy');
     });
 
     // Corporate Workshop
@@ -136,6 +132,13 @@ Route::middleware(['auth', 'admin'])->prefix('adminview')->name('admin.')->group
     
     // Consultancy & Advisory
     Route::get('/consultancy-advisory', [App\Http\Controllers\AdminController::class, 'consultancyAdvisory'])->name('consultancy-advisory');
+
+    // Blog Management Routes
+    Route::prefix('blog')->name('blog.')->group(function () {
+        Route::get('/', [App\Http\Controllers\AdminBlogController::class, 'dashboard'])->name('dashboard');
+        Route::get('/posts', [App\Http\Controllers\AdminBlogController::class, 'index'])->name('index');
+        Route::delete('/{id}', [App\Http\Controllers\AdminBlogController::class, 'destroy'])->name('destroy');
+    });
 
     // Create Alumni
     Route::get('/alumni', [App\Http\Controllers\AlumniController::class, 'index'])->name('alumni');

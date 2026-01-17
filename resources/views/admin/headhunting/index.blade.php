@@ -266,7 +266,7 @@
         background-color: #22c55e;
     }
 
-    .legend-dot.blogs {
+    .legend-dot.jobs {
         background-color: #06b6d4;
     }
 
@@ -409,27 +409,39 @@
     <div class="stat-card">
         <div class="stat-icon cyan">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
-                <polyline points="14 2 14 8 20 8"></polyline>
+                <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
             </svg>
         </div>
         <div class="stat-info">
-            <h3>{{ $stats['total_blogs'] ?? 0 }}</h3>
-            <p>Total Blog Posts</p>
+            <h3>{{ $stats['total_jobs'] ?? 0 }}</h3>
+            <p>Total Job Posts</p>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon green">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+        </div>
+        <div class="stat-info">
+            <h3>{{ $stats['active_jobs'] ?? 0 }}</h3>
+            <p>Active Jobs</p>
         </div>
     </div>
 
     <div class="stat-card">
         <div class="stat-icon pink">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="12" y1="20" x2="12" y2="10"></line>
-                <line x1="18" y1="20" x2="18" y2="4"></line>
-                <line x1="6" y1="20" x2="6" y2="16"></line>
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
             </svg>
         </div>
         <div class="stat-info">
-            <h3>{{ $stats['recent_blogs'] ?? 0 }}</h3>
-            <p>New Posts (30d)</p>
+            <h3>{{ $stats['recent_jobs'] ?? 0}}</h3>
+            <p>Recent Jobs (30d)</p>
         </div>
     </div>
 </div>
@@ -449,7 +461,7 @@
     <div class="combined-chart-card">
         <div class="chart-header">
             <div class="chart-title">
-                <span>Account Registrations & Blog Posts Over Time</span>
+                <span>Account Registrations & Job Posts Over Time</span>
             </div>
         </div>
         <div class="combined-chart-container">
@@ -465,8 +477,8 @@
                 <span>Employers</span>
             </div>
             <div class="legend-item">
-                <span class="legend-dot blogs"></span>
-                <span>Blog Posts</span>
+                <span class="legend-dot jobs"></span>
+                <span>Job Posts</span>
             </div>
         </div>
     </div>
@@ -512,15 +524,15 @@
                 <div class="chart-title">
                     <div class="chart-title-icon cyan">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
-                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
                         </svg>
                     </div>
-                    <span>Blog Posts</span>
+                    <span>Job Posts</span>
                 </div>
             </div>
             <div class="chart-container">
-                <canvas id="blogsChart"></canvas>
+                <canvas id="jobsChart"></canvas>
             </div>
         </div>
     </div>
@@ -548,13 +560,6 @@
                 <path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"></path>
             </svg>
             View All Employers
-        </a>
-        <a href="{{ route('admin.headhunting.blogs') }}" class="action-link">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
-                <polyline points="14 2 14 8 20 8"></polyline>
-            </svg>
-            View All Blogs
         </a>
         <a href="{{ route('admin.headhunting.employers') }}?status=pending" class="action-link">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -616,8 +621,8 @@
                     pointHoverRadius: 6
                 },
                 {
-                    label: 'Blog Posts',
-                    data: chartData.blogs,
+                    label: 'Job Posts',
+                    data: chartData.jobs,
                     borderColor: '#06b6d4',
                     backgroundColor: 'rgba(6, 182, 212, 0.1)',
                     fill: true,
@@ -748,15 +753,15 @@
         }
     });
 
-    // Blogs Chart
-    const blogsCtx = document.getElementById('blogsChart').getContext('2d');
-    new Chart(blogsCtx, {
+    // Job Posts Chart
+    const jobsCtx = document.getElementById('jobsChart').getContext('2d');
+    new Chart(jobsCtx, {
         type: 'bar',
         data: {
             labels: chartData.labels,
             datasets: [{
-                label: 'Blog Posts',
-                data: chartData.blogs,
+                label: 'Job Posts',
+                data: chartData.jobs,
                 backgroundColor: 'rgba(6, 182, 212, 0.7)',
                 borderColor: '#06b6d4',
                 borderWidth: 1,

@@ -251,9 +251,9 @@
     <!-- Sidebar -->
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
-            <a href="{{ route('admin.headhunting.index') }}" class="sidebar-logo">
+            <a href="{{ route('admin.campus-bird.index') }}" class="sidebar-logo">
                 <img src="{{ asset('assets/images/vh-logo.jpg') }}" alt="VH Logo">
-                Campus bird 
+                Campus Bird Internship
             </a>
         </div>
 

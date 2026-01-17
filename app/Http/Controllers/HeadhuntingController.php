@@ -20,25 +20,34 @@ class HeadhuntingController extends Controller
             'recent_candidates' => Candidate::where('created_at', '>=', now()->subDays(30))->count(),
             'total_employers' => Employer::count(),
             'pending_employers' => Employer::where('status', 'pending')->count(),
-            'total_blogs' => \App\Models\Article::count(),
-            'recent_blogs' => \App\Models\Article::where('created_at', '>=', now()->subDays(30))->count(),
+            'total_jobs' => \App\Models\Job::count(),
+            'active_jobs' => \App\Models\Job::where('status', 'active')->count(),
+            'recent_jobs' => \App\Models\Job::where('created_at', '>=', now()->subDays(30))->count(),
         ];
 
         // Get chart data for the last 12 months
         $chartData = $this->getChartData();
+        
+        // Get job field distribution for pie chart
+        $jobsByField = \App\Models\Job::selectRaw('field_type, COUNT(*) as count')
+            ->groupBy('field_type')
+            ->pluck('count', 'field_type')
+            ->toArray();
+        
+        $stats['jobs_by_field'] = $jobsByField;
 
         return view('admin.headhunting.index', compact('stats', 'chartData'));
     }
 
     /**
-     * Get chart data for candidates, employers, and blogs.
+     * Get chart data for candidates, employers, and job posts.
      */
     private function getChartData()
     {
         $months = [];
         $candidateData = [];
         $employerData = [];
-        $blogData = [];
+        $jobData = [];
 
         // Get data for last 12 months
         for ($i = 11; $i >= 0; $i--) {
@@ -53,7 +62,7 @@ class HeadhuntingController extends Controller
                 ->whereMonth('created_at', $date->month)
                 ->count();
             
-            $blogData[] = \App\Models\Article::whereYear('created_at', $date->year)
+            $jobData[] = \App\Models\Job::whereYear('created_at', $date->year)
                 ->whereMonth('created_at', $date->month)
                 ->count();
         }
@@ -62,7 +71,7 @@ class HeadhuntingController extends Controller
             'labels' => $months,
             'candidates' => $candidateData,
             'employers' => $employerData,
-            'blogs' => $blogData,
+            'jobs' => $jobData,
         ];
     }
 
@@ -686,52 +695,5 @@ class HeadhuntingController extends Controller
     // BLOG METHODS
     // ========================
 
-    /**
-     * Display the list of all blog articles.
-     */
-    public function blogs(Request $request)
-    {
-        $query = \App\Models\Article::with('user');
-
-        // Search functionality
-        if ($request->has('search') && $request->search) {
-            $search = $request->search;
-            $query->where(function ($q) use ($search) {
-                $q->where('title', 'like', "%{$search}%")
-                  ->orWhereHas('user', function ($userQuery) use ($search) {
-                      $userQuery->where('email', 'like', "%{$search}%");
-                  });
-            });
-        }
-
-        // Filter by category
-        if ($request->has('category') && $request->category) {
-            $query->where('category', $request->category);
-        }
-
-        $articles = $query->orderBy('created_at', 'desc')->paginate(15);
-
-        return view('admin.headhunting.blogs', compact('articles'));
-    }
-
-    /**
-     * Delete a blog article.
-     */
-    public function destroyBlog($id)
-    {
-        $article = \App\Models\Article::findOrFail($id);
-
-        // Delete featured image
-        if ($article->featured_image) {
-            \Illuminate\Support\Facades\Storage::disk('public')->delete($article->featured_image);
-        }
-
-        // Delete related data
-        $article->reactions()->delete();
-        $article->comments()->delete();
-        $article->delete();
-
-        return redirect()->route('admin.headhunting.blogs')->with('status', 'blog-deleted');
-    }
 }
 
