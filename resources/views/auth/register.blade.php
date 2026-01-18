@@ -93,6 +93,35 @@
         margin-top: 4px;
         display: block;
     }
+
+    /* Google Button */
+    .btn-google {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        background-color: white;
+        color: #333;
+        font-weight: 600;
+        padding: 0.75rem;
+        border-radius: 0.375rem;
+        text-decoration: none;
+        margin-top: 5px;
+        transition: all 0.2s;
+        border: 1px solid #e2e8f0;
+    }
+    .btn-google:hover {
+        background-color: #f8fafc;
+        text-decoration: none;
+        color: #0f172a;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+    }
+    .btn-google img {
+        width: 20px;
+        height: 20px;
+        margin-right: 0.75rem;
+    }
 </style>
 
 <div>
@@ -257,6 +286,14 @@
         </div>
 
         <button type="submit" class="btn-primary">Create Account</button>
+        
+        <div id="google-auth-section" class="mt-4">
+             <div style="text-align: center; margin: 15px 0; color: #94a3b8; font-size: 0.9rem;">— OR —</div>
+             <a href="{{ route('auth.google', ['intention' => 'register']) }}" class="btn-google">
+                 <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google">
+                 Sign up with Google
+             </a>
+        </div>
     </form>
 
     <div class="auth-footer">
@@ -272,16 +309,19 @@
         const roleSelect = document.getElementById('role');
         const candidateFields = document.getElementById('candidate-fields');
         const employerFields = document.getElementById('employer-fields');
+        const googleAuthSection = document.getElementById('google-auth-section');
 
         if (roleSelect.value === 'employer') {
             candidateFields.classList.add('hidden');
             employerFields.classList.remove('hidden');
+            if (googleAuthSection) googleAuthSection.style.display = 'none';
             
             enableInputs(employerFields);
             disableInputs(candidateFields);
         } else {
             candidateFields.classList.remove('hidden');
             employerFields.classList.add('hidden');
+            if (googleAuthSection) googleAuthSection.style.display = 'block';
 
             enableInputs(candidateFields);
             disableInputs(employerFields);

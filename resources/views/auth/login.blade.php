@@ -61,7 +61,6 @@
         box-shadow: 0 8px 25px rgba(0, 212, 255, 0.5);
     }
     
-    /* 5. SUCCESS/STATUS MESSAGE */
     .glass-alert {
         background: rgba(16, 185, 129, 0.15);
         border: 1px solid rgba(16, 185, 129, 0.3);
@@ -71,6 +70,35 @@
         margin-bottom: 20px;
         text-align: center;
         font-size: 0.9rem;
+    }
+
+    /* Google Button */
+    .btn-google {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        background-color: white;
+        color: #333;
+        font-weight: 600;
+        padding: 0.75rem;
+        border-radius: 0.375rem;
+        text-decoration: none;
+        margin-top: 5px;
+        transition: all 0.2s;
+        border: 1px solid #e2e8f0;
+    }
+    .btn-google:hover {
+        background-color: #f8fafc;
+        text-decoration: none;
+        color: #0f172a;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+    }
+    .btn-google img {
+        width: 20px;
+        height: 20px;
+        margin-right: 0.75rem;
     }
 </style>
 
@@ -108,6 +136,14 @@
         </div>
 
         <button type="submit" class="btn-primary">Sign In</button>
+
+        <div class="mt-4">
+             <div style="text-align: center; margin: 15px 0; color: #94a3b8; font-size: 0.9rem;">— OR —</div>
+             <a href="{{ route('auth.google', ['intention' => 'login']) }}" class="btn-google">
+                 <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google">
+                 Sign in with Google
+             </a>
+        </div>
     </form>
 
     <div class="auth-footer">
