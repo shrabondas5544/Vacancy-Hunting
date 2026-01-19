@@ -7,6 +7,8 @@ use App\Models\Employer;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use App\Mail\EmployerApproved;
+use Illuminate\Support\Facades\Mail;
 
 class HeadhuntingController extends Controller
 {
@@ -468,6 +470,14 @@ class HeadhuntingController extends Controller
             'status' => 'approved',
             'approved_at' => now(),
         ]);
+
+        // Send approval email
+        try {
+            Mail::to($employer->user->email)->send(new EmployerApproved($employer));
+        } catch (\Exception $e) {
+            // Log error but don't stop execution
+            \Illuminate\Support\Facades\Log::error('Failed to send employer approval email: ' . $e->getMessage());
+        }
 
         return redirect()->route('admin.headhunting.employers')->with('status', 'employer-approved');
     }

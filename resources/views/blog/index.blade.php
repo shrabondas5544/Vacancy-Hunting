@@ -425,6 +425,11 @@
                 justify-content: flex-start;
                 padding-bottom: 1rem;
                 -webkit-overflow-scrolling: touch;
+                /* Prevent interfering with swipe-back gesture - multiple browser prefixes */
+                -webkit-overscroll-behavior-x: contain;
+                -moz-overscroll-behavior-x: contain;
+                -ms-overscroll-behavior-x: contain;
+                overscroll-behavior-x: contain;
             }
 
             .filter-btn {
@@ -500,7 +505,7 @@
             <div class="articles-feed">
                 @foreach($articles as $article)
                     <article class="article-card">
-                        <button class="share-btn" onclick="shareArticle('{{ route('blog.show', $article->slug) }}', '{{ addslashes($article->title) }}')" title="Share article">
+                        <button class="share-btn" onclick="shareArticle(this, '{{ route('blog.show', $article->slug) }}', '{{ addslashes($article->title) }}')" title="Share article">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <circle cx="18" cy="5" r="3"></circle>
                                 <circle cx="6" cy="12" r="3"></circle>
@@ -570,33 +575,68 @@
     @include('partials.footer')
 
     <script>
-        function shareArticle(url, title) {
+        function shareArticle(button, url, title) {
+            // Check if Web Share API is supported (Chrome, Safari, Edge mobile)
             if (navigator.share) {
-                // Use native share API if available
                 navigator.share({
                     title: title,
                     url: url
                 }).catch((error) => {
-                    console.log('Error sharing', error);
+                    console.log('Share cancelled or failed:', error);
                 });
-            } else {
-                // Fallback to clipboard
+            } 
+            // Check if Clipboard API is supported (most modern browsers including Firefox)
+            else if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(url).then(() => {
-                    // Show a temporary notification
-                    const btn = event.target.closest('.share-btn');
-                    const originalHTML = btn.innerHTML;
-                    btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>';
-                    btn.style.background = 'rgba(16, 185, 129, 0.8)';
-                    
-                    setTimeout(() => {
-                        btn.innerHTML = originalHTML;
-                        btn.style.background = '';
-                    }, 2000);
+                    showShareFeedback(button, 'Link copied!', true);
                 }).catch((error) => {
-                    console.error('Failed to copy link', error);
-                    alert('Failed to copy link to clipboard');
+                    console.error('Failed to copy link:', error);
+                    showShareFeedback(button, 'Failed to copy', false);
                 });
             }
+            // Final fallback for older browsers
+            else {
+                // Create temporary input to copy text
+                const input = document.createElement('input');
+                input.value = url;
+                document.body.appendChild(input);
+                input.select();
+                try {
+                    document.execCommand('copy');
+                    document.body.removeChild(input);
+                    showShareFeedback(button, 'Link copied!', true);
+                } catch (error) {
+                    document.body.removeChild(input);
+                    showShareFeedback(button, 'Failed to copy', false);
+                }
+            }
+        }
+
+        function showShareFeedback(element, message, success) {
+            const btn = element.closest('.share-btn') || element;
+            if (!btn) return;
+            
+            const originalHTML = btn.innerHTML;
+            const originalBg = btn.style.background;
+            
+            // Show success or error icon
+            if (success) {
+                btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+                btn.style.background = 'rgba(16, 185, 129, 0.8)';
+            } else {
+                btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
+                btn.style.background = 'rgba(239, 68, 68, 0.8)';
+            }
+            
+            // Add tooltip
+            btn.title = message;
+            
+            // Reset after 2 seconds
+            setTimeout(() => {
+                btn.innerHTML = originalHTML;
+                btn.style.background = originalBg;
+                btn.title = 'Share article';
+            }, 2000);
         }
     </script>
 

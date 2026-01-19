@@ -107,6 +107,11 @@
         .footer-container {
             grid-template-columns: 1fr;
         }
+        
+        /* Fix mobile gaps */
+        .site-footer {
+            padding: 2rem 1.25rem 6rem; /* Reduced side padding, added bottom padding for mobile nav */
+        }
     }
 </style>
 

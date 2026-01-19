@@ -501,8 +501,11 @@
     }
     
     @media (max-width: 1024px) {
+        .navbar {
+            padding: 0.8rem 1rem; /* Reduced padding for mobile */
+        }
         .navbar-container {
-            justify-content: flex-end; /* Align logo to right on mobile */
+            justify-content: space-between; /* Keep spacing distributed */
         }
         .logo {
             flex-direction: row-reverse; /* Text on Left, Icon on Right */
@@ -605,6 +608,7 @@
                             </svg>
                             <span>Profile</span>
                         </a>
+                        @if(!Auth::user()->google_id)
                         <a href="{{ route('password.change') }}" class="dropdown-item">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
@@ -612,6 +616,7 @@
                             </svg>
                             <span>Change Password</span>
                         </a>
+                        @endif
                         <form action="{{ route('logout') }}" method="POST">
                             @csrf
                             <button type="submit" class="dropdown-item">
@@ -808,6 +813,7 @@
             </svg>
             Profile
         </a>
+        @if(Auth::check() && !Auth::user()->google_id)
         <a href="{{ route('password.change') }}" class="sheet-item">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
@@ -815,6 +821,7 @@
             </svg>
             Change Password
         </a>
+        @endif
         <form action="{{ route('logout') }}" method="POST" style="margin: 0;">
             @csrf
             <button type="submit" class="sheet-item" style="width: 100%; text-align: left; background: none; border: none; cursor: pointer; color: inherit; font: inherit; padding: 15px 20px;">

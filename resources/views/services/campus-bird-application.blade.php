@@ -229,7 +229,12 @@
 
         @media (max-width: 768px) {
             body {
-                padding: 70px 1rem 1rem;
+                padding: 0; /* Remove padding to fix navbar/footer gaps */
+            }
+
+            .container {
+                padding-top: 2rem; /* Ensure content has space */
+                padding-bottom: 6rem; /* Space for mobile nav */
             }
 
             .form-card {
@@ -293,7 +298,13 @@
                                 type="{{ in_array($field['field_name'], ['applicant_email']) ? 'email' : 'text' }}" 
                                 name="{{ $field['field_name'] }}" 
                                 class="form-control" 
-                                value="{{ old($field['field_name']) }}"
+                                value="{{ old($field['field_name']) ?? (Auth::check() && Auth::user()->isCandidate() ? (
+                                    $field['field_name'] == 'applicant_name' ? (Auth::user()->candidate->name ?? Auth::user()->name) : (
+                                        $field['field_name'] == 'applicant_email' ? Auth::user()->email : (
+                                            $field['field_name'] == 'applicant_phone' ? (Auth::user()->candidate->phone ?? '') : ''
+                                        )
+                                    )
+                                ) : '') }}"
                                 {{ $field['is_required'] ? 'required' : '' }}
                             >
 
