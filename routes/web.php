@@ -6,7 +6,14 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BlogController;
 
 // Public Routes
-Route::get('/', function () { return view('welcome'); }); // or redirect to login
+// Public Routes
+Route::get('/', function () { 
+    $activeJobs = \App\Models\Job::where('status', 'active')->count();
+    $companies = \App\Models\Employer::count(); // Total registered companies
+    $candidates = \App\Models\Candidate::count(); // Total registered candidates
+    
+    return view('welcome', compact('activeJobs', 'companies', 'candidates')); 
+});
 
 // Public Blog Routes
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
@@ -40,7 +47,11 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware(['auth'])->group(function () {
     
     Route::get('/dashboard', function () {
-        return view('welcome');
+        $activeJobs = \App\Models\Job::where('status', 'active')->count();
+        $companies = \App\Models\Employer::count();
+        $candidates = \App\Models\Candidate::count();
+        
+        return view('welcome', compact('activeJobs', 'companies', 'candidates'));
     })->name('dashboard');
 
     // Profile Routes

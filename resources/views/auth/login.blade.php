@@ -100,6 +100,54 @@
         height: 20px;
         margin-right: 0.75rem;
     }
+    /* Wave Animation Styles */
+    .wave-group {
+        position: relative;
+        margin: 30px 0; /* Adjusted margin */
+        width: 100%;
+    }
+
+    .wave-group input {
+        background-color: transparent !important;
+        border: 0 !important;
+        border-bottom: 2px #fff solid !important;
+        display: block;
+        width: 100%;
+        padding: 10px 0;
+        font-size: 16px;
+        color: #fff !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+    }
+
+    .wave-group input:focus,
+    .wave-group input:valid {
+        outline: 0;
+        border-bottom-color: #00d4ff !important; /* Primary light color */
+        background-color: transparent !important;
+    }
+
+    .wave-group label {
+        position: absolute;
+        top: 10px;
+        left: 0;
+        pointer-events: none;
+        display: flex;
+    }
+
+    .wave-group label span {
+        display: inline-block;
+        font-size: 16px;
+        min-width: 5px;
+        color: rgba(255, 255, 255, 0.7);
+        transition: 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    .wave-group input:focus + label span,
+    .wave-group input:valid + label span {
+        color: #00d4ff;
+        transform: translateY(-30px);
+    }
 </style>
 
 <div>
@@ -117,21 +165,34 @@
     <form method="POST" action="{{ route('login') }}">
         @csrf
 
-        <div class="form-group">
-            <label for="email" class="form-label">Email</label>
-            <input type="email" id="email" name="email" class="form-control" 
-                   value="{{ old('email') }}" placeholder="Enter your email" required autofocus>
+        <div class="wave-group">
+            <input type="email" id="email" name="email" value="{{ old('email') }}" required autofocus>
+            <label class="label">
+                <span style="transition-delay:0ms">E</span>
+                <span style="transition-delay:50ms">m</span>
+                <span style="transition-delay:100ms">a</span>
+                <span style="transition-delay:150ms">i</span>
+                <span style="transition-delay:200ms">l</span>
+            </label>
             @error('email')
-                <span class="text-danger">{{ $message }}</span>
+                <span class="text-danger" style="font-size: 0.85rem; margin-top: 5px; display: block;">{{ $message }}</span>
             @enderror
         </div>
 
-        <div class="form-group">
-            <label for="password" class="form-label">Password</label>
-            <input type="password" id="password" name="password" class="form-control" 
-                   placeholder="Enter your password" required>
+        <div class="wave-group">
+            <input type="password" id="password" name="password" required>
+            <label class="label">
+                <span style="transition-delay:0ms">P</span>
+                <span style="transition-delay:50ms">a</span>
+                <span style="transition-delay:100ms">s</span>
+                <span style="transition-delay:150ms">s</span>
+                <span style="transition-delay:200ms">w</span>
+                <span style="transition-delay:250ms">o</span>
+                <span style="transition-delay:300ms">r</span>
+                <span style="transition-delay:350ms">d</span>
+            </label>
             @error('password')
-                <span class="text-danger">{{ $message }}</span>
+                <span class="text-danger" style="font-size: 0.85rem; margin-top: 5px; display: block;">{{ $message }}</span>
             @enderror
         </div>
 

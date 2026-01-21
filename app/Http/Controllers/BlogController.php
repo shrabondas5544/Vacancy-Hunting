@@ -18,17 +18,43 @@ class BlogController extends Controller
     public function index(Request $request)
     {
         $category = $request->get('category', 'all');
+        $search = $request->get('search');
         
-        $articles = Article::published()
-            ->category($category)
-            ->with(['user', 'reactions', 'comments'])
-            ->orderBy('published_at', 'desc')
+        $query = Article::published()
+            ->with(['user.candidate', 'user.employer', 'reactions', 'comments']); // Load relationships for search
+
+        // Apply Category Filter
+        if ($category !== 'all') {
+            $query->where('category', $category);
+        }
+
+        // Apply Search Filter
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                // Search in Title
+                $q->where('title', 'like', "%{$search}%")
+                  // Search in Category
+                  ->orWhere('category', 'like', "%{$search}%")
+                  // Search in Author Name (Candidate or Employer)
+                  ->orWhereHas('user', function($userQ) use ($search) {
+                      $userQ->whereHas('candidate', function($candidateQ) use ($search) {
+                          $candidateQ->where('name', 'like', "%{$search}%");
+                      })
+                      ->orWhereHas('employer', function($employerQ) use ($search) {
+                          $employerQ->where('company_name', 'like', "%{$search}%");
+                      });
+                  });
+            });
+        }
+        
+        $articles = $query->orderBy('published_at', 'desc')
             ->paginate(9);
         
         return view('blog.index', [
             'articles' => $articles,
             'categories' => Article::$categories,
             'selectedCategory' => $category,
+            'search' => $search,
         ]);
     }
 

@@ -77,8 +77,8 @@
         /* Page Header */
         .page-header {
             text-align: center;
-            margin-bottom: 3rem;
-            padding: 3rem 0;
+            margin-bottom: 1.5rem; /* Reduced from 3rem */
+            padding: 2rem 0 1rem; /* Reduced padding */
         }
 
         .page-title {
@@ -88,14 +88,114 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
         }
 
-        .page-subtitle {
-            font-size: 1.2rem;
-            color: rgba(255, 255, 255, 0.7);
-            max-width: 600px;
-            margin: 0 auto;
+        /* Search Container Styles */
+        .search-container {
+            margin-bottom: 2rem;
+        }
+        
+        .search-wrapper-container { /* Renamed from .navbar-container to avoid conflict */
+            display: flex;
+            justify-content: center;
+            padding: 0 1rem;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            max-width: 600px; /* SLightly wider */
+            background-color: #1a1b23;
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+            transition: all 0.3s ease;
+            border: 1px solid #2a2b33;
+        }
+
+        .search-bar:focus-within {
+            background-color: #222533;
+            border-color: #00d4ff; /* Changed to Blue */
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.35); /* Blue shadow */
+        }
+
+        .search-bar:hover {
+            background-color: #222533;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.35);
+        }
+
+        .InputContainer {
+            display: flex;
+            align-items: center;
+            flex-grow: 1;
+            gap: 0.75rem;
+        }
+
+        .input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 1rem;
+            background: none;
+            color: #f0f0f0;
+            padding: 0.5rem 0;
+            font-family: inherit;
+        }
+
+        .input::placeholder {
+            color: #8a8a8a;
+            opacity: 0.8;
+            transition: opacity 0.2s ease;
+        }
+
+        .input:focus::placeholder {
+            opacity: 0.5;
+        }
+
+        .searchIcon {
+            width: 20px;
+            height: 20px;
+            fill: #8a8a8a;
+            transition: fill 0.2s ease;
+        }
+
+        .search-bar:focus-within .searchIcon {
+            fill: #00d4ff; /* Blue */
+        }
+
+        .border {
+            width: 1px;
+            height: 24px;
+            background-color: #3a3b43;
+            margin: 0 0.75rem;
+        }
+
+        .micButton {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border: none;
+            border-radius: 50%;
+            background: transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #00d4ff; /* Make icon blue */
+        }
+
+        .micButton:hover {
+            background-color: rgba(0, 212, 255, 0.1);
+            transform: scale(1.1);
+        }
+
+        .micIcon {
+            width: 20px;
+            height: 20px;
+            stroke: currentColor; /* Use text color */
+            transition: all 0.2s ease;
         }
 
         /* Write Button Container */
@@ -458,6 +558,144 @@
             <h1 class="page-title">Blog & Insights</h1>
             <p class="page-subtitle">Discover articles from industry professionals, employers, and job seekers sharing their knowledge and experiences.</p>
         </div>
+
+        <!-- Search Bar -->
+        <div class="search-container">
+            <form method="GET" action="{{ route('blog.index') }}" class="search-form">
+                @if($selectedCategory !== 'all')
+                    <input type="hidden" name="category" value="{{ $selectedCategory }}">
+                @endif
+                
+                <div class="search-wrapper-container"> <!-- Updated class name -->
+                    <div class="search-bar">
+                        <div class="InputContainer">
+                            <svg class="searchIcon" width="20px" viewBox="0 0 24 24" height="20px" xmlns="http://www.w3.org/2000/svg">
+                                <path fill="none" d="M0 0h24v24H0z"></path>
+                                <path d="M15.5 14h-.79l-.28-.27A6.518 6.518 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
+                            </svg>
+                            <input class="input" id="search-input" name="search" placeholder="Search by title, author, or company..." type="text" value="{{ $search ?? '' }}" onkeydown="if(event.key === 'Enter') this.form.submit();"/>
+                        </div>
+                        <div class="border"></div>
+                        <button type="submit" aria-label="Search" class="micButton">
+                            <!-- Changed to Magnifying Glass/Search Icon as requested -->
+                            <svg width="20px" viewBox="0 0 24 24" height="20px" fill="none" stroke="currentColor" stroke-width="2" class="micIcon">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <style>
+            .search-container {
+                margin-bottom: 2rem;
+            }
+            .search-wrapper-container {
+                display: flex;
+                justify-content: center;
+                padding: 0 1rem;
+            }
+
+            .search-bar {
+                display: flex;
+                align-items: center;
+                width: 100%;
+                max-width: 600px;
+                background-color: #1a1b23;
+                padding: 0.5rem 1rem;
+                border-radius: 30px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+                transition: all 0.3s ease;
+                border: 1px solid #2a2b33;
+            }
+
+            .search-bar:focus-within {
+                background-color: #222533;
+                border-color: #00d4ff !important; /* Force Blue */
+                box-shadow: 0 4px 15px rgba(0, 212, 255, 0.35) !important; /* Force Blue Shadow */
+            }
+
+            .search-bar:hover {
+                background-color: #222533;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.35);
+            }
+
+            .InputContainer {
+                display: flex;
+                align-items: center;
+                flex-grow: 1;
+                gap: 0.75rem;
+            }
+
+            .input {
+                flex: 1;
+                border: none;
+                outline: none;
+                font-size: 1rem;
+                background: none;
+                color: #f0f0f0;
+                padding: 0.5rem 0;
+                font-family: inherit;
+            }
+
+            .input::placeholder {
+                color: #8a8a8a;
+                opacity: 1;
+                transition: opacity 0.2s ease;
+            }
+
+            .input:focus::placeholder {
+                opacity: 0.5;
+            }
+
+            .searchIcon {
+                width: 20px;
+                height: 20px;
+                fill: #8a8a8a;
+                transition: fill 0.2s ease;
+            }
+
+            .search-bar:focus-within .searchIcon {
+                fill: #00ff99;
+            }
+
+            .border {
+                width: 1px;
+                height: 24px;
+                background-color: #3a3b43;
+                margin: 0 0.75rem;
+            }
+
+            .micButton {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 36px;
+                height: 36px;
+                border: none;
+                border-radius: 50%;
+                background: none;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+
+            .micButton:hover {
+                background-color: #2a2b33;
+            }
+
+            .micIcon {
+                width: 18px;
+                height: 18px;
+                fill: #8a8a8a;
+                transition: fill 0.2s ease;
+            }
+
+            .micButton:hover .micIcon {
+                fill: #ff5100;
+            }
+        </style>
 
         @if(session('success'))
             <div class="alert-success">
