@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Mail\JobPosted;
+use Illuminate\Support\Facades\Mail;
 
 class EmployerController extends Controller
 {
@@ -107,7 +109,7 @@ class EmployerController extends Controller
             'job_benefits' => 'nullable|string',
         ]);
 
-        auth()->user()->employer->jobs()->create([
+        $job = auth()->user()->employer->jobs()->create([
             'title' => $request->title,
             'field_type' => $request->field_type,
             'job_type' => $request->job_type,
@@ -125,6 +127,14 @@ class EmployerController extends Controller
             'job_benefits' => $request->job_benefits,
             'status' => 'active'
         ]);
+
+        // Send confirmation email
+        try {
+            Mail::to(auth()->user()->email)->send(new JobPosted($job));
+        } catch (\Exception $e) {
+            // Log error but continue
+            \Illuminate\Support\Facades\Log::error('Failed to send job posted email: ' . $e->getMessage());
+        }
 
         return redirect()->route('employer.post-job')->with('success', 'Job posted successfully!');
     }

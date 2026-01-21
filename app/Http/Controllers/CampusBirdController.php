@@ -7,6 +7,9 @@ use App\Models\InternshipForm;
 use App\Models\InternshipFormSubmission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Mail\InternshipApplicationSubmitted;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\InternshipApplicationShortlisted;
 
 class CampusBirdController extends Controller
 {
@@ -123,6 +126,15 @@ class CampusBirdController extends Controller
         $applicant = InternshipFormSubmission::findOrFail($id);
         $applicant->status = $request->status;
         $applicant->save();
+
+        // Send shortlist email if status is shortlisted
+        if ($request->status === 'shortlisted') {
+            try {
+                Mail::to($applicant->applicant_email)->send(new InternshipApplicationShortlisted($applicant));
+            } catch (\Exception $e) {
+                \Illuminate\Support\Facades\Log::error('Failed to send shortlist email: ' . $e->getMessage());
+            }
+        }
 
         return redirect()->back()->with('success', 'Applicant status updated successfully.');
     }
@@ -347,7 +359,7 @@ class CampusBirdController extends Controller
         }
 
         // Store the submission
-        InternshipFormSubmission::create([
+        $submission = InternshipFormSubmission::create([
             'internship_form_id' => $form->id,
             'applicant_name' => $request->applicant_name,
             'applicant_email' => $request->applicant_email,
@@ -355,6 +367,14 @@ class CampusBirdController extends Controller
             'status' => 'pending',
             'form_data' => $formData,
         ]);
+
+        // Send confirmation email
+        try {
+            Mail::to($submission->applicant_email)->send(new InternshipApplicationSubmitted($submission));
+        } catch (\Exception $e) {
+            // Log error but continue
+            \Illuminate\Support\Facades\Log::error('Failed to send internship application email: ' . $e->getMessage());
+        }
 
         return redirect()->route('services.campus-bird')->with('success', 'Your application has been submitted successfully!');
     }
