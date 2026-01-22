@@ -184,5 +184,9 @@ Route::middleware(['auth', 'admin'])->prefix('adminview')->name('admin.')->group
         // Form Builder
         Route::resource('forms', App\Http\Controllers\InternshipFormController::class);
         Route::post('forms/{form}/toggle', [App\Http\Controllers\InternshipFormController::class, 'toggle'])->name('forms.toggle');
+
+        // Alumni Management
+        Route::get('alumnis/export', [App\Http\Controllers\CampusBirdAlumniController::class, 'export'])->name('alumnis.export');
+        Route::resource('alumnis', App\Http\Controllers\CampusBirdAlumniController::class);
     });
 });

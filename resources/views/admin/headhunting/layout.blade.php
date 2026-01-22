@@ -299,7 +299,6 @@
                     </svg>
                     Job Posts
                 </a>
-            </div>
 
             </div>
         </nav>

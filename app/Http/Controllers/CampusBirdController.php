@@ -38,7 +38,21 @@ class CampusBirdController extends Controller
         // Get chart data for the last 12 months
         $chartData = $this->getChartData();
 
-        return view('admin.campus-bird.index', compact('stats', 'chartData'));
+        // Get Alumni statistics for Pie Chart (Category-wise)
+        $alumniByCategory = \App\Models\Alumni::selectRaw('category, count(*) as count')
+            ->groupBy('category')
+            ->pluck('count', 'category')
+            ->toArray();
+
+        // Get Alumni statistics for Bar/Pie Chart (Program-wise)
+        $alumniByProgram = \App\Models\Alumni::selectRaw('program, count(*) as count')
+            ->groupBy('program')
+            ->orderByDesc('count')
+            ->limit(5) // Top 5 programs
+            ->pluck('count', 'program')
+            ->toArray();
+
+        return view('admin.campus-bird.index', compact('stats', 'chartData', 'alumniByCategory', 'alumniByProgram'));
     }
 
     /**

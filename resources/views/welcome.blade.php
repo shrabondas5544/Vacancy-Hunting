@@ -720,6 +720,93 @@
         text-transform: uppercase;
         letter-spacing: 1px;
     }
+
+    /* Internship Section */
+    .internship-section {
+        padding: 2rem 2rem;
+        position: relative;
+        background: linear-gradient(135deg, rgba(26, 35, 50, 0.95) 0%, rgba(15, 23, 42, 0.9) 100%),
+                    url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1920&q=80') center/cover;
+        background-attachment: fixed;
+        overflow: hidden;
+    }
+
+    .internship-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(circle at 20% 50%, rgba(0, 212, 255, 0.15) 0%, transparent 50%),
+                    radial-gradient(circle at 80% 80%, rgba(102, 126, 234, 0.15) 0%, transparent 50%);
+        pointer-events: none;
+    }
+
+    .internship-content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 4rem;
+        max-width: 1400px;
+        width: 100%;
+        margin: 0 auto;
+        position: relative;
+        z-index: 1;
+    }
+
+    .internship-left {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+    }
+
+    .internship-image {
+        max-width: 100%;
+        height: auto;
+        /* Removed border-radius and box-shadow for transparent image */
+        transition: transform 0.3s ease;
+        animation: float 3s ease-in-out infinite;
+    }
+
+    .internship-right {
+        flex: 1;
+        color: white;
+    }
+
+    .internship-title {
+        font-size: 3rem;
+        font-weight: 800;
+        margin-bottom: 1.5rem;
+        line-height: 1.2;
+        background: linear-gradient(135deg, #fff 0%, #00d4ff 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .internship-text {
+        font-size: 1.15rem;
+        color: rgba(255, 255, 255, 0.8);
+        line-height: 1.8;
+        margin-bottom: 2.5rem;
+    }
+
+    @media (max-width: 900px) {
+        .internship-content {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .internship-image {
+            max-width: 80%;
+            margin-bottom: 2rem;
+        }
+        
+        .internship-title {
+            font-size: 2.2rem;
+        }
+    }
+
     </style>
 </head>
 <body>
@@ -757,10 +844,7 @@
                     </button>
                 </div>
 
-                <!-- Footer Link -->
-                <div class="hero-footer">
-                    <a href="{{ route('login') }}" class="hero-link">Find Jobs →</a>
-                </div>
+
             </div>
 
             <div class="hero-right">
@@ -911,6 +995,22 @@
                 and career development services that drive success for both individuals and organizations.
             </p>
             <a href="#" class="btn-outline">Know More About Us</a>
+        </div>
+    </section>
+
+    <!-- Internship Section -->
+    <section class="internship-section">
+        <div class="internship-content">
+            <div class="internship-left">
+                <img src="{{ asset('assets/images/internship-concept.png') }}" alt="Campus Bird Internship" class="internship-image">
+            </div>
+            <div class="internship-right">
+                <h2 class="internship-title">Join our Campus Bird Internship Program</h2>
+                <p class="internship-text">
+                    Experience the thrill of real-world challenges and professional growth. Our Campus Bird Internship Program offers hands-on opportunities to work with industry experts, develop cutting-edge skills, and build a network that will support your career for years to come. Whether you're looking to refine your expertise or explore new horizons, this is your launchpad to success.
+                </p>
+                <a href="{{ route('services.campus-bird') }}" class="btn-primary">Become a CampusBird Now</a>
+            </div>
         </div>
     </section>
     

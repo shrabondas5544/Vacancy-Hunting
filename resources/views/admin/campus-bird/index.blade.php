@@ -211,6 +211,11 @@
         color: #8cb910ff;
     }
 
+    .chart-title-icon.purple {
+        background-color: rgba(139, 92, 246, 0.15);
+        color: #8b5cf6;
+    }
+
     .chart-container {
         position: relative;
         height: 280px;
@@ -534,6 +539,59 @@
     </div>
 </div>
 
+
+<!-- Alumni Analytics Section -->
+<div class="charts-section">
+    <h2 class="section-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+        </svg>
+        Alumni Analytics
+    </h2>
+
+    <div class="charts-grid">
+        <!-- Category Wise Pie Chart -->
+        <div class="chart-card">
+            <div class="chart-header">
+                <div class="chart-title">
+                    <div class="chart-title-icon purple">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path>
+                            <path d="M22 12A10 10 0 0 0 12 2v10z"></path>
+                        </svg>
+                    </div>
+                    <span>Alumni by Category</span>
+                </div>
+            </div>
+            <div class="chart-container">
+                <canvas id="categoryChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Program Wise Bar Chart -->
+        <div class="chart-card">
+            <div class="chart-header">
+                <div class="chart-title">
+                    <div class="chart-title-icon blue">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="20" x2="18" y2="10"></line>
+                            <line x1="12" y1="20" x2="12" y2="4"></line>
+                            <line x1="6" y1="20" x2="6" y2="14"></line>
+                        </svg>
+                    </div>
+                    <span>Top Programs</span>
+                </div>
+            </div>
+            <div class="chart-container">
+                <canvas id="programChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Quick Actions -->
 <div class="quick-actions">
     <h2 class="section-title">
@@ -789,6 +847,82 @@
                     ticks: { stepSize: 1 }
                 },
                 x: {
+                    grid: { display: false }
+                }
+            }
+        }
+    });
+
+    // Alumni Category Pie Chart
+    const categoryCtx = document.getElementById('categoryChart').getContext('2d');
+    const alumniByCategory = @json($alumniByCategory ?? []);
+    
+    new Chart(categoryCtx, {
+        type: 'pie',
+        data: {
+            labels: Object.keys(alumniByCategory),
+            datasets: [{
+                data: Object.values(alumniByCategory),
+                backgroundColor: [
+                    'rgba(59, 130, 246, 0.7)',
+                    'rgba(16, 185, 129, 0.7)',
+                    'rgba(249, 115, 22, 0.7)',
+                    'rgba(139, 92, 246, 0.7)',
+                    'rgba(236, 72, 153, 0.7)',
+                    'rgba(234, 179, 8, 0.7)',
+                    'rgba(6, 182, 212, 0.7)',
+                    'rgba(99, 102, 241, 0.7)'
+                ],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        color: '#94a3b8',
+                        font: { size: 10 },
+                        boxWidth: 10
+                    }
+                }
+            }
+        }
+    });
+
+    // Alumni Program Bar Chart
+    const programCtx = document.getElementById('programChart').getContext('2d');
+    const alumniByProgram = @json($alumniByProgram ?? []);
+    
+    new Chart(programCtx, {
+        type: 'bar',
+        data: {
+            labels: Object.keys(alumniByProgram),
+            datasets: [{
+                label: 'Alumni Count',
+                data: Object.values(alumniByProgram),
+                backgroundColor: 'rgba(99, 102, 241, 0.7)',
+                borderColor: '#6366f1',
+                borderWidth: 1,
+                borderRadius: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            indexAxis: 'y',
+            plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                x: {
+                    beginAtZero: true,
+                    grid: { color: 'rgba(148, 163, 184, 0.1)' },
+                    ticks: { stepSize: 1 }
+                },
+                y: {
                     grid: { display: false }
                 }
             }

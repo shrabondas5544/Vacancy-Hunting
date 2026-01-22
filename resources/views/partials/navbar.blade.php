@@ -535,7 +535,7 @@
 <nav class="navbar">
     <div class="navbar-container">
         <a href="{{ url('/') }}" class="logo">
-            <span class="logo-icon"><img src="{{ asset('assets/images/VH logo.png') }}" alt="VH"></span>
+            <span class="logo-icon"><img src="{{ asset('assets/images/VH_logo.png') }}" alt="VH"></span>
             Vacancy Hunting
         </a>
         
