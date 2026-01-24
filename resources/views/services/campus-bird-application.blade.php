@@ -6,10 +6,11 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Campus Bird Internship Application - {{ $department }}</title>
     
-    <!-- Fonts -->
+    <!-- Fonts - Async Loading -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
     
     <style>
         * {
@@ -250,6 +251,8 @@
 <body>
     @include('partials.navbar')
 
+    <main role="main">
+
     <div class="container">
         <a href="{{ route('services.campus-bird') }}" class="back-link">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -286,7 +289,7 @@
 
                 @foreach($allFields as $field)
                     <div class="form-group">
-                        <label class="form-label">
+                        <label class="form-label" for="field_{{ $field['field_name'] }}">
                             {{ $field['label'] }}
                             @if($field['is_required'])
                                 <span class="required">*</span>
@@ -297,6 +300,7 @@
                             <input 
                                 type="{{ in_array($field['field_name'], ['applicant_email']) ? 'email' : 'text' }}" 
                                 name="{{ $field['field_name'] }}" 
+                                id="field_{{ $field['field_name'] }}"
                                 class="form-control" 
                                 value="{{ old($field['field_name']) ?? (Auth::check() && Auth::user()->isCandidate() ? (
                                     $field['field_name'] == 'applicant_name' ? (Auth::user()->candidate->name ?? Auth::user()->name) : (
@@ -311,6 +315,7 @@
                         @elseif($field['type'] === 'textarea')
                             <textarea 
                                 name="{{ $field['field_name'] }}" 
+                                id="field_{{ $field['field_name'] }}"
                                 class="form-control"
                                 {{ $field['is_required'] ? 'required' : '' }}
                             >{{ old($field['field_name']) }}</textarea>
@@ -319,6 +324,7 @@
                             <input 
                                 type="date" 
                                 name="{{ $field['field_name'] }}" 
+                                id="field_{{ $field['field_name'] }}"
                                 class="form-control"
                                 value="{{ old($field['field_name']) }}"
                                 {{ $field['is_required'] ? 'required' : '' }}
@@ -344,6 +350,7 @@
                         @elseif($field['type'] === 'select' && isset($field['options']))
                             <select 
                                 name="{{ $field['field_name'] }}" 
+                                id="field_{{ $field['field_name'] }}"
                                 class="form-control"
                                 {{ $field['is_required'] ? 'required' : '' }}
                             >
@@ -403,6 +410,7 @@
             </form>
         </div>
     </div>
+    </main>
 
     <script>
         function updateFileName(input) {

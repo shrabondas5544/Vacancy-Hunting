@@ -5,10 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Campus Bird Internship Program - Vacancy Hunting</title>
     
-    <!-- Fonts -->
+    <!-- Fonts - Async Loading -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
     
     <style>
         * {
@@ -303,6 +304,8 @@
 <body>
     @include('partials.navbar')
 
+    <main role="main">
+
     @if(session('success'))
         <div style="position: fixed; top: 80px; right: 20px; background: linear-gradient(135deg, #00bcd4 0%, #0099cc 100%); color: white; padding: 1rem 2rem; border-radius: 12px; box-shadow: 0 8px 24px rgba(0, 188, 212, 0.4); z-index: 999; animation: slideIn 0.3s ease;">
             {{ session('success') }}
@@ -380,7 +383,7 @@
     <div class="modal-overlay" id="applicationModal">
         <div class="modal-container">
             <div class="modal-header">
-                <h3 class="modal-title">Select Internship Category</h3>
+                <h2 class="modal-title">Select Internship Category</h2>
                 <button class="modal-close" onclick="toggleModal()">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                 </button>
@@ -423,6 +426,8 @@
             }
         });
     </script>
+
+    </main>
 
     @include('partials.footer')
 </body>

@@ -6,10 +6,11 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ $article->title }} - {{ config('app.name', 'Laravel') }}</title>
     
-    <!-- Fonts -->
+    <!-- Fonts - Async Loading -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
     
     <style>
         * {
@@ -493,7 +494,7 @@
 <body>
     @include('partials.navbar')
 
-    <main class="main-content">
+    <main class="main-content" role="main">
         <a href="{{ route('blog.index') }}" class="back-link">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <line x1="19" y1="12" x2="5" y2="12"></line>

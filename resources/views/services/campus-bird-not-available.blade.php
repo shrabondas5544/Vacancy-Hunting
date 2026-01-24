@@ -5,10 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Program Not Available - Campus Bird Internship</title>
     
-    <!-- Fonts -->
+    <!-- Fonts - Async Loading -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
     
     <style>
         * {
@@ -150,7 +151,7 @@
 <body>
     @include('partials.navbar')
 
-    <div class="container">
+    <main role="main" class="container">
         <div class="icon-container">
             <div class="icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -183,7 +184,7 @@
             </svg>
             Back to Campus Bird
         </a>
-    </div>
+    </main>
 
     @include('partials.footer')
 </body>
