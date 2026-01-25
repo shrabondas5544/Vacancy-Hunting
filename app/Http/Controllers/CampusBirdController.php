@@ -291,6 +291,24 @@ class CampusBirdController extends Controller
     }
 
     /**
+     * Display the list of alumni.
+     */
+    public function alumni()
+    {
+        $alumni = \App\Models\Alumni::orderBy('year', 'desc')->get();
+        return view('services.campus-bird-alumni', compact('alumni'));
+    }
+
+    /**
+     * Display individual alumni profile.
+     */
+    public function showAlumni($id)
+    {
+        $alumni = \App\Models\Alumni::findOrFail($id);
+        return view('services.campus-bird-alumni-profile', compact('alumni'));
+    }
+
+    /**
      * Display the application form for a specific department.
      */
     public function applicationForm($department)

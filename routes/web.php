@@ -27,6 +27,8 @@ Route::view('/cookie-policy', 'cookie-policy')->name('cookie-policy');
 
 // Public Services Routes
 Route::get('/services/campus-bird-internship', [App\Http\Controllers\CampusBirdController::class, 'description'])->name('services.campus-bird');
+Route::get('/services/campus-bird-internship/alumni', [App\Http\Controllers\CampusBirdController::class, 'alumni'])->name('services.campus-bird-alumni');
+Route::get('/services/campus-bird-internship/alumni/{id}/{slug?}', [App\Http\Controllers\CampusBirdController::class, 'showAlumni'])->name('services.campus-bird-alumni-profile');
 Route::get('/campus-bird/apply/{department}', [App\Http\Controllers\CampusBirdController::class, 'applicationForm'])->name('campus-bird.apply');
 Route::post('/campus-bird/submit', [App\Http\Controllers\CampusBirdController::class, 'submitApplication'])->name('campus-bird.submit');
 
