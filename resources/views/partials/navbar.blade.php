@@ -49,6 +49,9 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
+        /* Performance: explicit dimensions */
+        width: 32px;
+        height: 32px;
     }
     
     .nav-center {
@@ -535,7 +538,7 @@
 <nav class="navbar">
     <div class="navbar-container">
         <a href="{{ url('/') }}" class="logo">
-            <span class="logo-icon"><img src="{{ asset('assets/images/VH_logo.png') }}" alt="VH"></span>
+            <span class="logo-icon"><img src="{{ asset('assets/images/VH_logo.png') }}" alt="VH" width="32" height="32"></span>
             Vacancy Hunting
         </a>
         

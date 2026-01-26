@@ -5,10 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ $candidate->name }} - Profile - {{ config('app.name') }}</title>
     
-    <!-- Font Awesome -->
+    <!-- Font Awesome with font-display:swap -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @font-face {
+            font-family: 'Font Awesome 6 Free';
+            font-display: swap;
+        }
+    </style>
+    
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"></noscript>
     
     <style>
         /* ROOT VARIABLES FOR THEME */
@@ -19,10 +29,11 @@
             --bg-hover: #334155;
             --border-color: #334155;
             --text-primary: #ffffff;
-            --text-secondary: #94a3b8;
-            --text-muted: #64748b;
-            --accent-primary: #3b82f6;
-            --accent-hover: #2563eb;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --accent-primary: #2563eb;
+            --accent-text: #60a5fa;
+            --accent-hover: #1d4ed8;
             --accent-light: rgba(59, 130, 246, 0.1);
             --success: #10b981;
             --warning: #f59e0b;
@@ -136,7 +147,7 @@ margin-bottom: 24px;
         .progress-percentage {
             font-size: 18px;
             font-weight: 700;
-            color: var(--accent-primary);
+            color: var(--accent-text);
         }
 
         .progress-bar {
@@ -188,8 +199,8 @@ margin-bottom: 24px;
         }
 
         .tab-button.active {
-            color: var(--accent-primary);
-            border-bottom-color: var(--accent-primary);
+            color: var(--accent-text);
+            border-bottom-color: var(--accent-text);
         }
 
         .tab-button i {
@@ -230,7 +241,7 @@ margin-bottom: 24px;
         }
 
         .card-header i {
-            color: var(--accent-primary);
+            color: var(--accent-text);
             font-size: 22px;
         }
 
@@ -263,7 +274,7 @@ margin-bottom: 24px;
         }
 
         .info-icon i {
-            color: var(--accent-primary);
+            color: var(--accent-text);
             font-size: 18px;
         }
 
@@ -296,7 +307,7 @@ margin-bottom: 24px;
 
         .tag {
             background: var(--bg-primary);
-            color: var(--accent-primary);
+            color: var(--accent-text);
             padding: 8px 16px;
             border-radius: 20px;
             font-size: 14px;
@@ -369,7 +380,7 @@ margin-bottom: 4px;
 
         .timeline-subtitle {
             font-size: 15px;
-            color: var(--accent-primary);
+            color: var(--accent-text);
             margin-bottom: 12px;
         }
 
@@ -460,7 +471,7 @@ margin-bottom: 4px;
 
         .cert-icon i {
             font-size: 28px;
-            color: var(--accent-primary);
+            color: var(--accent-text);
         }
 
         .cert-details {
@@ -476,7 +487,7 @@ margin-bottom: 4px;
 
         .cert-org {
             font-size: 14px;
-            color: var(--accent-primary);
+            color: var(--accent-text);
             margin-bottom: 8px;
         }
 
@@ -864,7 +875,10 @@ margin-bottom: 4px;
         <div class="hero-content">
             <img src="{{ $candidate->profile_picture ? asset('storage/' . $candidate->profile_picture) : 'https://ui-avatars.com/api/?name=' . urlencode($candidate->name) . '&size=180&background=3b82f6&color=fff' }}"
                  alt="{{ $candidate->name }}"
-                 class="candidate-avatar">
+                 class="candidate-avatar"
+                 width="180"
+                 height="180"
+                 fetchpriority="high">
             <div class="hero-info">
                 <h1>{{ $candidate->name }}</h1>
                 <p><i class="fas fa-envelope"></i> {{ $user->email }}</p>
@@ -872,7 +886,7 @@ margin-bottom: 4px;
         </div>
     </div>
 
-    <div class="container">
+    <main class="container">
         <!-- Profile Completion Progress -->
         <div class="progress-section">
             <div class="progress-header">
@@ -1283,7 +1297,7 @@ margin-bottom: 4px;
                 <i class="fas fa-arrow-left"></i> Back to Dashboard
             </a>
         </div>
-    </div>
+    </main>
 
     <script>
         // Tab Switching
