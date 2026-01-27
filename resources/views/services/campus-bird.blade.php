@@ -327,8 +327,8 @@
     @endif
 
     <header class="page-header">
-        <h1 class="page-title">Campus Bird Internship Program</h1>
-        <p class="page-subtitle">Kickstart your career with real-world experience and professional mentorship right from your campus.</p>
+        <h1 class="page-title">{{ __('Campus Bird Internship Program') }}</h1>
+        <p class="page-subtitle">{{ __('Kickstart your career with real-world experience and professional mentorship right from your campus.') }}</p>
     </header>
 
     <div class="content-section">
@@ -337,56 +337,55 @@
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
                 </svg>
-                About the Program
+                {{ __('About the Program') }}
             </h2>
             <p class="section-text">
-                The Campus Bird Internship Program is designed to bridge the gap between academic learning and industry requirements. 
-                We provide students with hands-on opportunities to work on live projects, gain valuable skills, and understand corporate dynamics.
+                {{ __('The Campus Bird Internship Program is designed to bridge the gap between academic learning and industry requirements.') }} 
+                {{ __('We provide students with hands-on opportunities to work on live projects, gain valuable skills, and understand corporate dynamics.') }}
             </p>
             <p class="section-text">
-                Whether you are in your final year or just starting your college journey, our flexible program structure ensures that you can 
-                balance your studies while building a strong professional portfolio.
+                {{ __('Whether you are in your final year or just starting your college journey, our flexible program structure ensures that you can balance your studies while building a strong professional portfolio.') }}
             </p>
 
             <ul class="feature-list">
                 <li class="feature-item">
                     <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-                    <span class="feature-text">Hands-on Live Projects</span>
+                    <span class="feature-text">{{ __('Hands-on Live Projects') }}</span>
                 </li>
                 <li class="feature-item">
                     <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 14l9-5-9-5-9 5 9 5z"></path><path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path><path d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"></path></svg>
-                    <span class="feature-text">Guidance from Industry Experts</span>
+                    <span class="feature-text">{{ __('Guidance from Industry Experts') }}</span>
                 </li>
                 <li class="feature-item">
                     <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15l-2 5l-2.8-5h-5.2l3.8-2.6l-1.4-5.4l4.8 3.4l4.8-3.4l-1.4 5.4l3.8 2.6z"></path></svg>
-                    <span class="feature-text">Certification & Recommendation</span>
+                    <span class="feature-text">{{ __('Certification & Recommendation') }}</span>
                 </li>
                 <li class="feature-item">
                     <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path></svg>
-                    <span class="feature-text">PPO for Top Performers</span>
+                    <span class="feature-text">{{ __('PPO for Top Performers') }}</span>
                 </li>
             </ul>
         </div>
 
         <div class="cta-section">
-            <h2 class="cta-title">Ready to spread your wings?</h2>
-            <p class="cta-subtitle">Join the flock and start your professional journey today!</p>
+            <h2 class="cta-title">{{ __('Ready to spread your wings?') }}</h2>
+            <p class="cta-subtitle">{{ __('Join the flock and start your professional journey today!') }}</p>
             
             <button onclick="toggleModal()" class="cta-button">
-                Fill this form for Application
+                {{ __('Fill this form for Application') }}
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
             </button>
         </div>
 
         <div style="text-align: center; margin-top: 4rem;">
             <h2 class="section-heading" style="justify-content: center; font-size: 2rem; margin-bottom: 1rem;">
-                Our Pride, Our Alumni
+                {{ __('Our Pride, Our Alumni') }}
             </h2>
             <p class="section-text" style="text-align: center; max-width: 600px; margin: 0 auto 2rem auto;">
-                Meet our previous graduates who have successfully transitioned into their professional careers after completing the Campus Bird Internship Program.
+                {{ __('Meet our previous graduates who have successfully transitioned into their professional careers after completing the Campus Bird Internship Program.') }}
             </p>
             <a href="{{ route('services.campus-bird-alumni') }}" class="cta-button" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); box-shadow: none;">
-                See our previous alums
+                {{ __('See our previous alums') }}
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
             </a>
         </div>
@@ -396,7 +395,7 @@
     <div class="modal-overlay" id="applicationModal">
         <div class="modal-container">
             <div class="modal-header">
-                <h2 class="modal-title">Select Internship Category</h2>
+                <h2 class="modal-title">{{ __('Select Internship Category') }}</h2>
                 <button class="modal-close" onclick="toggleModal()">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                 </button>
@@ -409,17 +408,17 @@
                             @if($dept['available'])
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
                             @else
-                                <span style="font-size: 0.75rem; color: #ff6b6b;">Not Available</span>
+                                <span style="font-size: 0.75rem; color: #ff6b6b;">{{ __('Not Available') }}</span>
                             @endif
                         </a>
                     @endforeach
                 </div>
                 <p style="text-align: center; color: rgba(255, 255, 255, 0.6); font-size: 0.9rem; margin-top: 1.5rem; line-height: 1.6;">
-                    Programs marked as "Not Available" are currently not offered.<br>
-                    Stay tuned at our 
+                    {{ __('Programs marked as "Not Available" are currently not offered.') }}<br>
+                    {{ __('Stay tuned at our') }} 
                     <a href="https://www.facebook.com/vacancyhuntingbd" target="_blank" style="color: #00d4ff; text-decoration: none;">Facebook</a> / 
                     <a href="https://www.linkedin.com/company/vacancy-hunting" target="_blank" style="color: #00d4ff; text-decoration: none;">LinkedIn</a> 
-                    page for future updates.
+                    {{ __('page for future updates.') }}
                 </p>
             </div>
         </div>

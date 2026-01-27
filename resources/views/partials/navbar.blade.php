@@ -532,6 +532,33 @@
         font-size: 0.7em; 
         margin-left: 4px;
     }
+
+    /* Language Switcher */
+    .lang-switcher {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: white;
+        padding: 0.4rem 0.8rem;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 0.85rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .lang-switcher:hover {
+        background: rgba(0, 212, 255, 0.15);
+        border-color: #00d4ff;
+        color: #00d4ff;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 212, 255, 0.2);
+    }
+</style>
 </style>
 
 <!-- Navbar -->
@@ -574,6 +601,10 @@
         </div>
         
         <div class="nav-right">
+            <a href="{{ route('lang.switch', ['locale' => app()->getLocale() == 'en' ? 'bn' : 'en']) }}" class="lang-switcher" style="text-decoration: none;" title="Switch Language">
+                {{ app()->getLocale() == 'en' ? 'BN' : 'EN' }}
+            </a>
+
             @auth
                 <!-- Logged in user with dropdown -->
                 <div class="user-menu">

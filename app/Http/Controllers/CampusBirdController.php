@@ -293,10 +293,68 @@ class CampusBirdController extends Controller
     /**
      * Display the list of alumni.
      */
-    public function alumni()
+    public function alumni(Request $request)
     {
-        $alumni = \App\Models\Alumni::orderBy('year', 'desc')->get();
-        return view('services.campus-bird-alumni', compact('alumni'));
+        $query = \App\Models\Alumni::query();
+
+        // Search by Name
+        if ($request->filled('search')) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        // Filter by Program
+        if ($request->filled('program')) {
+            $query->where('program', $request->program);
+        }
+
+        // Filter by Category
+        if ($request->filled('category')) {
+            $query->where('category', $request->category);
+        }
+
+        // Filter by Year
+        if ($request->filled('year')) {
+            $query->where('year', $request->year);
+        }
+
+        // Filter by Division
+        if ($request->filled('division')) {
+            $query->where('division', $request->division);
+        }
+
+        $alumni = $query->orderBy('year', 'desc')->get();
+
+        // Fetch options for filters
+        $programs = [];
+        for ($i = 1; $i <= 10; $i++) {
+            $programs[] = "Campus Bird Internship $i";
+        }
+
+        $categories = [
+            'IT and graphics',
+            'Content & creation',
+            'Marketing & promotion',
+            'Human Resources',
+            'Bussniess Development',
+            'Client management & Public Relation(CM & PR)',
+            'Product design & Development(PDDT)',
+            'Education Consultancy'
+        ];
+
+        $years = range(2020, 2050);
+
+        $divisions = [
+            'Barishal',
+            'Chattogram',
+            'Dhaka',
+            'Khulna',
+            'Rajshahi',
+            'Rangpur',
+            'Mymensingh',
+            'Sylhet'
+        ];
+
+        return view('services.campus-bird-alumni', compact('alumni', 'programs', 'categories', 'years', 'divisions'));
     }
 
     /**
