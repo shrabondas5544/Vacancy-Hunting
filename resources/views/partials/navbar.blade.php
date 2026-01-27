@@ -551,14 +551,180 @@
         letter-spacing: 0.05em;
     }
 
-    .lang-switcher:hover {
-        background: rgba(0, 212, 255, 0.15);
-        border-color: #00d4ff;
-        color: #00d4ff;
-        transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(0, 212, 255, 0.2);
+    /* From Uiverse.io by chase2k25 - Adapted for VH */ 
+    .toggle-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        border-radius: 0.2em;
+        padding: 0.15em;
+        background: linear-gradient(to right, #1a1a1a, #2c2c2c);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+        font-size: 12px; /* Increased size for visibility */
     }
-</style>
+
+    .toggle-checkbox {
+        appearance: none;
+        position: absolute;
+        z-index: 10;
+        border-radius: inherit;
+        width: 100%;
+        height: 100%;
+        font: inherit;
+        opacity: 0;
+        cursor: pointer;
+    }
+
+    .toggle-container {
+        display: flex;
+        align-items: center;
+        position: relative;
+        border-radius: 0.1em;
+        width: 6em; /* Increased width for text */
+        height: 2.2em;
+        background-color: #222222;
+        box-shadow: inset 0 0 0.1em rgba(0, 0, 0, 0.8);
+        overflow: hidden;
+        transition: background-color 0.3s ease;
+    }
+
+    .toggle-background {
+        position: absolute;
+        width: 50%;
+        height: 100%;
+        left: 0;
+        /* Replaced Pink with Project Blue Gradient */
+        background: linear-gradient(to right, #00d4ff, #0099ccff);
+        transition: left 0.3s ease, transform 0.3s ease;
+        z-index: 1;
+    }
+
+    .toggle-checkbox:checked + .toggle-container > .toggle-background {
+        left: 50%;
+        transform: scaleX(1.1);
+    }
+
+    .toggle-button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        left: 0.2em;
+        border-radius: 0.1em;
+        width: 2.8em; /* Adjusted width */
+        height: 1.8em;
+        background: linear-gradient(to bottom, #0768a0ff, #0884ccff);
+        box-shadow: 0 0 0.2em rgba(255, 255, 255, 0.3);
+        transition: left 0.3s ease;
+        z-index: 2;
+    }
+
+    .toggle-checkbox:checked + .toggle-container > .toggle-button {
+        left: 3em; /* Move to right */
+    }
+
+    .toggle-checkbox:checked + .toggle-container {
+        background-color: #1a1a1a;
+    }
+    
+    /* Text Labels */
+    .toggle-label {
+        position: absolute;
+        width: 49%;
+        text-align: center;
+        font-weight: 800;
+        font-size: 1.2em;
+        color: rgba(255,255,255,0.8);
+        z-index: 3; /* Above background, but check z-index of button */
+        top: 50%;
+        transform: translateY(-50%);
+        pointer-events: none;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+    }
+    /* Note: Button is z-index 2. Background is z-index 1. 
+       If label is z-index 3, it will show ON TOP of the button.
+       User said "in black part will show BN/EN". 
+       Usually this means the background track text. 
+       If button covers it, that's fine. 
+       Let's put labels at z-index 0 (if container is stacking context) or 1?
+       Container creates stacking context? No, just flex.
+       But items are positioned absolute.
+       Let's put labels at z-index: 1. Button at 2. Background at 1?
+       Let's adjust z-indices.
+       Background: 1.
+       Button: 2.
+       Labels: should probably be visible *on top* of the black background, but *under* the button?
+       Or on top of the background color (if different).
+       Let's put labels at z-index: 1.5? Or 2 is button.
+       Let's try Labels at z-index 1. 
+       Wait, if background slides, it covers the left side?
+       .toggle-background is `width: 50%`. It moves left/right.
+       If active (blue) background is behind the text, text needs to be readable on blue.
+       The "black part" (container background) is visible where the colored background isn't?
+       Actually, `.toggle-background` is the colored part.
+       When checked, it moves to right (50%).
+       So left side becomes exposed black background?
+       No, `checked + ... > .toggle-background { left: 50% }`.
+       So initially (unchecked), background is at left (0). Blue is on left.
+       Button is at left. Button covers blue?
+       `toggle-button` width `1.8em`. Container `4em`. Half is `2em`.
+       Actually, with my modified width `6em`, half is `3em`.
+       If background is on left, it covers left half.
+       Then button is on top of it.
+       If I want text "EN" on left and "BN" on right...
+       "EN" will be on the colored background (if unchecked).
+       "BN" will be on the black background (if unchecked).
+       Let's set z-index of Text to 3 to be safe and readable, 
+       but `mix-blend-mode` or color choice is key.
+       White text on Blue is fine. White text on Black is fine.
+       But if button covers it? Button is opaque?
+       `.toggle-button` has `background: linear-gradient(...)`. Opaque.
+       So if button is over text, text is hidden.
+       Button is wide (`2.8em`). 
+       If text is centered in `3em` half... button covers most of it.
+       Maybe the intention is text is visible *on* the button? No, user said "in black part".
+       Okay, I'll place labels on top of everything (z-index 3) but user might mean "background".
+       If button covers text, that's standard toggle behavior.
+       I'll use `z-index: 0` for labels so they are on the container base, 
+       covered by button (z:2) and colored background (z:1)?
+       If colored background is z:1, it covers text.
+       I should perhaps put text on top of colored background too?
+       Let's try z-index 3 (on top of everything). Then button slides *under* text? No, button is physical switch.
+       Text usually printed on the track.
+       So Text z-index: 0. Colored Background z-index: 0 (or 1).
+       Button z-index: 2.
+       I'll put Text at z-index: 4, `pointer-events: none`.
+       This ensures visibility. 
+       If button is under text, it looks like text is projected?
+       Let's try text at z-index 1.5 (between background and button).
+       Button z-index 2. Background z-index 1.
+       So Text is on top of colored background, but Button covers it.
+    */
+    .toggle-label {
+        position: absolute;
+        width: 50%;
+        text-align: center;
+        font-weight: 800;
+        font-size: 1.2em;
+        color: rgba(255,255,255,0.9);
+        z-index: 1; /* Above background (if z=0), below button (z=2) */
+        top: 50%;
+        transform: translateY(-50%);
+        pointer-events: none;
+    }
+    .toggle-background { z-index: 0; }
+    .toggle-button { z-index: 2; }
+    
+    .toggle-label.left { left: 0; }
+    .toggle-label.right { right: 0; }
+
+    /* Mobile Responsive Scale */
+    @media (max-width: 768px) {
+        .toggle-wrapper {
+            font-size: 9px; /* Smaller on mobile (approx 75% of desktop) */
+        }
+    }
 </style>
 
 <!-- Navbar -->
@@ -601,9 +767,19 @@
         </div>
         
         <div class="nav-right">
-            <a href="{{ route('lang.switch', ['locale' => app()->getLocale() == 'en' ? 'bn' : 'en']) }}" class="lang-switcher" style="text-decoration: none;" title="Switch Language">
-                {{ app()->getLocale() == 'en' ? 'BN' : 'EN' }}
-            </a>
+            <div class="toggle-wrapper" style="margin-right: 15px;">
+                <input type="checkbox" class="toggle-checkbox" 
+                    {{ app()->getLocale() == 'bn' ? 'checked' : '' }} 
+                    onchange="window.location.href='{{ route('lang.switch', ['locale' => app()->getLocale() == 'en' ? 'bn' : 'en']) }}'"
+                    title="Switch Language"
+                >
+                <div class="toggle-container">
+                    <div class="toggle-background"></div>
+                    <div class="toggle-button"></div>
+                    <div class="toggle-label left">বাং</div>
+                    <div class="toggle-label right">EN</div>
+                </div>
+            </div>
 
             @auth
                 <!-- Logged in user with dropdown -->
